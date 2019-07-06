@@ -1,0 +1,24 @@
+{
+  "hosting": {
+    "public": "build",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "https://bufak-wiso.de",
+        "type": 301
+      },
+      {
+        "source": "/**",
+        "destination": "bufak-wiso.de",
+        "type": 301
+      }
+    ]
+  }
+}
