@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux'
+import AuthActions from '../../redux/authRedux'
 import {
   MdClearAll,
 } from 'react-icons/md';
@@ -6,7 +8,10 @@ import {
   Button,
   Nav,
   Navbar,
+  NavItem,
+  NavLink,
 } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 import bn from 'utils/bemnames';
 
 const bem = bn.create('header');
@@ -16,6 +21,7 @@ class Header extends React.Component {
     isOpenNotificationPopover: false,
     isNotificationConfirmed: false,
     isOpenUserCardPopover: false,
+    logout: false,
   };
 
   toggleNotificationPopover = () => {
@@ -41,8 +47,17 @@ class Header extends React.Component {
     document.querySelector('.cr-sidebar').classList.toggle('cr-sidebar--open');
   };
 
-  render() {
+  handleLogout() {
+    this.setState({ logout: true})
+    this.props.logout()
+  }
 
+  render() {
+    if (this.state.logout) {
+      return (
+        <Redirect to="/login" />
+      )
+    }
     return (
       <Navbar light expand className={bem.b('bg-white')}>
         <Nav navbar className="mr-2">
@@ -52,11 +67,26 @@ class Header extends React.Component {
         </Nav>
 
         <Nav navbar className={bem.e('nav-right')}>
-
+          <NavItem className="d-inline-flex">
+            <NavLink id="Popover1" className="position-relative">
+            <Button onClick={() => this.handleLogout()}>Logout</Button>
+            </NavLink>
+          </NavItem>
         </Nav>
       </Navbar>
     );
   }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(AuthActions.logout()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,9 +1,13 @@
 import GAListener from 'components/GAListener';
-import { MainLayout } from 'components/Layout';
+import { MainLayout, EmptyLayout } from 'components/Layout';
+import LayoutRoute from 'components/Layout/LayoutRoute'
+// import PrivateRoute from 'components/PrivateRoute';
 import PageSpinner from 'components/PageSpinner';
 import React from 'react';
+import AuthPage from 'pages/AuthPage';
+import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import './styles/reduction.scss';
 
 const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
@@ -14,13 +18,49 @@ const getBasename = () => {
 
 class App extends React.Component {
   render() {
+    const PrivateRoute = (route) => {
+      const localstore = JSON.parse(localStorage.getItem('login'))
+      const sessionstore = JSON.parse(sessionStorage.getItem('login'))
+      if ((localstore && localstore.token) || (sessionstore && sessionstore.token) ) {
+        return (
+          <Route
+            {...route}
+          />
+        )
+      } else {
+        return (
+          <Redirect 
+          to={'/login'} 
+          from={route.path}
+          />
+        )
+      }
+    }
+
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
+          <LayoutRoute
+              exact
+              path="/login"
+              layout={EmptyLayout}
+              component={props => (
+                <AuthPage {...props} authState={STATE_LOGIN} />
+              )}
+            />
+            <LayoutRoute
+              exact
+              path="/signup"
+              layout={EmptyLayout}
+              component={props => (
+                <AuthPage {...props} authState={STATE_SIGNUP} />
+              )}
+            />
+
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <Route exact path="/" component={DashboardPage} />
+                <PrivateRoute exact path="/" component={(props) => (<DashboardPage {...props}/>)} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
