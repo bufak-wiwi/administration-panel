@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import AuthActions from '../../redux/authRedux'
+import ConferenceActions from '../../redux/conferenceRedux'
 import {
   MdClearAll,
 } from 'react-icons/md';
@@ -10,6 +11,7 @@ import {
   Navbar,
   NavItem,
   NavLink,
+  Input,
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
 import bn from 'utils/bemnames';
@@ -55,7 +57,7 @@ class Header extends React.Component {
   render() {
     if (this.state.logout) {
       return (
-        <Redirect to="/login" />
+        <Redirect to={{ pathname: '/login' , state: { from: '/'}}} />
       )
     }
     return (
@@ -65,6 +67,22 @@ class Header extends React.Component {
             <MdClearAll size={25} />
           </Button>
         </Nav>
+        <Nav navbar>
+          {this.props.conferenceList &&
+            <Input
+            type="select"
+            name="conference"
+            value={ this.props.conferenceId }
+            onChange={(e) => this.props.updateConferenceId(e.currentTarget.value)}
+            >
+              {this.props.conferenceList.map(conference => 
+                <option key={conference.conferenceID} id={conference.conferenceID}>{conference.conferenceID}</option>
+              )}
+            </Input>
+          }
+        </Nav>
+
+  
 
         <Nav navbar className={bem.e('nav-right')}>
           <NavItem className="d-inline-flex">
@@ -80,12 +98,15 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    conferenceList: state.conference.conferenceList,
+    conferenceId: state.conference.conferenceId
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(AuthActions.logout()),
+    updateConferenceId: (id) => dispatch(ConferenceActions.updateConferenceId(id))
   }
 }
 

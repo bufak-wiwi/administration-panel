@@ -16,6 +16,8 @@ class AuthPage extends React.Component {
   };
 
   render() {
+    const { state } = this.props.history.location
+    console.log('State',state);
     return (
       <Row
         style={{
@@ -29,6 +31,7 @@ class AuthPage extends React.Component {
               authState={this.props.authState}
               onChangeAuthState={this.handleAuthState}
               onLogoClick={this.handleLogoClick}
+              redirectAfterLogin={state && state.from ? state.from : '/'}
             />
           </Card>
         </Col>

@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 import AuthActions from '../redux/authRedux'
-import { baseURL } from '../config/globals'
+import ConferenceActions from '../redux/conferenceRedux'
+import { apiFetch } from '../utils/functions'
 
 export function* login(action) { 
   try {
@@ -8,22 +9,28 @@ export function* login(action) {
     yield put(AuthActions.updateError(false))
     const { email, password, remeberMe } = action
     if(email && password) {
-      const result = yield call(signInWithEmailAndPassword, email, password)
+      const result = yield call(apiFetch, 'login', 'post', { email, password })
+      
       if(result.tokenString) {
-        // navigate ? 
+        const data = JSON.stringify({
+          user: result.user,
+          token: result.tokenString,
+          conferences: result.conferences,
+          admin: result.admin,
+          adminForConference: result.adminForConference
+        })
         if (remeberMe) {
-          localStorage.setItem('login', JSON.stringify({
-            user: result.user,
-            token: result.tokenString
-          }));
+          localStorage.setItem('data', data);
         } else {
-          sessionStorage.setItem('login', JSON.stringify({
-            user: result.user,
-            token: result.tokenString
-          }));
+          sessionStorage.setItem('data', data);
         }
+
+        yield put(AuthActions.updateToken(result.token))
         yield put(AuthActions.updateUser(result.user))
+        yield put(ConferenceActions.updateConferenceList(result.conferences))
+        yield put(AuthActions.updateAdmin(result.admin, result.adminForConference))
         yield put(AuthActions.updateFetching(false))
+
       } else {
         yield put(AuthActions.updateError(true))
         yield put(AuthActions.updateFetching(false))
@@ -36,15 +43,15 @@ export function* login(action) {
   }
 }
 
-function signInWithEmailAndPassword(email, password) {
-    return fetch(baseURL + 'login/', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password})
-    })
-    .then(res => res.json())
+export function* rehydrateState() {
+  const result = JSON.parse(sessionStorage.getItem('data'))
+  if (result.token) {
+    yield put(AuthActions.updateToken(result.token))
+    yield put(AuthActions.updateUser(result.user))
+    yield put(ConferenceActions.updateConferenceList(result.conferences))
+    yield put(AuthActions.updateAdmin(result.admin, result.adminForConference))
+    yield put(AuthActions.updateFetching(false))
+  }
 }
 
 export function* logout(action) {

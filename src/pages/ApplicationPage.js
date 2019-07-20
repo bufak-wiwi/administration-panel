@@ -6,13 +6,34 @@ import {
   CardHeader,
   CardBody,
 } from 'reactstrap'
-import {Link} from 'react-router-dom';
 // import { getColor } from 'utils/colors';
 
-class DashboardPage extends React.Component {
+class ApplicationPage extends React.Component {
   componentDidMount() {
     // this is needed, because InfiniteCalendar forces window scroll
     window.scrollTo(0, 0);
+  }
+
+  renderNoApplicationPhase = () => {
+      return (
+        <Card>
+            <CardHeader>Keine Laufende Anmeldephase</CardHeader>
+            <CardBody>
+                Für die ausgewählte BuFaK gibt es keine laufende Anmeldephase.
+            </CardBody>
+        </Card>
+      )
+  }
+
+  renderApplicationForm = () => {
+    return (
+        <Card>
+            <CardHeader>jioj</CardHeader>
+            <CardBody>
+                gfd
+            </CardBody>
+        </Card>
+      )
   }
 
   render() {
@@ -26,14 +47,10 @@ class DashboardPage extends React.Component {
     return (
       <Page
         className="DashboardPage"
-        title={'BuFaK ' +conference.conferenceID || 'Startseite'}
+        title="Anmeldung"
       >
-        <Card>
-          <CardHeader>Anmeldung</CardHeader>
-          <CardBody>
-            { conference.conferenceApplicationPhase ? <Link to="/anmeldung">Hier gehts zur Anmeldung</Link> : 'Die Anmeldung ist momentan nicht geöffnet'}
-          </CardBody>
-        </Card>
+        { !conference.applicationPhase && this.renderNoApplicationPhase()}
+        { conference.applicationPhase && this.renderApplicationForm()}
      </Page>
     );
   }
@@ -51,4 +68,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationPage);

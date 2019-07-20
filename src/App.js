@@ -1,16 +1,18 @@
 import GAListener from 'components/GAListener';
 import { MainLayout, EmptyLayout } from 'components/Layout';
 import LayoutRoute from 'components/Layout/LayoutRoute'
-// import PrivateRoute from 'components/PrivateRoute';
+import { connect } from 'react-redux'
 import PageSpinner from 'components/PageSpinner';
 import React from 'react';
 import AuthPage from 'pages/AuthPage';
 import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
 
 const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
+const ApplicationPage = React.lazy(() => import('pages/ApplicationPage'));
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -19,9 +21,12 @@ const getBasename = () => {
 class App extends React.Component {
   render() {
     const PrivateRoute = (route) => {
-      const localstore = JSON.parse(localStorage.getItem('login'))
-      const sessionstore = JSON.parse(sessionStorage.getItem('login'))
-      if ((localstore && localstore.token) || (sessionstore && sessionstore.token) ) {
+      console.log('rote path inside App', route)
+      const sessionstore = JSON.parse(sessionStorage.getItem('data'))
+      if (!this.props.auth.user && sessionstore && sessionstore.user) {
+        this.props.rehydrateState();
+      }
+      if (this.props.auth.user) {
         return (
           <Route
             {...route}
@@ -30,8 +35,7 @@ class App extends React.Component {
       } else {
         return (
           <Redirect 
-          to={'/login'} 
-          from={route.path}
+          to={{ pathname: '/login' , state: { from: route.path}}} 
           />
         )
       }
@@ -61,6 +65,7 @@ class App extends React.Component {
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
                 <PrivateRoute exact path="/" component={(props) => (<DashboardPage {...props}/>)} />
+                <PrivateRoute exact path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
@@ -95,4 +100,16 @@ const query = ({ width }) => {
   return { breakpoint: 'xs' };
 };
 
-export default componentQueries(query)(App);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    rehydrateState: () => dispatch(AuthActions.rehydrateState())
+  }
+}
+
+export default componentQueries(query)(connect(mapStateToProps, mapDispatchToProps)(App));

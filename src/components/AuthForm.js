@@ -66,12 +66,12 @@ class AuthForm extends React.Component {
       children,
       onLogoClick,
       error,
+      redirectAfterLogin,
     } = this.props;
-    const { from } = { from: { pathname: '/' } }
     if (this.props.user || this.state.user) {
       return (
         <Redirect
-          to={from}
+          to={redirectAfterLogin || '/'}
         />
       )
     }
@@ -111,12 +111,12 @@ class AuthForm extends React.Component {
             <Input {...confirmPasswordInputProps} />
           </FormGroup>
         )}
-        <FormGroup check>
+        {/* <FormGroup check>
           <Label check>
             <Input type="checkbox" onChange={remeberMe => this.setState({ remeberMe: remeberMe.target.value })}/>{' '}
             {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
           </Label>
-        </FormGroup>
+        </FormGroup> */}
         <hr />
         { error && <Alert color="danger">Ungültiger Login</Alert>}
         <Button
