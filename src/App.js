@@ -21,7 +21,6 @@ const getBasename = () => {
 class App extends React.Component {
   render() {
     const PrivateRoute = (route) => {
-      console.log('rote path inside App', route)
       const sessionstore = JSON.parse(sessionStorage.getItem('data'))
       if (!this.props.auth.user && sessionstore && sessionstore.user) {
         this.props.rehydrateState();
@@ -33,6 +32,7 @@ class App extends React.Component {
           />
         )
       } else {
+        console.log('Redirect to login')
         return (
           <Redirect 
           to={{ pathname: '/login' , state: { from: route.path}}} 

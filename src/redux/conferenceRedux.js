@@ -6,7 +6,11 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   updateConferenceList: ['conferenceList'],
   updateConferenceId: ['conferenceId'],
-  updateError: ['error']
+  updateConferenceError: ['error'],
+  updateConference: ['conference'],
+  getConference: null,
+  applyForConference: ['data'],
+  updateConferenceFetching: ['fetching'],
 })
 
 export const ConferenceTypes = Types
@@ -17,7 +21,9 @@ export default Creators
 export const INITIAL_STATE = Immutable({
     conferenceList: null,
     conferenceId: null,
-    error: false
+    conference: null,
+    error: false,
+    fetching: false,
   })
 
 /* ------------- Reducers ------------- */
@@ -28,13 +34,21 @@ export const updateConferenceList = (state, { conferenceList }) =>
 export const updateConferenceId = (state, { conferenceId }) =>
   state.merge({ conferenceId })
 
-export const updateError = (state, { error }) =>
+export const updateConference = (state, { conference }) =>
+  state.merge({ conference })
+
+export const updateConferenceError = (state, { error }) =>
   state.merge({ error })
+
+export const updateConferenceFetching = (state, { fetching }) =>
+  state.merge({ fetching })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_CONFERENCE_LIST]: updateConferenceList,
   [Types.UPDATE_CONFERENCE_ID]: updateConferenceId,
-  [Types.UPDATE_ERROR]: updateError
+  [Types.UPDATE_CONFERENCE]: updateConference,
+  [Types.UPDATE_CONFERENCE_ERROR]: updateConferenceError,
+  [Types.UPDATE_CONFERENCE_FETCHING]: updateConferenceFetching,
 })

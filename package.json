@@ -4,6 +4,7 @@
   "private": false,
   "homepage": "https://bufak-wiso.de",
   "dependencies": {
+    "@material-ui/core": "^4.2.1",
     "bootstrap": "4.3.1",
     "chart.js": "2.7.2",
     "classnames": "^2.2.6",

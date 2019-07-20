@@ -11,10 +11,10 @@ export async function apiFetch(path, method, body) {
         method,
         headers: {
             'Content-Type': 'application/json',
-            'jwttoken': auth && auth.user ? auth.user.token : '',
+            'jwttoken': auth ? auth.token : '',
             'conference_id': 2
         },
         body: JSON.stringify(body)
-    });
+    }).catch(e => console.log(e));
     return await res.json();
 }

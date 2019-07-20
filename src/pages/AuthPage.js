@@ -17,7 +17,6 @@ class AuthPage extends React.Component {
 
   render() {
     const { state } = this.props.history.location
-    console.log('State',state);
     return (
       <Row
         style={{

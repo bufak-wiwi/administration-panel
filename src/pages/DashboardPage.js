@@ -26,7 +26,7 @@ class DashboardPage extends React.Component {
     return (
       <Page
         className="DashboardPage"
-        title={'BuFaK ' +conference.conferenceID || 'Startseite'}
+        title={'BuFaK ' + conference.conferenceID || 'Startseite'}
       >
         <Card>
           <CardHeader>Anmeldung</CardHeader>
