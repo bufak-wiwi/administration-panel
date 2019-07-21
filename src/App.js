@@ -104,12 +104,13 @@ const query = ({ width }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    conferenceId: state.conference.conferenceId,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    rehydrateState: () => dispatch(AuthActions.rehydrateState())
+    rehydrateState: () => dispatch(AuthActions.rehydrateState()),
   }
 }
 

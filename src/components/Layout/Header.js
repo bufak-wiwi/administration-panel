@@ -26,6 +26,18 @@ class Header extends React.Component {
     logout: false,
   };
 
+  componentDidMount() {
+    if (this.props.conferenceId) {
+      this.props.getConference() 
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.conferenceId && prevProps.conferenceId !== this.props.conferenceId) {
+      this.props.getConference()
+    }
+  }
+
   toggleNotificationPopover = () => {
     this.setState({
       isOpenNotificationPopover: !this.state.isOpenNotificationPopover,
@@ -76,7 +88,7 @@ class Header extends React.Component {
             onChange={(e) => this.props.updateConferenceId(e.currentTarget.value)}
             >
               {this.props.conferenceList.map(conference => 
-                <option key={conference.conferenceID} id={conference.conferenceID}>{conference.conferenceID}</option>
+                <option key={conference.conferenceID} value={conference.conferenceID}>{conference.name}</option>
               )}
             </Input>
           }
@@ -106,7 +118,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(AuthActions.logout()),
-    updateConferenceId: (id) => dispatch(ConferenceActions.updateConferenceId(id))
+    updateConferenceId: (id) => dispatch(ConferenceActions.updateConferenceId(id)),
+    getConference: () => dispatch(ConferenceActions.getConference()),
   }
 }
 

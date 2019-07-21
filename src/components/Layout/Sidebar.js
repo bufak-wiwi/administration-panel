@@ -1,7 +1,9 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
 import SourceLink from 'components/SourceLink';
-import React from 'react';import {
+import React from 'react';
+import {
   MdHome,
+  MdAssignment
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -20,6 +22,7 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
+  { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment}
 ];
 
 const bem = bn.create('sidebar');
