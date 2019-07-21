@@ -8,7 +8,7 @@ const { Types, Creators } = createActions({
   updateToken: ['token'],
   registerUser: ['params'],
   updateFetching: ['fetching'],
-  updateAdmin: ['isAdmin', 'adminForConference'],
+  updateUserForConference: ['userForConference'],
   login: ['email', 'password', 'remeberMe'],
   updateError: ['error'],
   logout: ['history'],
@@ -25,8 +25,7 @@ export const INITIAL_STATE = Immutable({
     user: null,
     token: null,
     isSuperAdmin: false,
-    isAddmin: false,
-    adminForConference: 0,
+    userForConference: [],
     fetching: false,
     error: false
   })
@@ -36,8 +35,8 @@ export const INITIAL_STATE = Immutable({
 export const updateToken = (state, { token }) =>
   state.merge({ token })
 
-export const updateAdmin = (state, {admin, adminForConference}) =>
-  state.merge({ admin, adminForConference })
+export const updateUserForConference = (state, { userForConference }) =>
+  state.merge({ userForConference })
 
 export const updateUser = (state, { user }) => 
   state.merge({ user, isSuperAdmin: user.isSuperAdmin })
@@ -59,7 +58,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.RESET_AUTH_STATE]: resetAuthState,
   [Types.UPDATE_TOKEN]: updateToken,
   [Types.UPDATE_USER]: updateUser,
-  [Types.UPDATE_ADMIN]: updateAdmin,
+  [Types.UPDATE_USER_FOR_CONFERENCE]: updateUserForConference,
   [Types.UPDATE_FETCHING]: updateFetching,
   [Types.UPDATE_ERROR]: updateError
 })

@@ -16,19 +16,19 @@ export function* login(action) {
           user: result.user,
           token: result.tokenString,
           conferences: result.conferences,
-          admin: result.admin,
-          adminForConference: result.adminForConference
+          userForConference: result.userForConference
         })
+
         if (remeberMe) {
           localStorage.setItem('data', data);
         } else {
           sessionStorage.setItem('data', data);
         }
 
-        yield put(AuthActions.updateToken(result.token))
+        yield put(AuthActions.updateToken(result.tokenString))
         yield put(AuthActions.updateUser(result.user))
         yield put(ConferenceActions.updateConferenceList(result.conferences))
-        yield put(AuthActions.updateAdmin(result.admin, result.adminForConference))
+        yield put(AuthActions.updateUserForConference( result.userForConference))
         yield put(AuthActions.updateFetching(false))
 
       } else {
@@ -49,7 +49,7 @@ export function* rehydrateState() {
     yield put(AuthActions.updateToken(result.token))
     yield put(AuthActions.updateUser(result.user))
     yield put(ConferenceActions.updateConferenceList(result.conferences))
-    yield put(AuthActions.updateAdmin(result.admin, result.adminForConference))
+    yield put(AuthActions.updateUserForConference( result.userForConference))
     yield put(AuthActions.updateFetching(false))
   }
 }

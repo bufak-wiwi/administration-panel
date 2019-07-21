@@ -14,13 +14,16 @@ import {
   Label,
   Button,
   Alert,
-  Jumbotron,
 } from 'reactstrap'
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import PageSpinner from '../components/PageSpinner';
-import {Link} from 'react-router-dom';
+import { isApplied } from '../utils/functions'
+import {
+  MdCheckCircle,
+  MdHighlightOff
+} from 'react-icons/md';
 // import { getColor } from 'utils/colors';
 
 class ApplicationPage extends React.Component {
@@ -39,16 +42,6 @@ class ApplicationPage extends React.Component {
       note: '',
       newsletter: false,
       dataprotection: false,
-    }
-  }
-
-  componentDidMount() {
-    this.props.getConference()
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.conferenceId && prevProps.conferenceId !== this.props.conferenceId) {
-      this.props.getConference()
     }
   }
   
@@ -440,16 +433,41 @@ class ApplicationPage extends React.Component {
       )
     } else if (error) {
       return (
-        <Alert color="danger">Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
+        <Alert color="danger"><MdHighlightOff size={30}/>Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
       )
     } else {
-      return (
-        <div>
-          <Alert color="success">Deine Anmeldung wurde erfolgreich hochgeladen!</Alert>
-          <Link to="/">Zurück zur Startseite</Link>
-        </div>
-      )
+      this.renderApplied();
     }
+  }
+
+  renderConferenceLoading() {
+    return (
+      <Card>
+        <CardBody><PageSpinner color="secondary" /></CardBody>
+      </Card>
+    )
+  }
+
+  renderConferenceError() {
+    return (
+      <Card>
+        <CardHeader>Fehler</CardHeader>
+        <CardBody>
+          <Alert color="danger">Die gewünschte Konferenz kann nicht geladen werden. Bitte versuche es später.</Alert>
+        </CardBody>
+      </Card>
+    )
+  }
+
+  renderApplied() {
+    return (
+      <Card>
+        <CardHeader>Anmeldung eingegangen</CardHeader>
+        <CardBody>
+          <Alert color="success"><MdCheckCircle size={30}/> Deine Anmeldung ist erfolgreich bei uns eingegangen.</Alert>
+        </CardBody>
+      </Card>
+    )
   }
 
   handleSubmit() {
@@ -473,18 +491,18 @@ class ApplicationPage extends React.Component {
   }
 
   render() {
-    const {conference} = this.props;
-    if (!conference) {
-      return ('loading');
-    }
-
+    const {conference, conferenceId, fetching, error, user, userForConference} = this.props;
+    const isUserApplied = () => isApplied(userForConference , conferenceId)
     return (
       <Page
         className="DashboardPage"
         title="Anmeldung"
       >
-        { !conference.conferenceApplicationPhase && this.renderNoApplicationPhase()}
-        { conference.conferenceApplicationPhase && this.renderApplicationForm()}
+        { !conference && fetching && this.renderConferenceLoading()}
+        { !conference && error && this.renderConferenceError()}
+        { conference && isUserApplied() && this.renderApplied() }
+        { conference && !conference.conferenceApplicationPhase && !isUserApplied() &&this.renderNoApplicationPhase()}
+        { conference && conference.conferenceApplicationPhase && !isUserApplied() && this.renderApplicationForm()}
      </Page>
     );
   }
@@ -495,6 +513,7 @@ const mapStateToProps = (state) => {
       conferenceId: state.conference.conferenceId,
       conference: state.conference.conference,
       user: state.auth.user,
+      userForConference: state.auth.userForConference,
       fetching: state.conference.fetching,
       error: state.conference.error,
   }

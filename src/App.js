@@ -19,20 +19,21 @@ const getBasename = () => {
 };
 
 class App extends React.Component {
+  componentWillMount() {
+    const sessionstore = JSON.parse(sessionStorage.getItem('data'))
+    if (!this.props.auth.user && sessionstore && sessionstore.user) {
+      this.props.rehydrateState();
+    }
+  }
   render() {
     const PrivateRoute = (route) => {
-      const sessionstore = JSON.parse(sessionStorage.getItem('data'))
-      if (!this.props.auth.user && sessionstore && sessionstore.user) {
-        this.props.rehydrateState();
-      }
-      if (this.props.auth.user) {
+      if (route.auth) {
         return (
           <Route
             {...route}
           />
         )
       } else {
-        console.log('Redirect to login')
         return (
           <Redirect 
           to={{ pathname: '/login' , state: { from: route.path}}} 
@@ -40,7 +41,7 @@ class App extends React.Component {
         )
       }
     }
-
+    const auth = this.props.auth.user;
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
@@ -64,8 +65,8 @@ class App extends React.Component {
 
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <PrivateRoute exact path="/" component={(props) => (<DashboardPage {...props}/>)} />
-                <PrivateRoute exact path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
+                <PrivateRoute exact auth={auth} path="/" component={(props) => (<DashboardPage {...props}/>)} />
+                <PrivateRoute exact auth={auth} path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
@@ -103,12 +104,13 @@ const query = ({ width }) => {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    conferenceId: state.conference.conferenceId,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    rehydrateState: () => dispatch(AuthActions.rehydrateState())
+    rehydrateState: () => dispatch(AuthActions.rehydrateState()),
   }
 }
 

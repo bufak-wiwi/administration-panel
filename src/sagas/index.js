@@ -20,7 +20,7 @@ export default function * root () {
     takeEvery(AuthTypes.REGISTER_USER, registerUser),
     takeEvery(AuthTypes.REHYDRATE_STATE, rehydrateState),
     // Conference
-    takeEvery(ConferenceTypes.GET_CONFERENCE, getConference),
+    takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),

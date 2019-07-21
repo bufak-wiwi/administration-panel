@@ -7,7 +7,7 @@ export function isMobileDevice() {
 
 export async function apiFetch(path, method, body) {
     const { auth } = store.getState()
-    const res = await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
+    return await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
         method,
         headers: {
             'Content-Type': 'application/json',
@@ -15,6 +15,53 @@ export async function apiFetch(path, method, body) {
             'conference_id': 2
         },
         body: JSON.stringify(body)
-    }).catch(e => console.log(e));
-    return await res.json();
+    }).then(res => res.json())
+}
+
+export const unknown = 'UNKNOWN';
+export const unapplied = 'UNAPPLIED'; 
+export const applied = 'APPLIED';
+export const attendee = 'ATTENDEE';
+export const rejected = 'REJECTED';
+
+export function getUserStatusForConference() {
+    const { userForConference }= store.getState().auth
+    const { conferenceId } = store.getState().conference
+
+    if (!userForConference || !conferenceId) {
+        return unknown
+    }
+
+    var conferenceObj = userForConference.find(x => x.conference_ID === conferenceId)
+    console.log('GEtStatus for', conferenceId, userForConference, userForConference.findIndex(x => x.conference_ID === conferenceId))
+    if (!conferenceObj) {
+        return unapplied;
+    } 
+    if (conferenceObj.attendee) {
+        return attendee;
+    }
+
+    if (conferenceObj.rejected) {
+        return rejected
+    }
+
+    if (conferenceObj.applied && !conferenceObj.attendee && !conferenceObj.rejected) {
+        return applied;
+    }
+}
+
+export function isApplied(userForConference, conferenceId) {
+    return getUserStatusForConference(userForConference, conferenceId) === applied
+}
+
+export function isUnapplied(userForConference, conferenceId) {
+    return getUserStatusForConference(userForConference, conferenceId) === unapplied
+}
+
+export function isAttendee(userForConference, conferenceId) {
+    return getUserStatusForConference(userForConference, conferenceId) === attendee
+}
+
+export function isRejected(userForConference, conferenceId) {
+    return getUserStatusForConference(userForConference, conferenceId) === rejected
 }
