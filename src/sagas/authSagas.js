@@ -10,7 +10,7 @@ export function* login(action) {
     const { email, password, remeberMe } = action
     if(email && password) {
       const result = yield call(apiFetch, 'login', 'post', { email, password })
-      
+      console.log("hallo i bims")
       if(result.tokenString) {
         const data = JSON.stringify({
           user: result.user,
@@ -52,6 +52,21 @@ export function* rehydrateState() {
     yield put(AuthActions.updateAdmin(result.admin, result.adminForConference))
     yield put(AuthActions.updateFetching(false))
   }
+}
+
+export function* registerUser(params){
+  try{
+  const {council_id, name, surname, birthday, email, password, sex, note, address} = params.params
+  yield put(AuthActions.updateFetching(true))
+  const result = yield call(apiFetch, 'Users', 'post', {council_id, name, surname, birthday, email, password, sex, note, address})
+  if (result.jwttoken) {
+    yield put(AuthActions.login(email, password))
+  }
+}
+catch (e){
+  console.log(e)
+}
+
 }
 
 export function* logout(action) {

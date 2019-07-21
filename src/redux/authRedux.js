@@ -6,6 +6,7 @@ import Immutable from 'seamless-immutable'
 const { Types, Creators } = createActions({
   updateUser: ['user'],
   updateToken: ['token'],
+  registerUser: ['params'],
   updateFetching: ['fetching'],
   updateAdmin: ['isAdmin', 'adminForConference'],
   login: ['email', 'password', 'remeberMe'],
