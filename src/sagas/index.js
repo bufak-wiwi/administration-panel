@@ -17,7 +17,7 @@ export default function * root () {
     takeEvery(AuthTypes.LOGOUT, logout),
     takeEvery(AuthTypes.REHYDRATE_STATE, rehydrateState),
     // Conference
-    takeEvery(ConferenceTypes.GET_CONFERENCE, getConference),
+    takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
   ])
 }

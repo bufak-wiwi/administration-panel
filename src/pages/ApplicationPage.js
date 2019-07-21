@@ -43,11 +43,13 @@ class ApplicationPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getConference()
+    if (this.props.conferenceId) {
+      this.props.getConference() 
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.conferenceId && prevProps.conferenceId !== this.props.conferenceId) {
+    if (this.props.conferenceId && prevProps.conferenceId !== this.props.conferenceId) {
       this.props.getConference()
     }
   }
@@ -452,6 +454,25 @@ class ApplicationPage extends React.Component {
     }
   }
 
+  renderConferenceLoading() {
+    return (
+      <Card>
+        <CardBody><PageSpinner color="secondary" /></CardBody>
+      </Card>
+    )
+  }
+
+  renderConferenceError() {
+    return (
+      <Card>
+        <CardHeader>Fehler</CardHeader>
+        <CardBody>
+          <Alert color="danger">Die gewünschte Konferenz kann nicht geladen werden. Bitte versuche es später.</Alert>
+        </CardBody>
+      </Card>
+    )
+  }
+
   handleSubmit() {
     this.setState({activeStep: 3})
     const { participant, bufakCount, eat, intolerance, intolerance_note, phone, note, newsletter, sleep, priority} = this.state
@@ -473,18 +494,16 @@ class ApplicationPage extends React.Component {
   }
 
   render() {
-    const {conference} = this.props;
-    if (!conference) {
-      return ('loading');
-    }
-
+    const {conference, fetching, error} = this.props;
     return (
       <Page
         className="DashboardPage"
         title="Anmeldung"
       >
-        { !conference.conferenceApplicationPhase && this.renderNoApplicationPhase()}
-        { conference.conferenceApplicationPhase && this.renderApplicationForm()}
+        { !conference && fetching && this.renderConferenceLoading()}
+        { !conference && error && this.renderConferenceError()}
+        { conference && !conference.conferenceApplicationPhase && this.renderNoApplicationPhase()}
+        { conference && conference.conferenceApplicationPhase && this.renderApplicationForm()}
      </Page>
     );
   }

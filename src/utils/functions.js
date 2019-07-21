@@ -7,7 +7,7 @@ export function isMobileDevice() {
 
 export async function apiFetch(path, method, body) {
     const { auth } = store.getState()
-    const res = await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
+    return await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
         method,
         headers: {
             'Content-Type': 'application/json',
@@ -15,6 +15,5 @@ export async function apiFetch(path, method, body) {
             'conference_id': 2
         },
         body: JSON.stringify(body)
-    }).catch(e => console.log(e));
-    return await res.json();
+    }).then(res => res.json())
 }

@@ -4,11 +4,18 @@ import { apiFetch } from '../utils/functions'
 
 export function* getConference() {
     try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
         const { conferenceId } = yield select(state => state.conference);
-        const conference = yield call(apiFetch, `conferences/${conferenceId}`, 'get')
-        console.log(conference);
-        yield put(ConferenceActions.updateConference(conference))
+        const { token } = yield select(state => state.auth)
+        if (conferenceId && token ) {
+            const conference = yield call(apiFetch, `conferences/${conferenceId}`, 'get')
+            yield put(ConferenceActions.updateConference(conference))
+            yield put(ConferenceActions.updateConferenceFetching(false))
+        }
     } catch(e) {
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
         console.log('GetConference', e)
     }
 }
