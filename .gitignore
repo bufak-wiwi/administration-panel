@@ -21,3 +21,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/styles/reduction.css
+
+/src/config/globals.tsx
