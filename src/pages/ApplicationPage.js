@@ -472,7 +472,7 @@ class ApplicationPage extends React.Component {
 
   handleSubmit() {
     this.setState({activeStep: 3})
-    const { participant, bufakCount, eat, intolerance, intolerance_note, phone, note, newsletter, sleep, priority} = this.state
+    const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep, priority} = this.state
 
     this.props.applyForConference({
       conferenceId: this.props.conferenceId,
@@ -484,6 +484,7 @@ class ApplicationPage extends React.Component {
       sleepingPref: sleep,
       tel: phone,
       eating: eat,
+      priority,
       intolerance: intolerance === 'yes' ? intolerance_note : 'none',
       note,
       status: 0
@@ -491,7 +492,7 @@ class ApplicationPage extends React.Component {
   }
 
   render() {
-    const {conference, conferenceId, fetching, error, user, userForConference} = this.props;
+    const {conference, conferenceId, fetching, error, userForConference} = this.props;
     const isUserApplied = () => isApplied(userForConference , conferenceId)
     return (
       <Page

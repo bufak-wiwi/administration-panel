@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Alert,
   Row,
   Col,
   FormGroup,
@@ -13,12 +12,7 @@ import {
   Input,
   Button,
 } from 'reactstrap'
-import {Link} from 'react-router-dom';
 import PageSpinner from '../../components/PageSpinner';
-import {
-  MdCheckCircle,
-  MdHighlightOff
-} from 'react-icons/md';
 import ConferenceActions from '../../redux/conferenceRedux';
 
 const phases = [

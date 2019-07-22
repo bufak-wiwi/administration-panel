@@ -7,7 +7,7 @@ import React from 'react';
 import AuthPage from 'pages/AuthPage';
 import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
 import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
