@@ -38,3 +38,29 @@ export function* applyForConference(action) {
         console.log('ApplyForConference', e)
     }
 }
+
+// Administrator
+export function* updatePhases(action) {
+    try {
+        // start loading and reset error
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+
+        const { data } = action
+        const { conferenceId } = yield select(state => state.conference);
+        if (data && conferenceId) {
+            // make api call
+            const result = yield call(apiFetch, 'Conferences/phases', 'put', data)
+            if (!result) {
+                yield put(ConferenceActions.updateConferenceError(true))
+            }
+            // stop loading
+            yield put(ConferenceActions.updateConferenceFetching(true))
+        } 
+    } catch(e) {
+        // catch error and stop loading
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+        console.log(e)
+    }
+} 

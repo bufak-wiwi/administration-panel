@@ -11,6 +11,7 @@ const { Types, Creators } = createActions({
   getConference: null,
   applyForConference: ['data'],
   updateConferenceFetching: ['fetching'],
+  updatePhases: ['data'],
 })
 
 export const ConferenceTypes = Types
