@@ -23,22 +23,3 @@ export function* getCouncilList() {
         console.log('GetCouncilList', e)
     }
 }
-
-// export function* applyForCouncil(action) {
-//     try {
-//         yield put(CouncilActions.updateCouncilFetching(true))
-//         yield put(CouncilActions.updateCouncilError(false))
-//         const { data } = action
-//         if ( data ) {
-//             const result = yield call(apiFetch, 'Council_Application', 'post', data)
-//             if (!result) {
-//                 yield put(CouncilActions.updateCouncilError(true))
-//             } 
-//             yield put(CouncilActions.updateCouncilFetching(false))
-//         }
-//     } catch(e) {
-//         yield put(CouncilActions.updateCouncilFetching(false))
-//         yield put(CouncilActions.updateCouncilError(true))
-//         console.log('ApplyForCouncil', e)
-//     }
-// }

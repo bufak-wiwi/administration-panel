@@ -10,7 +10,6 @@ export function* login(action) {
     const { email, password, remeberMe } = action
     if(email && password) {
       const result = yield call(apiFetch, 'login', 'post', { email, password })
-      console.log("hallo i bims")
       if(result.tokenString) {
         const data = JSON.stringify({
           user: result.user,

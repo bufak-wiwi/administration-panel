@@ -104,7 +104,6 @@ class DashboardPage extends React.Component {
                     </CardHeader>
                     <CardBody>
                         { phases.map(x => {
-                            console.log('State', this.state[x.id])
                             return (
                                 <FormGroup key={'formGroup_' + x.id}>
                                     <Label for={x.id}>{x.name}</Label>

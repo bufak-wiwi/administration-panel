@@ -30,9 +30,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Reducers ------------- */
 
 export const updateCouncilList = (state, { councilList }) => {
-  console.log(councilList)
   return state.merge({ councilList })
-
 }
 
 export const updateCouncilId = (state, { councilId }) =>
