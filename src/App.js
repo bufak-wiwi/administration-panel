@@ -7,12 +7,15 @@ import React from 'react';
 import AuthPage from 'pages/AuthPage';
 import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
 import componentQueries from 'react-component-queries';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
+import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
 
 const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
 const ApplicationPage = React.lazy(() => import('pages/ApplicationPage'));
+// Administrator
+const PhasesPage = React.lazy(() => import('pages/administrator/PhasesPage'))
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -26,22 +29,6 @@ class App extends React.Component {
     }
   }
   render() {
-    const PrivateRoute = (route) => {
-      if (route.auth) {
-        return (
-          <Route
-            {...route}
-          />
-        )
-      } else {
-        return (
-          <Redirect 
-          to={{ pathname: '/login' , state: { from: route.path}}} 
-          />
-        )
-      }
-    }
-    const auth = this.props.auth.user;
     return (
       <BrowserRouter basename={getBasename()}>
         <GAListener>
@@ -65,8 +52,9 @@ class App extends React.Component {
 
             <MainLayout breakpoint={this.props.breakpoint}>
               <React.Suspense fallback={<PageSpinner />}>
-                <PrivateRoute exact auth={auth} path="/" component={(props) => (<DashboardPage {...props}/>)} />
-                <PrivateRoute exact auth={auth} path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
+                <PrivateRoute exact path="/" component={(props) => (<DashboardPage {...props}/>)} />
+                <PrivateRoute exact path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
+                <AdministratorRoute exact path="/phasen" component={(props) => (<PhasesPage {...props} />)} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />

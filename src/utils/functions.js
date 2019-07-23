@@ -33,7 +33,6 @@ export function getUserStatusForConference() {
     }
 
     var conferenceObj = userForConference.find(x => x.conference_ID === conferenceId)
-    console.log('GEtStatus for', conferenceId, userForConference, userForConference.findIndex(x => x.conference_ID === conferenceId))
     if (!conferenceObj) {
         return unapplied;
     } 
