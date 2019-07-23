@@ -8,12 +8,14 @@ import {
   Row,
   Col,
   Input,
-  Table
+  Table,
+  Button,
 } from 'reactstrap'
 import PageSpinner from '../../components/PageSpinner';
 import ConferenceActions from '../../redux/conferenceRedux';
 import CouncilActions from '../../redux/councilRedux'
 import SearchInput from '../../components/SearchInput';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 
 const priorities = [
     {name: '1', id: 'priority', value: 1},
@@ -35,6 +37,8 @@ class ApplicationListPage extends React.Component {
             search: '',
             selectedPriority: '',
             selectedStatus: '',
+            isOpen: false,
+            isChangeClicked: false,
         }
     }
 
@@ -106,6 +110,74 @@ class ApplicationListPage extends React.Component {
        } 
     }
 
+    changeApplicationStatus(status) {
+        this.setState({ isOpen: false})
+        const changedApplications = []
+        const filteredApplications = this.getFilteredApplicationsList()
+        filteredApplications.forEach(x => {
+            const index = changedApplications.findIndex(y => y.applicantUID === x.applicantUID)
+            if (index === -1) {
+                changedApplications.push({...x, status })
+            } else {
+                changedApplications[index] = {...changedApplications[index], status }
+            }
+        })
+        // TOD upload updates
+    }
+
+    renderDialog() {
+        const filteredApplications = this.getFilteredApplicationsList()
+        const { isChangeClicked } = this.state
+        return(
+            <Dialog open={this.state.isOpen} onClose={() => this.setState({ isOpen: false, isChangeClicked: false })}>
+                <DialogTitle>Status ändern</DialogTitle>
+                <DialogContent>
+                    { !isChangeClicked && (
+                        <div>
+                            <DialogContentText>In diesem Dialog kannst du den Status von mehreren Anmeldungen abhängig von den Filtern und der Suche gleichzeitig ändern.</DialogContentText>
+                            <DialogContentText>Anmeldungen betroffen insgesamt: <b>{ filteredApplications.length }</b><br />
+                                <b>{filteredApplications.filter(x => x.status === 'HasApplied').length}</b> ausstehend<br />
+                                <b>{filteredApplications.filter(x => x.status === 'IsAttendee').length}</b> angenommen<br />
+                                <b>{filteredApplications.filter(x => x.status === 'IsRejected').length}</b> abgelehnt<br />
+                            </DialogContentText>
+                        </div>
+                    )}
+                    { isChangeClicked && <DialogContentText>Wie sollen die ausgewählten Anmeldungen geändert werden?</DialogContentText>}
+                    { isChangeClicked && <DialogActions>
+                        <Row style={{justifyContent: 'center', flex: 1}}>
+                            <Button color="success" style={{ margin: 10}}onClick={() => this.changeApplicationStatus('IsAttendee')}>Annehmen</Button>
+                            <Button color="danger" style={{ margin: 10}} onClick={() => this.changeApplicationStatus('IsRejected')}>Ablehnen</Button>
+                            <Button color="primary" style={{ margin: 10}}onClick={() => this.changeApplicationStatus('HasApplied')}>Zurücksetzen</Button>
+                        </Row>
+                    </DialogActions>}
+                    <DialogActions>
+                        <Row>
+                            <Button color="grey" onClick={() => this.setState({ isOpen: false, isChangeClicked: false })}>Abbrechen</Button>
+                            { !isChangeClicked && <Button onClick={() => this.setState({ isChangeClicked: true})}>Ändern</Button> }
+                        </Row>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
+        )
+    }
+
+    renderChangeDialog() {
+        return (
+            <Dialog open={this.state.isChangeOpen} onClose={() => this.setState({ isChangeOpen: false})}>
+            <DialogTitle>Status ändern - bestätigen</DialogTitle>
+            <DialogContent>
+                <DialogContentText>Wie sollen die ausgewählten Anmeldungen geändert werden</DialogContentText>
+                <DialogActions>
+                    <Button  color="grey" onClick={() => this.setState({ isChangeOpen: false})}>Abbrechen</Button>
+                    <Button color="success" onClick={() => alert('annehmen')}>Annehmen</Button>
+                    <Button color="danger" onClick={() => alert('ablehnen')}>Ablehnen</Button>
+                    <Button color="secondary" onClick={() => alert('zurücksetzen')}>Zurücksetzen</Button>
+                </DialogActions>
+            </DialogContent>
+        </Dialog>
+        )
+    }
+
   render() {
     const { applicationList, councilList } = this.props
     if (!applicationList || !councilList) {
@@ -151,7 +223,11 @@ class ApplicationListPage extends React.Component {
                                 <option value='IsRejected'>abgelehnt</option>
                             </Input>
                         </Col>
-                        <Col xs="12" md={{size: 3, offset: 5}}>
+                        <Col xs="12" md="2">
+                            <Button onClick={() => this.setState({ isOpen: true})}>Status ändern</Button>
+                            { this.renderDialog() }
+                        </Col>
+                        <Col xs="12" md="3">
                             <SearchInput onChange={(e) => this.setState({ search: e.currentTarget.value})} />
                         </Col>
                     </Row>
