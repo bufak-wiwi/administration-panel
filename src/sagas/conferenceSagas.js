@@ -64,3 +64,14 @@ export function* updatePhases(action) {
         console.log(e)
     }
 } 
+
+export function* getApplicationList() {
+    try {
+        const result = yield call(apiFetch, 'Conference_Application/forConference', 'get')
+        if (result) {
+            yield put(ConferenceActions.updateApplicationList(result))
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
