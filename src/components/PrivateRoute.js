@@ -38,7 +38,6 @@ export const AdministratorRoute = ({...route}) => {
     if (!conferenceId || !userForConference) {
         return <PageSpinner color="primary" />
     } else {
-        // const permission = userForConference.find(x => x.conference_ID === conferenceId)
         if (isAdministrator()) {
             return <Route {...route} />
         } else {
