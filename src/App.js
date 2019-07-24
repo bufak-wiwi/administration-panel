@@ -17,6 +17,7 @@ const ApplicationPage = React.lazy(() => import('pages/ApplicationPage'));
 // Administrator
 const PhasesPage = React.lazy(() => import('pages/administrator/PhasesPage'))
 const ApplicationListPage = React.lazy(() => import('pages/administrator/ApplicationListPage'))
+const ApplicationDetailsPage = React.lazy(() => import('pages/administrator/ApplicationDetailsPage'))
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -58,6 +59,7 @@ class App extends React.Component {
 
                 <AdministratorRoute exact path="/phasen" component={(props) => (<PhasesPage {...props} />)} />
                 <AdministratorRoute exact path="/application" component={(props) => (<ApplicationListPage {...props} />)} />
+                <AdministratorRoute exact path="/application/:uid" component={(props) => (<ApplicationDetailsPage {...props} />)} />
               </React.Suspense>
             </MainLayout>
             <Redirect to="/" />
