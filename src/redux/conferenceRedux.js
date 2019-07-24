@@ -12,6 +12,8 @@ const { Types, Creators } = createActions({
   applyForConference: ['data'],
   updateConferenceFetching: ['fetching'],
   updatePhases: ['data'],
+  updateIsPasswordValid: ['isPasswordValid'],
+  checkPassword: ['password']
 })
 
 export const ConferenceTypes = Types
@@ -25,6 +27,7 @@ export const INITIAL_STATE = Immutable({
     conference: null,
     error: false,
     fetching: false,
+    isPasswordValid: false,
   })
 
 /* ------------- Reducers ------------- */
@@ -44,6 +47,9 @@ export const updateConferenceError = (state, { error }) =>
 export const updateConferenceFetching = (state, { fetching }) =>
   state.merge({ fetching })
 
+export const updateIsPasswordValid = (state, { isPasswordValid }) =>
+  state.merge({ isPasswordValid })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -52,4 +58,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_CONFERENCE]: updateConference,
   [Types.UPDATE_CONFERENCE_ERROR]: updateConferenceError,
   [Types.UPDATE_CONFERENCE_FETCHING]: updateConferenceFetching,
+  [Types.UPDATE_IS_PASSWORD_VALID]: updateIsPasswordValid,
 })

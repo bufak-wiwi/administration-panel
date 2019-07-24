@@ -24,6 +24,7 @@ import {
   MdCheckCircle,
   MdHighlightOff
 } from 'react-icons/md';
+import PasswordProtection from '../components/PasswordProtection'
 // import { getColor } from 'utils/colors';
 
 class ApplicationPage extends React.Component {
@@ -57,6 +58,9 @@ class ApplicationPage extends React.Component {
   }
 
   renderApplicationForm = () => {
+    if (true) {
+      return (<PasswordProtection />)
+    } 
     return (
         <Card>
             <CardBody>
