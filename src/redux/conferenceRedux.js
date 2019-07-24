@@ -13,7 +13,8 @@ const { Types, Creators } = createActions({
   updateConferenceFetching: ['fetching'],
   updatePhases: ['data'],
   getApplicationList: null,
-  updateApplicationList: ['applicationList']
+  updateApplicationList: ['applicationList'],
+  uploadApplicationStatusChange: ['data']
 })
 
 export const ConferenceTypes = Types

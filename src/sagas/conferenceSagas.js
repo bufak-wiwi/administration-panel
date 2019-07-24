@@ -75,3 +75,15 @@ export function* getApplicationList() {
         console.log(e)
     }
 }
+
+export function* uploadApplicationStatusChange(action) {
+    try {
+        const { data } = action
+        const result = yield call(apiFetch, 'Conference_Application/bulkstatus', 'put', data)
+        if (result) {
+            yield call(getApplicationList)
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}

@@ -110,19 +110,29 @@ class ApplicationListPage extends React.Component {
        } 
     }
 
+    getStatusIndex(x) {
+        switch(x) {
+            case 'HasApplied':
+                return 0
+             case 'IsRejected':
+                 return 1
+             case 'IsAttendee':
+                 return 2
+             default:
+                 return 0
+        } 
+    }
+
     changeApplicationStatus(status) {
         this.setState({ isOpen: false})
         const changedApplications = []
         const filteredApplications = this.getFilteredApplicationsList()
-        filteredApplications.forEach(x => {
-            const index = changedApplications.findIndex(y => y.applicantUID === x.applicantUID)
-            if (index === -1) {
-                changedApplications.push({...x, status })
-            } else {
-                changedApplications[index] = {...changedApplications[index], status }
-            }
+
+        filteredApplications.forEach(x => changedApplications.push(x.applicantUID))
+        this.props.uploadApplicationStatusChange({
+            uiDs: changedApplications,
+            newStatus: this.getStatusIndex(status)
         })
-        // TOD upload updates
     }
 
     renderDialog() {
@@ -279,6 +289,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getApplicationList: () => dispatch(ConferenceActions.getApplicationList()),
     getCouncilList: () => dispatch(CouncilActions.getCouncilList()),
+    uploadApplicationStatusChange: (data) => dispatch(ConferenceActions.uploadApplicationStatusChange(data))
   }
 }
 
