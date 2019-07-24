@@ -24,7 +24,7 @@ const priorities = [
     {name: '4', id: 'priority', value: 4},
     {name: '5', id: 'priority', value: 5},
     {name: '6', id: 'priority', value: 6},
-    {name: 'Alumnus', id: 'isAlumhnus', value: true},
+    {name: 'Alumnus', id: 'isAlumnus', value: true},
     {name: 'BuFaK Rat', id: 'isBuFaKCouncil', value: true},
     {name: 'Helfer', id: 'isHelper',  value: true},
 ]

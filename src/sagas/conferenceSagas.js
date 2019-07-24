@@ -87,3 +87,31 @@ export function* uploadApplicationStatusChange(action) {
         console.log(e)
     }
 }
+
+export function* getApplication(action) {
+    try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+        const { uid } = action
+        const result = yield call(apiFetch, 'Conference_Application/single/' + uid, 'get')
+        if (result) {
+            yield put(ConferenceActions.updateApplication(result))
+        } else {
+            yield put(ConferenceActions.updateConferenceError(true))
+        }
+        yield put(ConferenceActions.updateConferenceFetching(false))
+    } catch(e) {
+        console.log(e)
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+    }
+}
+
+// export function* uploadApplication(action) {
+//     try {
+//         const { application } = action
+//         const result = yield calll(apiFetch, '')
+//     } catch(e) {
+//         console.log(e)
+//     }
+// }
