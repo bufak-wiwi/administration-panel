@@ -16,7 +16,19 @@ export async function apiFetch(path, method, body) {
             'conference_id': conferenceId
         },
         body: JSON.stringify(body)
-    }).then(res => res.json())
+    })
+    .then(async res => {
+        try {
+            if (!res.ok) {
+                return false
+            }
+            var result = await res.text()
+            return result.length > 0 ? JSON.parse(result) : true
+        } catch(e) {
+            console.log('catched error', e)
+            return false
+        }
+    })
 }
 
 export const unknown = 'UNKNOWN';
