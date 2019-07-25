@@ -48,6 +48,10 @@ class ApplicationDetailsPage extends React.Component {
       }
     }
 
+    componentWillUnmount() {
+      this.props.updateApplication()
+    }
+
     componentDidUpdate(prevProps, prevState) {
       if (!this.state.loaded && prevProps.application !== this.state.application) {
         this.setState({ application: this.props.application, loaded: true})
@@ -118,7 +122,7 @@ class ApplicationDetailsPage extends React.Component {
     this.setState({
       editing: false
     })
-    alert('Make request to api')
+    this.props.uploadApplication(this.state.application)
   }
 
   render() {
@@ -259,6 +263,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getApplication: (uid) => dispatch(ConferenceActions.getApplication(uid)),
     getCouncilList: () => dispatch(CouncilActions.getCouncilList()),
+    uploadApplication: (application) => dispatch(ConferenceActions.uploadApplication(application)),
+    updateApplication: () => dispatch(ConferenceActions.updateApplication(null))
   }
 }
 

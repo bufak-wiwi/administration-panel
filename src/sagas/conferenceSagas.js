@@ -107,11 +107,14 @@ export function* getApplication(action) {
     }
 }
 
-// export function* uploadApplication(action) {
-//     try {
-//         const { application } = action
-//         const result = yield calll(apiFetch, '')
-//     } catch(e) {
-//         console.log(e)
-//     }
-// }
+export function* uploadApplication(action) {
+    try {
+        const { application } = action
+        const result = yield call(apiFetch, 'Conference_Application/single/', 'put', application)
+        if (result) {
+            yield call(getApplication, {uid: application.applicantUID})
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
