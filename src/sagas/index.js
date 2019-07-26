@@ -7,7 +7,7 @@ import { CouncilTypes } from '../redux/councilRedux';
 
 /* ------------- Sagas ------------- */
 import { login, logout, rehydrateState, registerUser } from './authSagas'
-import { getConference, applyForConference, updatePhases } from './conferenceSagas'
+import { getConference, applyForConference, updatePhases, getApplicationList, uploadApplicationStatusChange, getApplication, uploadApplication } from './conferenceSagas'
 import { getCouncil, getCouncilList } from './councilSagas'
 
 /* ------------- Connect Types To Sagas ------------- */
@@ -23,6 +23,10 @@ export default function * root () {
     takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
     takeEvery(ConferenceTypes.UPDATE_PHASES, updatePhases),
+    takeEvery(ConferenceTypes.GET_APPLICATION_LIST, getApplicationList),
+    takeEvery(ConferenceTypes.UPLOAD_APPLICATION_STATUS_CHANGE, uploadApplicationStatusChange),
+    takeEvery(ConferenceTypes.GET_APPLICATION, getApplication),
+    takeEvery(ConferenceTypes.UPLOAD_APPLICATION, uploadApplication), 
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),

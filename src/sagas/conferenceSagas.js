@@ -64,3 +64,57 @@ export function* updatePhases(action) {
         console.log(e)
     }
 } 
+
+export function* getApplicationList() {
+    try {
+        const result = yield call(apiFetch, 'Conference_Application/forConference', 'get')
+        if (result) {
+            yield put(ConferenceActions.updateApplicationList(result))
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+export function* uploadApplicationStatusChange(action) {
+    try {
+        const { data } = action
+        const result = yield call(apiFetch, 'Conference_Application/bulkstatus', 'put', data)
+        if (result) {
+            yield call(getApplicationList)
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+export function* getApplication(action) {
+    try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+        const { uid } = action
+        const result = yield call(apiFetch, 'Conference_Application/single/' + uid, 'get')
+        if (result) {
+            yield put(ConferenceActions.updateApplication(result))
+        } else {
+            yield put(ConferenceActions.updateConferenceError(true))
+        }
+        yield put(ConferenceActions.updateConferenceFetching(false))
+    } catch(e) {
+        console.log(e)
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+    }
+}
+
+export function* uploadApplication(action) {
+    try {
+        const { application } = action
+        const result = yield call(apiFetch, 'Conference_Application/single/', 'put', application)
+        if (result) {
+            yield call(getApplication, {uid: application.applicantUID})
+        }
+    } catch(e) {
+        console.log(e)
+    }
+}
