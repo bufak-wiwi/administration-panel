@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import LayoutRoute from './Layout/LayoutRoute'
 import store from '../redux/store'
 import PageSpinner from './PageSpinner';
 import MissingPermissions from './MissinPermissions'
@@ -7,9 +8,9 @@ import MissingPermissions from './MissinPermissions'
 export const PrivateRoute = ({...route}) => {
     const { user } = store.getState().auth
     if (user) {
-        return <Route {...route} />
+        return <LayoutRoute {...route} />
     } else {
-        return <Redirect to={{ pathname: '/login' , state: { from: route.path}}} />
+        return <Redirect to={{ pathname: '/login' , state: { from: route.location.pathname}}} />
     }
 }
 
@@ -32,14 +33,14 @@ export const AdministratorRoute = ({...route}) => {
     const { conferenceId } = store.getState().conference
     const { user, userForConference } = store.getState().auth
     if  (!user) {
-        return <Redirect to={{ pathname: '/login' , state: { from: route.path}}} />
+        return <Redirect to={{ pathname: '/login' , state: { from: route.location.pathname}}} />
     }
 
     if (!conferenceId || !userForConference) {
         return <PageSpinner color="primary" />
     } else {
         if (isAdministrator()) {
-            return <Route {...route} />
+            return <LayoutRoute {...route} />
         } else {
             return <MissingPermissions />
         }
@@ -49,11 +50,11 @@ export const AdministratorRoute = ({...route}) => {
 export const SuperAdminRoute = ({...route}) => {
     const { user } = store.getState().auth
     if  (!user) {
-        return <Redirect to={{ pathname: '/login' , state: { from: route.path}}} />
+        return <Redirect to={{ pathname: '/login' , state: { from: route.location.pathname}}} />
     }
 
     if (user.isSuperAdmin) {
-        return <Route {...route} />
+        return <LayoutRoute {...route} />
     } else {
         return <MissingPermissions />
     }
