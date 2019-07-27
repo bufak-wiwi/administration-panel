@@ -2,7 +2,6 @@ import GAListener from 'components/GAListener';
 import { MainLayout, EmptyLayout } from 'components/Layout';
 import LayoutRoute from 'components/Layout/LayoutRoute'
 import { connect } from 'react-redux'
-import PageSpinner from 'components/PageSpinner';
 import React from 'react';
 import AuthPage from 'pages/AuthPage';
 import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
@@ -12,12 +11,12 @@ import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
 import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
 
-const DashboardPage = React.lazy(() => import('pages/DashboardPage'));
-const ApplicationPage = React.lazy(() => import('pages/ApplicationPage'));
+import DashboardPage from './pages/DashboardPage';
+import ApplicationPage from './pages/ApplicationPage';
 // Administrator
-const PhasesPage = React.lazy(() => import('pages/administrator/PhasesPage'))
-const ApplicationListPage = React.lazy(() => import('pages/administrator/ApplicationListPage'))
-const ApplicationDetailsPage = React.lazy(() => import('pages/administrator/ApplicationDetailsPage'))
+import PhasesPage from './pages/administrator/PhasesPage';
+import ApplicationListPage from './pages/administrator/ApplicationListPage';
+import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -35,7 +34,7 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
-          <LayoutRoute
+           <LayoutRoute
               exact
               path="/login"
               layout={EmptyLayout}
@@ -51,17 +50,36 @@ class App extends React.Component {
                 <AuthPage {...props} authState={STATE_SIGNUP} />
               )}
             />
-
-            <MainLayout breakpoint={this.props.breakpoint}>
-              <React.Suspense fallback={<PageSpinner />}>
-                <PrivateRoute exact path="/" component={(props) => (<DashboardPage {...props}/>)} />
-                <PrivateRoute exact path="/anmeldung" component={(props) => (<ApplicationPage {...props}/>)} />
-
-                <AdministratorRoute exact path="/phasen" component={(props) => (<PhasesPage {...props} />)} />
-                <AdministratorRoute exact path="/application" component={(props) => (<ApplicationListPage {...props} />)} />
-                <AdministratorRoute exact path="/application/:uid" component={(props) => (<ApplicationDetailsPage {...props} />)} />
-              </React.Suspense>
-            </MainLayout>
+            <PrivateRoute
+              exact
+              path="/"
+              layout={MainLayout}
+              component={DashboardPage}
+            />
+            <PrivateRoute
+              exact
+              path="/anmeldung"
+              layout={MainLayout}
+              component={ApplicationPage}
+            />
+            <AdministratorRoute
+              exact
+              path="/phasen"
+              layout={MainLayout}
+              component={PhasesPage}
+            />
+            <AdministratorRoute
+              exact
+              path="/application"
+              layout={MainLayout}
+              component={ApplicationListPage}
+            />
+            <AdministratorRoute
+              exact
+              path="/application/:uid"
+              layout={MainLayout}
+              component={ApplicationDetailsPage}
+            />
             <Redirect to="/" />
           </Switch>
         </GAListener>
