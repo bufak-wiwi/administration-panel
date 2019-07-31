@@ -84,6 +84,7 @@ class Header extends React.Component {
             <Input
             type="select"
             name="conference"
+            disabled
             value={ this.props.conferenceId }
             onChange={(e) => this.props.updateConferenceId(e.currentTarget.value)}
             >
