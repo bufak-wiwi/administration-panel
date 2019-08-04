@@ -8,6 +8,7 @@ export function isMobileDevice() {
 export async function apiFetch(path, method, body) {
     const { auth } = store.getState()
     const { conferenceId } = store.getState().conference
+
     return await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
         method,
         headers: {
@@ -29,6 +30,7 @@ export async function apiFetch(path, method, body) {
             return false
         }
     })
+    .catch(e => console.log('ApiFetch', e))
 }
 
 export const unknown = 'UNKNOWN';
@@ -46,7 +48,7 @@ export function getUserStatusForConference() {
     }
 
     var conferenceObj = userForConference.find(x => x.conference_ID === conferenceId)
-    if (!conferenceObj) {
+    if (!conferenceObj || (!conferenceObj.applied && !conferenceObj.attendee && !conferenceObj.rejected)) {
         return unapplied;
     } 
     if (conferenceObj.attendee) {

@@ -1,5 +1,6 @@
 import { call, put, select } from 'redux-saga/effects'
 import ConferenceActions from '../redux/conferenceRedux'
+import AuthActions from '../redux/authRedux'
 import { apiFetch } from '../utils/functions'
 
 export function* getConference() {
@@ -27,9 +28,16 @@ export function* applyForConference(action) {
         const { data } = action
         if ( data ) {
             const result = yield call(apiFetch, 'Conference_Application', 'post', data)
-            if (!result) {
+            if (result) {
+                const { userForConference } = yield select(state => state.auth)
+                const { conferenceId } = yield select(state => state.conference)
+                // update UserForConference manually because it gets only updated by reloading the page
+                var updatedObj = JSON.parse(JSON.stringify(userForConference));
+                updatedObj.find(x => x.conference_ID === conferenceId)["applied"] = true
+                yield put(AuthActions.updateUserForConference(updatedObj))
+            } else {
                 yield put(ConferenceActions.updateConferenceError(true))
-            } 
+            }
             yield put(ConferenceActions.updateConferenceFetching(false))
         }
     } catch(e) {
@@ -115,6 +123,26 @@ export function* uploadApplication(action) {
             yield call(getApplication, {uid: application.applicantUID})
         }
     } catch(e) {
+        console.log(e)
+    }
+}
+
+export function* checkPassword(action) {
+    try {
+        yield put (ConferenceActions.updateConferenceError(false))
+        yield put (ConferenceActions.updateConferenceFetching(true))
+        const { password } = action
+        const { user } = yield select(state => state.auth);
+        const result = yield call(apiFetch, 'ApplicationAuths/', 'PUT', { password, council_ID: user.councilID })
+        if (result && result.passwordFound) {
+            yield put(ConferenceActions.updateIsPasswordValid(result.passwordFound, result.prioriy))
+        } else {
+            yield put (ConferenceActions.updateConferenceError(true))
+        }
+        yield put (ConferenceActions.updateConferenceFetching(false))
+    } catch(e) {
+        yield put (ConferenceActions.updateConferenceError(true))
+        yield put (ConferenceActions.updateConferenceFetching(false))
         console.log(e)
     }
 }

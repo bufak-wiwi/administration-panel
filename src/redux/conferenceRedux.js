@@ -12,6 +12,8 @@ const { Types, Creators } = createActions({
   applyForConference: ['data'],
   updateConferenceFetching: ['fetching'],
   updatePhases: ['data'],
+  updateIsPasswordValid: ['isPasswordValid', 'priority'],
+  checkPassword: ['password'],
   getApplicationList: null,
   updateApplicationList: ['applicationList'],
   uploadApplicationStatusChange: ['data'],
@@ -31,6 +33,8 @@ export const INITIAL_STATE = Immutable({
     conference: null,
     error: false,
     fetching: false,
+    isPasswordValid: false,
+    priority: 0,
     applicationList: [],
     application: null,
   })
@@ -52,6 +56,8 @@ export const updateConferenceError = (state, { error }) =>
 export const updateConferenceFetching = (state, { fetching }) =>
   state.merge({ fetching })
 
+export const updateIsPasswordValid = (state, { isPasswordValid, priority }) =>
+  state.merge({ isPasswordValid, priority })
 export const updateApplicationList = (state, { applicationList }) =>
   state.merge({ applicationList })
 
@@ -66,6 +72,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_CONFERENCE]: updateConference,
   [Types.UPDATE_CONFERENCE_ERROR]: updateConferenceError,
   [Types.UPDATE_CONFERENCE_FETCHING]: updateConferenceFetching,
+  [Types.UPDATE_IS_PASSWORD_VALID]: updateIsPasswordValid,
   [Types.UPDATE_APPLICATION_LIST]: updateApplicationList,
   [Types.UPDATE_APPLICATION]: updateApplication,
 })
