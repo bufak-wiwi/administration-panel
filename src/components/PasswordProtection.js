@@ -18,14 +18,14 @@ class PasswordProtection extends React.Component {
             <Card>
                 <CardBody>
                     <FormGroup>
-                        <Label for="password">Password deiner Fachschaft:</Label>
-                        <Input type="password" onChange={e => this.setState({ password: e.currentTarget.value})} />
+                        <Label for="password">Passwort deiner Fachschaft:</Label>
+                        <Input type="text" onChange={e => this.setState({ password: e.currentTarget.value})} />
                     </FormGroup>
-                    { error && <Alert color="danger">Password fehlerhaft oder ungültig.</Alert>}
+                    { error && <Alert color="danger">Passwort fehlerhaft oder ungültig.</Alert>}
                     <FormGroup>
                         <Button disabled={fetching} onClick={() => this.props.checkPassword(this.state.password)}>
                             { fetching && <Spinner />}
-                            { !fetching && 'Password überprüfen'}
+                            { !fetching && 'Passwort überprüfen'}
                         </Button>
                     </FormGroup>
                 </CardBody>

@@ -58,7 +58,7 @@ class ApplicationPage extends React.Component {
   }
 
   renderApplicationForm = () => {
-    if (true) {
+    if (!this.props.isPasswordValid) {
       return (<PasswordProtection />)
     } 
     return (
@@ -114,8 +114,9 @@ class ApplicationPage extends React.Component {
             <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
             <Input
               type="select"
-              value={this.state.priority}
-              onChange={(e) => this.setState({ priority: e.currentTarget.value})}
+              disabled
+              value={this.props.priority}
+              //onChange={(e) => this.setState({ priority: e.currentTarget.value})}
               required
               id="priority">
               {Array.from({length: 6}, (v, k) => k+1).map(x => <option key={x} id={x}>{x}</option>)}
@@ -287,7 +288,7 @@ class ApplicationPage extends React.Component {
             <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
             <Input
               type="select"
-              value={this.state.priority}
+              value={this.props.priority}
               disabled
               required
               id="priority">
@@ -401,7 +402,7 @@ class ApplicationPage extends React.Component {
         <FormGroup check>
           <Label for="dataprotection" check>
             <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({dataprotection: e.target.checked}) } id="dataprotection" />{' '}
-            Ich habe die Datenschutzerklärung gelesen und stimme ihr zu
+            Ich habe die Datenschutzerklärung gelesen und stimme ihr zu*
           </Label>
         </FormGroup>
         <FormGroup check>
@@ -476,7 +477,7 @@ class ApplicationPage extends React.Component {
 
   handleSubmit() {
     this.setState({activeStep: 3})
-    const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep, priority} = this.state
+    const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep} = this.state
 
     this.props.applyForConference({
       conferenceId: this.props.conferenceId,
@@ -488,7 +489,7 @@ class ApplicationPage extends React.Component {
       sleepingPref: sleep,
       tel: phone,
       eating: eat,
-      priority,
+      priority: this.props.priority,
       intolerance: intolerance === 'yes' ? intolerance_note : 'none',
       note,
       status: 0
@@ -521,6 +522,8 @@ const mapStateToProps = (state) => {
       userForConference: state.auth.userForConference,
       fetching: state.conference.fetching,
       error: state.conference.error,
+      isPasswordValid: state.conference.isPasswordValid,
+      priority: state.conference.priority,
   }
 }
 

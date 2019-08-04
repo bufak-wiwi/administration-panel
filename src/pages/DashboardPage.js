@@ -14,15 +14,16 @@ import {
   MdHighlightOff
 } from 'react-icons/md';
 import { getUserStatusForConference, unapplied, applied, attendee, rejected } from '../utils/functions'
+import ConferenceActions from '../redux/conferenceRedux'
 
 class DashboardPage extends React.Component {
   componentDidMount() {
-    // this is needed, because InfiniteCalendar forces window scroll
-    window.scrollTo(0, 0);
+    this.props.getConference();
   }
 
   renderUserStatusCard() {
     const { userForConference, conferenceId } = this.props
+    console.log(userForConference);
     switch(getUserStatusForConference(userForConference, conferenceId)) {
       case unapplied:
         return this.renderUnAppliedcard();
@@ -44,7 +45,7 @@ class DashboardPage extends React.Component {
         <CardHeader>Du hast dich nicht angemeldet</CardHeader>
         <CardBody>
           { (!conference || !conference.conferenceApplicationPhase) && 'Keine Laufende Anmelde Phase.'}
-          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">admin.bufak-wiso.de/anmeldung</Link></Alert>}
+          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">konferenz.bufak-wiso.de/anmeldung</Link></Alert>}
         </CardBody>
       </Card>
     )
@@ -95,15 +96,12 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    const {conferenceList, conferenceId} = this.props;
-
-    if (!conferenceList) {
+    const {conference} = this.props;
+    if (!conference) {
       return (
         <PageSpinner color="primary" />
       );
     }
-    const conference = conferenceList.find(x => x.conferenceID === conferenceId);
-
     return (
       <Page
         className="DashboardPage"
@@ -117,14 +115,15 @@ class DashboardPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    conference: state.conference.conference,
     conferenceId: state.conference.conferenceId,
-    conferenceList: state.conference.conferenceList,
     userForConference: state.auth.userForConference
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getConference: () => dispatch(ConferenceActions.getConference())
   }
 }
 
