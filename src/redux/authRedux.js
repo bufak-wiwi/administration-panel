@@ -14,6 +14,7 @@ const { Types, Creators } = createActions({
   logout: ['history'],
   rehydrateState: null,
   resetAuthState: null,
+  resetPassword: ['email'],
 })
 
 export const AuthTypes = Types

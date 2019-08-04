@@ -6,7 +6,7 @@ import { ConferenceTypes } from '../redux/conferenceRedux';
 import { CouncilTypes } from '../redux/councilRedux';
 
 /* ------------- Sagas ------------- */
-import { login, logout, rehydrateState, registerUser } from './authSagas'
+import { login, logout, rehydrateState, registerUser, resetPassword } from './authSagas'
 import { 
   getConference,
   applyForConference,
@@ -28,6 +28,7 @@ export default function * root () {
     takeEvery(AuthTypes.LOGOUT, logout),
     takeEvery(AuthTypes.REGISTER_USER, registerUser),
     takeEvery(AuthTypes.REHYDRATE_STATE, rehydrateState),
+    takeLatest(AuthTypes.RESET_PASSWORD, resetPassword),
     // Conference
     takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
