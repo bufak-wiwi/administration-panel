@@ -77,3 +77,15 @@ export function* logout(action) {
     console.log('Error at logging out', e)
   }
 }
+
+export function* resetPassword(action) {
+  try {
+    const { email } = action;
+    const result = yield call(apiFetch, 'Users/passwordforget', 'put', { email })
+    if (result) {
+      console.log('worked', result)
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}

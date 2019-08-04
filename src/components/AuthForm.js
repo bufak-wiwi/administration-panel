@@ -7,6 +7,16 @@ import AuthActions from '../redux/authRedux';
 import CouncilActions from'../redux/councilRedux';
 import { Redirect } from 'react-router-dom';
 import { Button, Form, FormGroup, Input, Label, Spinner, Alert } from 'reactstrap';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MDButton from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import { MdClose } from 'react-icons/md';
+import IconButton from '@material-ui/core/IconButton';
 
 class AuthForm extends React.Component {
   constructor(props) {
@@ -24,7 +34,9 @@ class AuthForm extends React.Component {
       name: '',
       surname: '',
       note: '',
-      birthday: ''
+      birthday: '',
+      passwordForgot: false,
+      displayMessage: false,
     };
   }
 
@@ -61,6 +73,68 @@ class AuthForm extends React.Component {
       address: this.state.zipcode + ';' + this.state.city + ';' + this.state.street,
     })}
   };
+
+  renderPasswordForgot() {
+    return (
+      <div>
+        <Dialog open={this.state.passwordForgot} onClose={() => this.setState({ passwordForgot: false})} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Passwort zurücksetzen</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Falls die eingegebene E-Mail-Adresse im System hinterlegt ist, wirst du in wenigen Minuten eine E-Mail zum zurücksetzen deines Passworts erhalten. 
+              Bitte überprüfe auch den Sam-Ordner.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="E-Mail-Adresse"
+              type="email"
+              fullWidth
+              value={this.state.email}
+              onChange={e => this.setState({ email: e.currentTarget.value})}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.setState({ passwordForgot: false})} color="primary">
+              Abbrechen
+            </Button>
+            <Button onClick={() => this.resetPassword()} color="primary">
+              Zurücksetzen
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.displayMessage}
+          autoHideDuration={6000}
+          onClose={() => this.setState({ displayMessage: false})}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">Bei korrekter E-Mail-Adresse wird dein Passwort zurückgesetzt.</span>}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={() => this.setState({ displayMessage: false})}
+            >
+              <MdClose />
+            </IconButton>,
+          ]}
+        />
+      </div>
+    );
+  }
+
+  resetPassword() {
+    this.setState({ passwordForgot: false, displayMessage: true});
+    // this.props.resetPassword(this.state.email);
+  }
 
   renderButtonText() {
     const { buttonText, isFetching } = this.props;
@@ -215,13 +289,9 @@ class AuthForm extends React.Component {
           {...passwordInputProps}
           />
         </FormGroup>
+        {!this.isSignup && <MDButton variant="outlined" onClick={() => this.setState({ passwordForgot: true})}>Passwort vergessen?</MDButton>}
+        { this.renderPasswordForgot()}
         {this.isSignup && this.renderSignup()}
-        {/* <FormGroup check>
-          <Label check>
-            <Input type="checkbox" onChange={remeberMe => this.setState({ remeberMe: remeberMe.target.value })}/>{' '}
-            {this.isSignup ? 'Agree the terms and policy' : 'Remember me'}
-          </Label>
-        </FormGroup> */}
         <hr />
         { error && <Alert color="danger">Ungültiger Login</Alert>}
         <Button
@@ -340,7 +410,8 @@ const mapDispatchToProps = (dispatch) => {
     login: (email, password, remeberMe) => dispatch(AuthActions.login(email, password, remeberMe)),
     registerUser: (params) => dispatch(AuthActions.registerUser(params)),
     getCouncil: () => dispatch(CouncilActions.getCouncil()),
-    getCouncilList: () => dispatch(CouncilActions.getCouncilList())
+    getCouncilList: () => dispatch(CouncilActions.getCouncilList()),
+    resetPassword: (email) => dispatch(AuthActions.resetPassword(email)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AuthForm);
