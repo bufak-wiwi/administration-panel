@@ -133,7 +133,7 @@ class AuthForm extends React.Component {
 
   resetPassword() {
     this.setState({ passwordForgot: false, displayMessage: true});
-    // this.props.resetPassword(this.state.email);
+    this.props.resetPassword(this.state.email);
   }
 
   renderButtonText() {
