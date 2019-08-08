@@ -68,6 +68,14 @@ catch (e){
 
 }
 
+export function* getUser(uid){
+  try{
+    const result = yield call(apiFetch, `Users/${uid}`, 'get')
+  } catch(e) {
+    console.log('Error at getting User', e)
+  }
+}
+
 export function* logout(action) {
   try {
     localStorage.clear()
