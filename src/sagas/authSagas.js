@@ -55,17 +55,16 @@ export function* rehydrateState() {
 
 export function* registerUser(params){
   try{
-  const {council_id, name, surname, birthday, email, password, sex, note, address} = params.params
-  yield put(AuthActions.updateFetching(true))
-  const result = yield call(apiFetch, 'Users', 'post', {council_id, name, surname, birthday, email, password, sex, note, address})
-  if (result.jwttoken) {
-    yield put(AuthActions.login(email, password))
+    const {council_id, name, surname, birthday, email, password, sex, note, address} = params.params
+    yield put(AuthActions.updateFetching(true))
+    const result = yield call(apiFetch, 'Users', 'post', {council_id, name, surname, birthday, email, password, sex, note, address})
+    if (result.jwttoken) {
+      yield put(AuthActions.login(email, password))
+    }
   }
-}
-catch (e){
-  console.log(e)
-}
-
+  catch (e){
+    console.log(e)
+    }
 }
 
 export function* getUser(uid){
@@ -73,6 +72,17 @@ export function* getUser(uid){
     const result = yield call(apiFetch, `Users/${uid}`, 'get')
   } catch(e) {
     console.log('Error at getting User', e)
+  }
+}
+
+export function* putUser(params){
+  try{
+    const {uid, councilID, name, surname, birthday, email, sex, note, address} = params.params
+    yield put(AuthActions.updateFetching(true))
+    const result = yield call(apiFetch, `Users/${uid}`, 'put', {uid, name, surname, birthday, email, councilID, address, sex, note})
+  }
+  catch(e){
+    console.log('Error at putting User', e)
   }
 }
 

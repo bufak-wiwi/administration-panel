@@ -51,6 +51,10 @@ export const getUser = (state, {user}) =>  {
   return state.merge({user})
 }
 
+export const putUser = (state, {user}) => {
+  return state.merge({user})
+}
+
 export const updateError = (state, { error }) => {
   return   state.merge({ error })
 }
