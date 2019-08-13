@@ -33,7 +33,19 @@ export function* applyForConference(action) {
                 const { conferenceId } = yield select(state => state.conference)
                 // update UserForConference manually because it gets only updated by reloading the page
                 var updatedObj = JSON.parse(JSON.stringify(userForConference));
-                updatedObj.find(x => x.conference_ID === conferenceId)["applied"] = true
+                var obj = updatedObj.find(x => x.conference_ID === conferenceId)
+                if (obj) {
+                    obj["applied"] = true
+                } else { 
+                    updatedObj.push({
+                        "conference_ID": data.conferenceId,
+                        "applied": true,
+                        "admin": false,
+                        "attendee": false,
+                        "rejected": false,
+                        "priority": data.priority
+                    })
+                }
                 yield put(AuthActions.updateUserForConference(updatedObj))
             } else {
                 yield put(ConferenceActions.updateConferenceError(true))
@@ -76,6 +88,7 @@ export function* updatePhases(action) {
 export function* getApplicationList() {
     try {
         const result = yield call(apiFetch, 'Conference_Application/forConference', 'get')
+        console.log('Application List', result)
         if (result) {
             yield put(ConferenceActions.updateApplicationList(result))
         }

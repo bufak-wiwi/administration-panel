@@ -513,7 +513,6 @@ class ApplicationPage extends React.Component {
   render() {
     const {conference, conferenceId, fetching, error, userForConference} = this.props;
     const isUserUnapplied = () => isUnapplied(userForConference , conferenceId)
-    console.log(conferenceId, userForConference)
     return (
       <Page
         className="DashboardPage"
