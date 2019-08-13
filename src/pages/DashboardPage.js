@@ -23,7 +23,6 @@ class DashboardPage extends React.Component {
 
   renderUserStatusCard() {
     const { userForConference, conferenceId } = this.props
-    console.log(userForConference);
     switch(getUserStatusForConference(userForConference, conferenceId)) {
       case unapplied:
         return this.renderUnAppliedcard();
