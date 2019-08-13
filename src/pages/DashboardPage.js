@@ -73,7 +73,7 @@ class DashboardPage extends React.Component {
         <CardHeader>Anmeldung angenommen</CardHeader>
         <CardBody>
           <Alert color="success">
-            <MdCheckCircle size={30} /> Deine Anmeldung für die {conference ? conference.names : 'BuFaK'} angenommen.
+            <MdCheckCircle size={30} /> Deine Anmeldung für die {conference ? conference.name : 'BuFaK'} wurde angenommen.
           </Alert>
         </CardBody>
       </Card>
