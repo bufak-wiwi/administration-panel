@@ -19,7 +19,7 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import PageSpinner from '../components/PageSpinner';
-import { isApplied } from '../utils/functions'
+import { isUnapplied } from '../utils/functions'
 import {
   MdCheckCircle,
   MdHighlightOff
@@ -512,7 +512,8 @@ class ApplicationPage extends React.Component {
 
   render() {
     const {conference, conferenceId, fetching, error, userForConference} = this.props;
-    const isUserApplied = () => isApplied(userForConference , conferenceId)
+    const isUserUnapplied = () => isUnapplied(userForConference , conferenceId)
+    console.log(conferenceId, userForConference)
     return (
       <Page
         className="DashboardPage"
@@ -520,9 +521,9 @@ class ApplicationPage extends React.Component {
       >
         { !conference && fetching && this.renderConferenceLoading()}
         { !conference && error && this.renderConferenceError()}
-        { conference && isUserApplied() && this.renderApplied() }
-        { conference && !conference.conferenceApplicationPhase && !isUserApplied() &&this.renderNoApplicationPhase()}
-        { conference && conference.conferenceApplicationPhase && !isUserApplied() && this.renderApplicationForm()}
+        { conference && !isUserUnapplied() && this.renderApplied() }
+        { conference && !conference.conferenceApplicationPhase && isUserUnapplied() &&this.renderNoApplicationPhase()}
+        { conference && conference.conferenceApplicationPhase && isUserUnapplied() && this.renderApplicationForm()}
      </Page>
     );
   }
