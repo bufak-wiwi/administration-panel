@@ -136,6 +136,7 @@ export function* checkPassword(action) {
         const result = yield call(apiFetch, 'ApplicationAuths/', 'PUT', { password, council_ID: user.councilID })
         if (result && result.passwordFound) {
             yield put(ConferenceActions.updateIsPasswordValid(result.passwordFound, result.prioriy, result.isOtherKey || false))
+            yield put(ConferenceActions.updatePassword(password))
         } else {
             yield put (ConferenceActions.updateConferenceError(true))
         }

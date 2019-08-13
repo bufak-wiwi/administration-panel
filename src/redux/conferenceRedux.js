@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   getApplication: ['uid'],
   updateApplication: ['application'],
   uploadApplication: ['application'],
+  updatePassword: ['password'],
 })
 
 export const ConferenceTypes = Types
@@ -36,6 +37,7 @@ export const INITIAL_STATE = Immutable({
     applicationList: [],
     application: null,
     // password protection
+    password: '',
     isPasswordValid: false,
     priority: 0,
     isOtherKey: false,
@@ -67,6 +69,9 @@ export const updateApplicationList = (state, { applicationList }) =>
 export const updateApplication = (state, { application }) =>
   state.merge({ application })
 
+export const updatePassword = (state, { password }) =>
+  state.merge({ password })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -78,4 +83,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_IS_PASSWORD_VALID]: updateIsPasswordValid,
   [Types.UPDATE_APPLICATION_LIST]: updateApplicationList,
   [Types.UPDATE_APPLICATION]: updateApplication,
+  [Types.UPDATE_PASSWORD]: updatePassword,
 })

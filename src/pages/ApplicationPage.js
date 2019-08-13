@@ -505,7 +505,8 @@ class ApplicationPage extends React.Component {
       priority: this.props.priority,
       intolerance: intolerance === 'yes' ? intolerance_note : 'none',
       note,
-      status: 0
+      status: 0,
+      key: this.props.password,
     })
   }
 
@@ -536,6 +537,7 @@ const mapStateToProps = (state) => {
       fetching: state.conference.fetching,
       error: state.conference.error,
       // password protection
+      password: state.conference.password,
       isPasswordValid: state.conference.isPasswordValid,
       priority: state.conference.priority,
       isOtherKey: state.conference.isOtherKey,
