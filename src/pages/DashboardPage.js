@@ -105,7 +105,7 @@ class DashboardPage extends React.Component {
     return (
       <Page
         className="DashboardPage"
-        title={conference ? 'BuFaK ' + conference.name : 'Startseite'}
+        title={conference ? conference.name : 'Startseite'}
       >
         { this.renderUserStatusCard()}
      </Page>
