@@ -31,7 +31,7 @@ class ApplicationPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      participant: 'pariticipant',
+      participant: 'alumnus',
       priority: 1,
       bufakCount: 1,
       activeStep: 0,
@@ -89,24 +89,36 @@ class ApplicationPage extends React.Component {
   }
 
   renderGeneralStep(){
+    const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
     return (
       <div>
       <Row>
         <Col xs="12" sm="6">
           <FormGroup>
             <Label for="participant">Ich bin*</Label>
-            <Input
-              type="select"
-              value={this.state.participant}
-              onChange={(e) => this.setState({ participant: e.currentTarget.value})}
-              required
-              id="participant"
-            >
-              <option value="pariticipant">Teilnehmer</option>
-              <option value="alumnus">Alumnus</option>
-              <option value="rat">BuFaK Rat</option>
-              <option value="helper">Helfer</option>
-            </Input>
+            { this.props.isOtherKey ?
+              <Input
+                type="select"
+                value={participant}
+                onChange={(e) => this.setState({ participant: e.currentTarget.value})}
+                required
+                id="participant"
+              >
+                <option value="alumnus">Alumnus</option>
+                <option value="rat">BuFaK Rat</option>
+                <option value="helper">Helfer</option>
+              </Input>
+              :
+              <Input
+                type="select"
+                value={participant}
+                disabled
+                required
+                id="participant"
+              >
+                <option value="pariticipant">Teilnehmer</option>
+              </Input>
+            }
           </FormGroup>
         </Col>
         <Col xs="12" sm="6">
@@ -116,7 +128,6 @@ class ApplicationPage extends React.Component {
               type="select"
               disabled
               value={this.props.priority}
-              //onChange={(e) => this.setState({ priority: e.currentTarget.value})}
               required
               id="priority">
               {Array.from({length: 6}, (v, k) => k+1).map(x => <option key={x} id={x}>{x}</option>)}
@@ -263,6 +274,7 @@ class ApplicationPage extends React.Component {
   }
 
   renderApproveStep() {
+    const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
     return (
       <div>
         <Row>
@@ -271,7 +283,7 @@ class ApplicationPage extends React.Component {
             <Label for="participant">Ich bin*</Label>
             <Input
               type="select"
-              value={this.state.participant}
+              value={participant}
               disabled
               required
               id="participant"
@@ -478,13 +490,14 @@ class ApplicationPage extends React.Component {
   handleSubmit() {
     this.setState({activeStep: 3})
     const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep} = this.state
+    const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
 
     this.props.applyForConference({
       conferenceId: this.props.conferenceId,
       applicantUID: this.props.user.uid,
-      isAlumnus: this.state.participant === 'alumnus',
-      isBuFaKCouncil: this.state.participant === 'rat',
-      isHelper: this.state.participant === 'helper',
+      isAlumnus: participant === 'alumnus',
+      isBuFaKCouncil: participant === 'rat',
+      isHelper: participant === 'helper',
       count: bufakCount,
       sleepingPref: sleep,
       tel: phone,
@@ -522,8 +535,10 @@ const mapStateToProps = (state) => {
       userForConference: state.auth.userForConference,
       fetching: state.conference.fetching,
       error: state.conference.error,
+      // password protection
       isPasswordValid: state.conference.isPasswordValid,
       priority: state.conference.priority,
+      isOtherKey: state.conference.isOtherKey,
   }
 }
 
