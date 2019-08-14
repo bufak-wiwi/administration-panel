@@ -359,12 +359,12 @@ AuthForm.defaultProps = {
   passwordLabel: 'Passwort',
   passwordInputProps: {
     type: 'password',
-    placeholder: 'your password',
+    placeholder: 'Passwort',
   },
   confirmPasswordLabel: 'Passwort bestätigen',
   confirmPasswordInputProps: {
     type: 'password',
-    placeholder: 'confirm your password',
+    placeholder: 'Passwort wiederholen',
   },
   councilLabel: 'Fachschauftsrat',
   councilInputProps: {
