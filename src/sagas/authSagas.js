@@ -63,7 +63,7 @@ export function* registerUser(params){
     if (result.jwtToken) {
       yield put(AuthActions.login(email, password))
     } else {
-      yield put(AuthActions.updateError(false))
+      yield put(AuthActions.updateError(true))
     }
     yield put(AuthActions.updateFetching(false))
   }

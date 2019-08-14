@@ -6,7 +6,7 @@ import Select from 'react-select';
 import AuthActions from '../redux/authRedux';
 import CouncilActions from'../redux/councilRedux';
 import { Redirect } from 'react-router-dom';
-import { Button, Form, FormGroup, Input, Label, Spinner, Alert } from 'reactstrap';
+import { Button, Form, FormGroup, Input, Label, Spinner, Alert, FormFeedback } from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -25,9 +25,10 @@ class AuthForm extends React.Component {
       aggreed: false,
       email: '',
       password: '',
+      passwordConfirm: '',
       remeberMe: false,
       councilID: 0,
-      sex: '',
+      sex: 'm',
       street: '',
       zipcode: '',
       city: '',
@@ -170,8 +171,14 @@ class AuthForm extends React.Component {
       <div>
       <FormGroup>
         <Label for={confirmPasswordLabel}>{confirmPasswordLabel}</Label>
-        <Input {...confirmPasswordInputProps} />
-        
+        <Input
+          required
+          value={this.state.passwordConfirm}
+          onChange={e => this.setState({ passwordConfirm : e.currentTarget.value})}
+          {...confirmPasswordInputProps} 
+          invalid={this.state.password !== this.state.passwordConfirm}
+        />
+        <FormFeedback>Passwörter müssen übereinstimmen</FormFeedback>
       </FormGroup>
       <FormGroup>
         <Label for={nameLabel}>{ nameLabel }</Label>
@@ -230,14 +237,36 @@ class AuthForm extends React.Component {
       </FormGroup>
       <FormGroup check>
         <Label check>
-        <Input type="checkbox" 
-                onChange={e => this.setState({aggreed: e.currentTarget.checked})}
-                />{' '}
+        <Input
+          type="checkbox" 
+          onChange={e => this.setState({aggreed: e.currentTarget.checked})}
+        />{' '}
         Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie
         </Label>
       </FormGroup>
       </div>
     )
+  }
+
+  isInputViable() {
+    if (this.isLogin) {
+      return this.state.email !== ''
+        && this.state.password !== ''
+    } else {
+      return this.state.email !== ''
+        && this.state.password !== ''
+        && this.state.passwordConfirm !== ''
+        && this.state.password === this.state.passwordConfirm
+        && this.state.aggreed
+        && this.state.birthday !== ''
+        && this.state.city !== ''
+        && this.state.councilID !== 0
+        && this.state.sex !== ''
+        && this.state.street !== ''
+        && this.state.surname !== ''
+        && this.state.name !== ''
+        && this.state.zipcode !== ''
+    }
   }
 
   render() {
@@ -293,9 +322,9 @@ class AuthForm extends React.Component {
         { this.renderPasswordForgot()}
         {this.isSignup && this.renderSignup()}
         <hr />
-        { error && <Alert color="danger">Ungültiger Login</Alert>}
+        { error && <Alert color="danger">{ this.isLogin ? 'Ungültiger Login' : 'Registrierung fehlerhaft'}</Alert>}
         <Button
-          disabled={this.isSignup && !this.state.aggreed}
+          disabled={!this.isInputViable()}
           size="lg"
           className="bg-gradient-theme-left border-0"
           block
