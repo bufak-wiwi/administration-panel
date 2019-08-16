@@ -507,6 +507,7 @@ class ApplicationPage extends React.Component {
       note,
       status: 0,
       key: this.props.password,
+      newsletter: this.state.newsletter,
     })
   }
 
