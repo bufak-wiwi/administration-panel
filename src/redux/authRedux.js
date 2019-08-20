@@ -9,6 +9,7 @@ const { Types, Creators } = createActions({
   updateToken: ['token'],
   registerUser: ['params'],
   getUser: ['uid'],
+  putUser: ['user'],
   updateFetching: ['fetching'],
   updateUserForConference: ['userForConference'],
   login: ['email', 'password', 'remeberMe'],
@@ -47,14 +48,6 @@ export const updateFetching = (state, { fetching }) =>{
   return state.merge({ fetching })
 }
 
-export const getUser = (state, {user}) =>  {
-  return state.merge({user})
-}
-
-export const putUser = (state, {user}) => {
-  return state.merge({user})
-}
-
 export const updateError = (state, { error }) => {
   return   state.merge({ error })
 }
@@ -71,5 +64,4 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER_FOR_CONFERENCE]: updateUserForConference,
   [Types.UPDATE_FETCHING]: updateFetching,
   [Types.UPDATE_ERROR]: updateError,
-  [Types.GET_USER]: getUser
 })

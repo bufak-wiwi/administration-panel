@@ -1,4 +1,4 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import AuthActions from '../redux/authRedux'
 import ConferenceActions from '../redux/conferenceRedux'
 import { apiFetch } from '../utils/functions'
@@ -67,9 +67,13 @@ export function* registerUser(params){
     }
 }
 
-export function* getUser(uid){
+export function* getUser(){
   try{
+    const { uid } = yield select(state => state.auth.user)
     const result = yield call(apiFetch, `Users/${uid}`, 'get')
+    if (result) {
+      yield put(AuthActions.updateUser(result))
+    }
   } catch(e) {
     console.log('Error at getting User', e)
   }
@@ -77,9 +81,13 @@ export function* getUser(uid){
 
 export function* putUser(params){
   try{
-    const {uid, councilID, name, surname, birthday, email, sex, note, address} = params.params
-    yield put(AuthActions.updateFetching(true))
-    const result = yield call(apiFetch, `Users/${uid}`, 'put', {uid, name, surname, birthday, email, councilID, address, sex, note})
+    const { user } = params
+    const { uid } = yield select(state => state.auth.user)
+    console.log('Put User', user)
+    if (user && uid ) {
+      const result = yield call(apiFetch, `Users/${uid}`, 'put', user)
+      console.log('Put result', result)
+    }
   }
   catch(e){
     console.log('Error at putting User', e)

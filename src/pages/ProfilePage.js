@@ -5,42 +5,33 @@ import { Card,
     CardHeader, CardBody, Button, Row, Col, FormGroup, Label, Input
 } from 'reactstrap'
 import Select from 'react-select';
-// import {Link} from 'react-router-dom';
 import PageSpinner from '../components/PageSpinner';
-// import { MdCheckCircle, MdHighlightOff } from 'react-icons/md';
-//import AuthActions from '../redux/authRedux';
+import AuthActions from '../redux/authRedux';
 import ConferenceActions from '../redux/conferenceRedux';
 import CouncilActions from '../redux/councilRedux';
 
 class ProfilePage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          user : {
-              uid: "132098130219",
-                name:"Daniel",
-                surname:"Korsmeier",
-                birthday:"1991-08-14",
-                email:"bufak@dkorsmeier.de",
-                councilID:"160",
-                address:"33175;Bad Lippspringe;Arminiuspark 12c",
-                sex:"Männlich",
-                note:"string",
-                invalid:false,
-                isSuperAdmin:false
-          },
-          zipcode: "",
-          city: "",
-          street: "",
-          editing: false
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      user : null,
+      zipcode: "",
+      city: "",
+      street: "",
+      editing: false,
+      updated: false
     }
+  }
+
   componentDidMount() {
     this.props.getCouncilList()
-    //this.props.getUser();
-    if (this.state.user) 
-    {
-      var addressarray = this.cutAddress(this.state.user.address);
+    this.props.getUser();
+  }
+
+  componentDidUpdate() {
+    if (this.props.user !== this.state.user && !this.state.updated) {
+      this.setState({ user: this.props.user, updated: true});
+      var addressarray = this.props.user.address.split(';');
       this.setState({ zipcode: addressarray[0], city: addressarray[1], street: addressarray[2]});
     }
   }
@@ -48,21 +39,17 @@ class ProfilePage extends React.Component {
   onCancel() {
     this.setState({
       editing: false,
-      //application: this.props.application
+      updated: true,
+      user: this.props.user
     })
   }
 
   onSave() {
     this.setState({
-      editing: false
+      editing: false,
+      updated: false,
     })
-    this.setState({user: {...this.state.user, address: this.state.zipcode + ";" + this.state.city + ";" + this.state.street}})
-    //this.props.uploadApplication(this.state.application)
-  }
-
-  cutAddress(address){
-      const addressArray = address.split(';')
-      return addressArray
+    this.props.putUser({...this.state.user, address: this.state.zipcode + ";" + this.state.city + ";" + this.state.street});
   }
 
   renderUserCard() {
@@ -71,137 +58,135 @@ class ProfilePage extends React.Component {
     var councilOptions = [];
     if (councilList){
       councilList.forEach(cl => {
-        councilOptions.push({value: cl.councilID.toString(),label: cl.name + ", " + cl.university})
+        councilOptions.push({value: cl.councilID ,label: cl.name + ", " + cl.university})
       })
     }
 
     return(
-        <Card>
-            <CardHeader>
-                  <Row style={{ justifyContent: 'space-between'}}>
-                  {/* { application.user.surname + ' ' + application.user.name} */}
-                  <div>
-                  { !editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
-                  { editing && <Button style={{ marginRight: 10}} onClick={() => this.onCancel()}>Abbrechen</Button>}
-                  { editing && <Button onClick={() => this.onSave()}>Speichern</Button>}
-                  </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                    <Row>
-                        <Col xs="12" md="6">
-                            <FormGroup>
-                            <Label for="status">Geschlecht</Label>
-                            <Input
-                                type="select"
-                                id="name"
-                                disabled={!this.state.editing}
-                                value={ user.sex}
-                                onChange={(e) => this.setState({ user: {...this.state.user, sex: e.currentTarget.value}})}
-                                >
-                                    <option>Männlich</option>
-                                    <option>Weiblich</option>
-                                    <option>keine Angabe</option>
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                            <Label for="status">Vorname</Label>
-                            <Input
-                                type="text"
-                                id="name"
-                                disabled={!this.state.editing}
-                                value={ user.name}
-                                onChange={(e) => this.setState({ user: {...this.state.user, name: e.currentTarget.value}})}
-                                >
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                            <Label for="status">Nachname</Label>
-                            <Input
-                                type="text"
-                                id="surname"
-                                disabled={!this.state.editing}
-                                value={ user.surname}
-                                onChange={(e) => this.setState({ user: {...this.state.user, surname: e.currentTarget.value}})}
-                                >
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                            <Label for="status">Straße, Hausnummer</Label>
-                            <Input
-                                type="text"
-                                id="surname"
-                                disabled={!this.state.editing}
-                                value={ street }
-                                onChange={(e) => this.setState({ street: e.currentTarget.value})}
-                                >
-                                </Input>
-                            </FormGroup>
-                          <Row>
-                            <Col xs="12" md="6">
-                              <FormGroup>
-                                <Label for="status">PLZ</Label>
-                                <Input
-                                    type="text"
-                                    id="surname"
-                                    disabled={!this.state.editing}
-                                    value={ zipcode }
-                                    onChange={(e) => this.setState({ zipcode: e.currentTarget.value})}
-                                    >
-                                    </Input>
-                              </FormGroup>
-                            </Col>
-                            <Col xs="12" md="6">
-                              <FormGroup>
-                                <Label for="status">Stadt</Label>
-                                <Input
-                                    type="text"
-                                    id="surname"
-                                    disabled={!this.state.editing}
-                                    value={ city }
-                                    onChange={(e) => this.setState({ city: e.currentTarget.value})}
-                                    >
-                                    </Input>
-                              </FormGroup>
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col xs="12" md="6">
-                            <FormGroup>
-                            <Label for="status">E-Mail</Label>
-                            <Input
-                                type="text"
-                                id="email"
-                                disabled={!this.state.editing}
-                                value={ user.email}
-                                onChange={(e) => this.setState({ user: {...this.state.user, email: e.currentTarget.value}})}
-                                >
-                                </Input>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label for="Geburtsdatum">Geburtsdatum</Label>
-                                <Input
-                                    type="date"
-                                    name="date"
-                                    disabled={!this.state.editing}
-                                    value={user.birthday}
-                                    onChange={e => this.setState({user: { ...this.state.user, birthday: e.currentTarget.value}})}
-                                    placeholder="date placeholder"
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label> Fachschaftsrat</Label>
-                                <Select 
-                                isDisabled={!this.state.editing}
-                                onChange={e => this.setState({ user: { ...this.state.user, councilID: e.value }})}
-                                defaultValue={councilOptions && councilOptions.find( council => council.value === user.councilID)}
-                                options = {councilOptions} />
-                            </FormGroup>
-                        </Col>
-                    </Row>
-                </CardBody>
-            
-        </Card>
+    <Card>
+      <CardHeader>
+        <Row style={{ justifyContent: 'space-between'}}>
+        <div>
+        { !editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
+        { editing && <Button style={{ marginRight: 10}} onClick={() => this.onCancel()}>Abbrechen</Button>}
+        { editing && <Button onClick={() => this.onSave()}>Speichern</Button>}
+        </div>
+        </Row>
+      </CardHeader>
+      <CardBody>
+        <Row>
+            <Col xs="12" md="6">
+                <FormGroup>
+                <Label for="status">Geschlecht</Label>
+                <Input
+                    type="select"
+                    id="name"
+                    disabled={!this.state.editing}
+                    value={ user.sex}
+                    onChange={(e) => this.setState({ user: {...this.state.user, sex: e.currentTarget.value}})}
+                    >
+                      <option value="m">Männlich</option>
+                      <option value="w">Weiblich</option>
+                      <option value="na">keine Angabe</option>
+                    </Input>
+                </FormGroup>
+                <FormGroup>
+                <Label for="status">Vorname</Label>
+                <Input
+                    type="text"
+                    id="name"
+                    disabled={!this.state.editing}
+                    value={ user.name}
+                    onChange={(e) => this.setState({ user: {...this.state.user, name: e.currentTarget.value}})}
+                    >
+                    </Input>
+                </FormGroup>
+                <FormGroup>
+                <Label for="status">Nachname</Label>
+                <Input
+                    type="text"
+                    id="surname"
+                    disabled={!this.state.editing}
+                    value={ user.surname}
+                    onChange={(e) => this.setState({ user: {...this.state.user, surname: e.currentTarget.value}})}
+                    >
+                    </Input>
+                </FormGroup>
+                <FormGroup>
+                <Label for="status">Straße, Hausnummer</Label>
+                <Input
+                    type="text"
+                    id="surname"
+                    disabled={!this.state.editing}
+                    value={ street }
+                    onChange={(e) => this.setState({ street: e.currentTarget.value})}
+                    >
+                    </Input>
+                </FormGroup>
+              <Row>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="status">PLZ</Label>
+                    <Input
+                        type="text"
+                        id="surname"
+                        disabled={!this.state.editing}
+                        value={ zipcode }
+                        onChange={(e) => this.setState({ zipcode: e.currentTarget.value})}
+                        >
+                        </Input>
+                  </FormGroup>
+                </Col>
+                <Col xs="12" md="6">
+                  <FormGroup>
+                    <Label for="status">Stadt</Label>
+                    <Input
+                        type="text"
+                        id="surname"
+                        disabled={!this.state.editing}
+                        value={ city }
+                        onChange={(e) => this.setState({ city: e.currentTarget.value})}
+                        >
+                        </Input>
+                  </FormGroup>
+                </Col>
+              </Row>
+            </Col>
+            <Col xs="12" md="6">
+                <FormGroup>
+                <Label for="status">E-Mail</Label>
+                <Input
+                    type="text"
+                    id="email"
+                    disabled={true}
+                    value={ user.email}
+                    //onChange={(e) => this.setState({ user: {...this.state.user, email: e.currentTarget.value}})}
+                    >
+                    </Input>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="Geburtsdatum">Geburtsdatum</Label>
+                    <Input
+                        type="date"
+                        name="date"
+                        disabled={!this.state.editing}
+                        value={user.birthday}
+                        onChange={e => this.setState({user: { ...this.state.user, birthday: e.currentTarget.value}})}
+                        placeholder="date placeholder"
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label> Fachschaftsrat</Label>
+                    <Select 
+                    isDisabled={!this.state.editing}
+                    onChange={e => this.setState({ user: { ...this.state.user, councilID: e.value }})}
+                    defaultValue={councilOptions && councilOptions.find( council => council.value === user.councilID)}
+                    options = {councilOptions} />
+                </FormGroup>
+            </Col>
+        </Row>
+      </CardBody>
+    </Card>
         
     )
   }
@@ -236,7 +221,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    //getUser: () => dispatch(AuthActions.getUser()),
+    getUser: () => dispatch(AuthActions.getUser()),
+    putUser: (user) => dispatch(AuthActions.putUser(user)),
     getConference: () => dispatch(ConferenceActions.getConference()),
     getCouncilList: () => dispatch(CouncilActions.getCouncilList())
   }
