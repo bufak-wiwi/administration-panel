@@ -12,7 +12,7 @@ const { Types, Creators } = createActions({
   applyForConference: ['data'],
   updateConferenceFetching: ['fetching'],
   updatePhases: ['data'],
-  updateIsPasswordValid: ['isPasswordValid', 'priority'],
+  updateIsPasswordValid: ['isPasswordValid', 'priority', 'isOtherKey'],
   checkPassword: ['password'],
   getApplicationList: null,
   updateApplicationList: ['applicationList'],
@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
   getApplication: ['uid'],
   updateApplication: ['application'],
   uploadApplication: ['application'],
+  updatePassword: ['password'],
 })
 
 export const ConferenceTypes = Types
@@ -33,10 +34,13 @@ export const INITIAL_STATE = Immutable({
     conference: null,
     error: false,
     fetching: false,
-    isPasswordValid: false,
-    priority: 0,
     applicationList: [],
     application: null,
+    // password protection
+    password: '',
+    isPasswordValid: false,
+    priority: 0,
+    isOtherKey: false,
   })
 
 /* ------------- Reducers ------------- */
@@ -56,14 +60,17 @@ export const updateConferenceError = (state, { error }) =>
 export const updateConferenceFetching = (state, { fetching }) =>
   state.merge({ fetching })
 
-export const updateIsPasswordValid = (state, { isPasswordValid, priority }) =>
-  state.merge({ isPasswordValid, priority })
+export const updateIsPasswordValid = (state, { isPasswordValid, priority, isOtherKey }) =>
+  state.merge({ isPasswordValid, priority, isOtherKey })
 
 export const updateApplicationList = (state, { applicationList }) =>
   state.merge({ applicationList })
 
 export const updateApplication = (state, { application }) =>
   state.merge({ application })
+
+export const updatePassword = (state, { password }) =>
+  state.merge({ password })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -76,4 +83,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_IS_PASSWORD_VALID]: updateIsPasswordValid,
   [Types.UPDATE_APPLICATION_LIST]: updateApplicationList,
   [Types.UPDATE_APPLICATION]: updateApplication,
+  [Types.UPDATE_PASSWORD]: updatePassword,
 })

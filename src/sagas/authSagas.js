@@ -55,16 +55,23 @@ export function* rehydrateState() {
 
 export function* registerUser(params){
   try{
+    yield put(AuthActions.updateFetching(true))
+    yield put(AuthActions.updateError(false))
     const {council_id, name, surname, birthday, email, password, sex, note, address} = params.params
     yield put(AuthActions.updateFetching(true))
     const result = yield call(apiFetch, 'Users', 'post', {council_id, name, surname, birthday, email, password, sex, note, address})
-    if (result.jwttoken) {
+    if (result.jwtToken) {
       yield put(AuthActions.login(email, password))
+    } else {
+      yield put(AuthActions.updateError(true))
     }
+    yield put(AuthActions.updateFetching(false))
   }
   catch (e){
+    yield put(AuthActions.updateFetching(false))
+    yield put(AuthActions.updateError(true))
     console.log(e)
-    }
+  }
 }
 
 export function* getUser(){
@@ -102,5 +109,17 @@ export function* logout(action) {
     yield put(AuthActions.resetAuthState())
   } catch (e) {
     console.log('Error at logging out', e)
+  }
+}
+
+export function* resetPassword(action) {
+  try {
+    const { email } = action;
+    const result = yield call(apiFetch, 'Users/passwordforget', 'put', { email })
+    if (result) {
+      console.log('worked', result)
+    }
+  } catch (e) {
+    console.log(e)
   }
 }

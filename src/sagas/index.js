@@ -13,6 +13,7 @@ import {
   registerUser,
   getUser,
   putUser,
+  resetPassword
 } from './authSagas'
 import { 
   getConference,
@@ -37,6 +38,7 @@ export default function * root () {
     takeEvery(AuthTypes.REHYDRATE_STATE, rehydrateState),
     takeEvery(AuthTypes.GET_USER, getUser),
     takeEvery(AuthTypes.PUT_USER, putUser),
+    takeLatest(AuthTypes.RESET_PASSWORD, resetPassword),
     // Conference
     takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),

@@ -23,7 +23,6 @@ class DashboardPage extends React.Component {
 
   renderUserStatusCard() {
     const { userForConference, conferenceId } = this.props
-    console.log(userForConference);
     switch(getUserStatusForConference(userForConference, conferenceId)) {
       case unapplied:
         return this.renderUnAppliedcard();
@@ -73,7 +72,7 @@ class DashboardPage extends React.Component {
         <CardHeader>Anmeldung angenommen</CardHeader>
         <CardBody>
           <Alert color="success">
-            <MdCheckCircle size={30} /> Deine Anmeldung für die {conference ? conference.names : 'BuFaK'} angenommen.
+            <MdCheckCircle size={30} /> Deine Anmeldung für die {conference ? conference.name : 'BuFaK'} wurde angenommen.
           </Alert>
         </CardBody>
       </Card>
@@ -105,7 +104,7 @@ class DashboardPage extends React.Component {
     return (
       <Page
         className="DashboardPage"
-        title={conference ? 'BuFaK ' + conference.name : 'Startseite'}
+        title={conference ? conference.name : 'Startseite'}
       >
         { this.renderUserStatusCard()}
      </Page>

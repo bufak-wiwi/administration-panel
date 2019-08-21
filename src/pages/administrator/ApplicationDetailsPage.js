@@ -43,8 +43,8 @@ class ApplicationDetailsPage extends React.Component {
     componentDidMount() {
       if (!this.props.application || !this.props.councilList) {
         const { uid } = this.props.match.params
-          this.props.getApplication(uid)
-          this.props.getCouncilList()
+        this.props.getApplication(uid)
+        this.props.getCouncilList()
       }
     }
 
@@ -53,7 +53,7 @@ class ApplicationDetailsPage extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-      if (!this.state.loaded && prevProps.application !== this.state.application) {
+      if (!this.state.loaded && this.props.application !== this.state.application) {
         this.setState({ application: this.props.application, loaded: true})
       }
     }
