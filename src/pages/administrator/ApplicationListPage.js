@@ -259,7 +259,7 @@ class ApplicationListPage extends React.Component {
                             return (
                                 <tr key={x.applicantUID} onClick={() => this.props.history.push('/application/' + x.applicantUID)}>
                                     <th scope="row">{i+1}</th>
-                                    <td>{ `${x.user.surname} ${x.user.name}` }</td>
+                                    <td>{ `${x.user.name} ${x.user.surname}` }</td>
                                     <td>{ this.getCouncilName(x.user.councilID) }</td>
                                     <td>{ this.getCouncilUniversity(x.user.councilID)}</td>
                                     <td>{ this.getPriorityOrType(x) }</td>
