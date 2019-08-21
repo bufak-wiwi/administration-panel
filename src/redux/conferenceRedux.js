@@ -58,6 +58,7 @@ export const updateConferenceFetching = (state, { fetching }) =>
 
 export const updateIsPasswordValid = (state, { isPasswordValid, priority }) =>
   state.merge({ isPasswordValid, priority })
+
 export const updateApplicationList = (state, { applicationList }) =>
   state.merge({ applicationList })
 

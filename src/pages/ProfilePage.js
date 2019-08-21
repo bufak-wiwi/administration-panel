@@ -29,7 +29,7 @@ class ProfilePage extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.user !== this.state.user && !this.state.updated) {
+    if (this.props.user !== this.state.user && !this.state.editing) {
       this.setState({ user: this.props.user, updated: true});
       var addressarray = this.props.user.address.split(';');
       this.setState({ zipcode: addressarray[0], city: addressarray[1], street: addressarray[2]});
@@ -82,7 +82,7 @@ class ProfilePage extends React.Component {
                     type="select"
                     id="name"
                     disabled={!this.state.editing}
-                    value={ user.sex}
+                    value={ user.sex }
                     onChange={(e) => this.setState({ user: {...this.state.user, sex: e.currentTarget.value}})}
                     >
                       <option value="m">Männlich</option>
@@ -194,7 +194,7 @@ class ProfilePage extends React.Component {
   render() {
     const { conference} = this.props;
     
-     if (!conference) {
+     if (!conference || !this.state.user) {
        return (
          <PageSpinner color="primary" />
        );

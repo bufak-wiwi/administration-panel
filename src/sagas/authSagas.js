@@ -83,10 +83,11 @@ export function* putUser(params){
   try{
     const { user } = params
     const { uid } = yield select(state => state.auth.user)
-    console.log('Put User', user)
     if (user && uid ) {
       const result = yield call(apiFetch, `Users/${uid}`, 'put', user)
-      console.log('Put result', result)
+      if (result) {
+        yield put(AuthActions.updateUser(user))
+      }
     }
   }
   catch(e){
