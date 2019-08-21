@@ -241,7 +241,7 @@ class AuthForm extends React.Component {
           type="checkbox" 
           onChange={e => this.setState({aggreed: e.currentTarget.checked})}
         />{' '}
-        Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie
+        Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere sie
         </Label>
       </FormGroup>
       </div>
