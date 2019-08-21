@@ -1,12 +1,6 @@
 import Page from 'components/Page';
 import React from 'react';
 import { connect } from 'react-redux'
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Alert,
-} from 'reactstrap'
 
 class DataProtectionPage extends React.Component {
 
