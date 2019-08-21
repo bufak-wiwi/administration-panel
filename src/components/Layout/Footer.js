@@ -9,7 +9,7 @@ const Footer = () => {
     <Navbar>
       <Nav navbar>
         <NavItem>
-          2018 BuFaK WiSo, source on <SourceLink>Github</SourceLink>
+          2018 BuFaK WiSo, source on <SourceLink>Github</SourceLink> - <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>
         </NavItem>
       </Nav>
     </Navbar>

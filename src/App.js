@@ -14,6 +14,7 @@ import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
 import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
 import ProfilePage from './pages/ProfilePage';
+import DataProtectionPage from './pages/DataProtectionPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -36,6 +37,12 @@ class App extends React.Component {
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
+            <LayoutRoute
+              exact
+              path="/datenschutz"
+              layout={EmptyLayout}
+              component={DataProtectionPage}
+            />
            <LayoutRoute
               exact
               path="/login"
