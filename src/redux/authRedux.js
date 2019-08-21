@@ -4,9 +4,12 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  // User
   updateUser: ['user'],
   updateToken: ['token'],
   registerUser: ['params'],
+  getUser: ['uid'],
+  putUser: ['user'],
   updateFetching: ['fetching'],
   updateUserForConference: ['userForConference'],
   login: ['email', 'password', 'remeberMe'],
@@ -61,5 +64,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER]: updateUser,
   [Types.UPDATE_USER_FOR_CONFERENCE]: updateUserForConference,
   [Types.UPDATE_FETCHING]: updateFetching,
-  [Types.UPDATE_ERROR]: updateError
+  [Types.UPDATE_ERROR]: updateError,
 })

@@ -8,6 +8,7 @@ import {
   MdSettings,
   MdAccessTime,
   MdAssignmentInd,
+  MdPerson,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -28,7 +29,8 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
-  { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment}
+  { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
+  { to: '/profile', name: 'Profil', exact: true, Icon: MdPerson},
 ];
 
 const navAdminItems = [

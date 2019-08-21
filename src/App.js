@@ -13,10 +13,12 @@ import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
 
 import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
+import ProfilePage from './pages/ProfilePage';
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
 import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
+
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -55,6 +57,12 @@ class App extends React.Component {
               path="/"
               layout={MainLayout}
               component={DashboardPage}
+            />
+            <PrivateRoute
+              exact
+              path="/profile"
+              layout={MainLayout}
+              component={ProfilePage}
             />
             <PrivateRoute
               exact
