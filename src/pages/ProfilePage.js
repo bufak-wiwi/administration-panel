@@ -44,12 +44,26 @@ class ProfilePage extends React.Component {
     })
   }
 
+  isDataValid() {
+    const { user, street, zipcode, city} = this.state;
+    return user.name 
+      && user.surname
+      && user.sex
+      && user.birthday
+      && user.councilID
+      && street
+      && zipcode
+      && city
+  }
+
   onSave() {
-    this.setState({
-      editing: false,
-      updated: false,
-    })
-    this.props.putUser({...this.state.user, address: this.state.zipcode + ";" + this.state.city + ";" + this.state.street});
+    if (this.isDataValid()) {
+      this.setState({
+        editing: false,
+        updated: false,
+      })
+      this.props.putUser({...this.state.user, address: this.state.zipcode + ";" + this.state.city + ";" + this.state.street});
+    }
   }
 
   renderUserCard() {
@@ -69,7 +83,7 @@ class ProfilePage extends React.Component {
         <div>
         { !editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
         { editing && <Button style={{ marginRight: 10}} onClick={() => this.onCancel()}>Abbrechen</Button>}
-        { editing && <Button onClick={() => this.onSave()}>Speichern</Button>}
+        { editing && <Button disabled={!this.isDataValid()} onClick={() => this.onSave()}>Speichern</Button>}
         </div>
         </Row>
       </CardHeader>
@@ -160,7 +174,6 @@ class ProfilePage extends React.Component {
                     id="email"
                     disabled={true}
                     value={ user.email}
-                    //onChange={(e) => this.setState({ user: {...this.state.user, email: e.currentTarget.value}})}
                     >
                     </Input>
                 </FormGroup>
