@@ -172,7 +172,7 @@ class ApplicationDetailsPage extends React.Component {
                   </Col>
                   <Col xs="12" md="6">
                     <FormGroup>
-                      <Label for="">Status</Label>
+                      <Label for="">Priorität</Label>
                       <Input
                         type="select"
                         id="priority"
