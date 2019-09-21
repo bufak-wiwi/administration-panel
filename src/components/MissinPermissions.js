@@ -1,14 +1,15 @@
 import React from 'react';
-import Typography from './Typography'
-import bn from 'utils/bemnames';
-const bem = bn.create('page');
+import { Row } from 'reactstrap'
+import Emptylayout from './Layout/EmptyLayout'
+const missingPermissions = require('../assets/img/octocat/missingPermissions.png');
+
 const MissingPermissions = ( ) => {
   return (
-    <div className="cr-page-spinner">
-            <Typography type="h3" className={bem.e('title')}>
-             Keine Berechtigungen
-          </Typography>
-    </div>
+    <Emptylayout>
+      <Row style={{justifyContent: 'center'}}>
+       <img src={missingPermissions} alt="OCTOCAT!"/>
+      </Row>
+    </Emptylayout>
   );
 };
 
