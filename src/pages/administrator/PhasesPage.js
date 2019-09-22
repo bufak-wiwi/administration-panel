@@ -17,7 +17,7 @@ import ConferenceActions from '../../redux/conferenceRedux';
 
 const phases = [
     { name: 'Anmeldung zur Konferenz', id:'conferenceApplicationPhase'},
-    { name: 'Workshop-Anmeldung', id: 'workshopApplicatonPhase'}
+    { name: 'Workshop-Anmeldung', id: 'workshopApplicationPhase'}
 ]
 
 class DashboardPage extends React.Component {
@@ -27,7 +27,7 @@ class DashboardPage extends React.Component {
         this.state = {
             editing: false,
             conferenceApplicationPhase: false,
-            workshopApplicatonPhase: false,
+            workshopApplicationPhase: false,
             workshopSuggestionPhase: false,
         }
     }
@@ -46,10 +46,10 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicatonPhase, workshopSuggestionPhase } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
-            workshopApplicatonPhase,
+            workshopApplicationPhase,
             workshopSuggestionPhase,
         })
     }
@@ -60,12 +60,12 @@ class DashboardPage extends React.Component {
         })
         const { 
             conferenceApplicationPhase,
-            workshopApplicatonPhase,
+            workshopApplicationPhase,
             workshopSuggestionPhase
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
-            workshopApplicatonPhase,
+            workshopApplicationPhase,
             workshopSuggestionPhase
         })
     }

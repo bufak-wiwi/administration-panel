@@ -160,3 +160,15 @@ export function* checkPassword(action) {
         console.log(e)
     }
 }
+
+export function* getUsers() {
+    try {
+        const conferenceID = yield select(state => state.conference.conferenceID);
+        const users = yield call(apiFetch, `users/byconference/${conferenceID}`, 'get');
+        if (users) {
+            yield put(ConferenceActions.updateUsers(users))
+        }
+    } catch(e) {
+        console.log('GetUser', e)
+    }
+}
