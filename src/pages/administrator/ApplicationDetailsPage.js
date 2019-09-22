@@ -144,7 +144,7 @@ class ApplicationDetailsPage extends React.Component {
             <Card>
                 <CardHeader>
                   <Row style={{ justifyContent: 'space-between'}}>
-                  { application.user.surname + ' ' + application.user.name}
+                  { application.user.name + ' ' + application.user.surname}
                   <div>
                   { !editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
                   { editing && <Button style={{ marginRight: 10}} onClick={() => this.onCancel()}>Abbrechen</Button>}
