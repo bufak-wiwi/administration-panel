@@ -18,15 +18,15 @@ import SearchInput from '../../components/SearchInput';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 
 const priorities = [
-    {name: '1', id: 'priority', value: 1},
-    {name: '2', id: 'priority', value: 2},
-    {name: '3', id: 'priority', value: 3},
-    {name: '4', id: 'priority', value: 4},
-    {name: '5', id: 'priority', value: 5},
-    {name: '6', id: 'priority', value: 6},
-    {name: 'Alumnus', id: 'isAlumnus', value: true},
-    {name: 'BuFaK Rat', id: 'isBuFaKCouncil', value: true},
-    {name: 'Helfer', id: 'isHelper',  value: true},
+    {name: '1', id: 'priority', value: 1, normal: true},
+    {name: '2', id: 'priority', value: 2, normal: true},
+    {name: '3', id: 'priority', value: 3, normal: true},
+    {name: '4', id: 'priority', value: 4, normal: true},
+    {name: '5', id: 'priority', value: 5, normal: true},
+    {name: '6', id: 'priority', value: 6, normal: true},
+    {name: 'Alumnus', id: 'isAlumnus', value: true, normal: false},
+    {name: 'BuFaK Rat', id: 'isBuFaKCouncil', value: true, normal: false},
+    {name: 'Helfer', id: 'isHelper',  value: true, normal: false},
 ]
 
 class ApplicationListPage extends React.Component {
@@ -52,7 +52,7 @@ class ApplicationListPage extends React.Component {
         const prio = priorities.find(x => x.name === this.state.selectedPriority)
         return this.props.applicationList
             .filter(x => !x.isInvalid) // neccessary?
-            .filter(x => !prio || x[prio.id] === prio.value)
+            .filter(x => !prio || (x[prio.id] === prio.value && (!prio.normal || !(x.isAlumnus || x.isBuFaKCouncil || x.isHelper))))
             .filter(x => !this.state.selectedStatus || x.status === this.state.selectedStatus)
             .filter(x => `${x.user.name} ${x.user.surname}`.toLowerCase().includes(search)
                 || x.user.email.toLowerCase().includes(search)
@@ -62,7 +62,7 @@ class ApplicationListPage extends React.Component {
                 || this.isSearchInCouncil(x.user.councilID)
             )
     }
-
+    
     isSearchInCouncil(councilId) {
         const council = this.props.councilList.find(x => x.councilID === councilId)
         const search = this.state.search.toLowerCase().trim()
