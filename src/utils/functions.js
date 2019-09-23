@@ -21,6 +21,9 @@ export async function apiFetch(path, method, body) {
     .then(async res => {
         try {
             if (!res.ok) {
+                if (res.status === 401 || res.status === 418) {
+                    store.dispatch({ type: 'LOGOUT'})
+                }
                 return false
             }
             var result = await res.text()
