@@ -14,7 +14,8 @@ const { Types, Creators } = createActions({
     updateSuccess: ['success'],
     updateError: ['error'],
     createNewWorkshop: ['workshop'],
-    updateExistingWorkshop: ['workshop']
+    updateExistingWorkshop: ['workshop'],
+    deleteWorkshop: ['id'],
 })
 
 export const WorkshopTypes = Types

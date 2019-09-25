@@ -86,3 +86,12 @@ export function* getUsers() {
         console.log('GetUser', e)
     }
 }
+
+export function* deleteWorkshop(params) {
+    try {
+        const { id } = params;
+        yield call(apiFetch, `workshops/${id}`, 'delete')
+    } catch (e) {
+        console.log('Deleting Workshop:', e)
+    }
+}

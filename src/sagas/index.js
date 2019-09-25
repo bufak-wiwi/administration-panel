@@ -33,6 +33,7 @@ import {
   getUsers,
   createNewWorkshop,
   updateExistingWorkshop,
+  deleteWorkshop
 } from './workshopSagas'
 
 /* ------------- Connect Types To Sagas ------------- */
@@ -65,5 +66,6 @@ export default function * root () {
     takeLatest(WorkshopTypes.GET_USERS, getUsers),
     takeLatest(WorkshopTypes.CREATE_NEW_WORKSHOP, createNewWorkshop),
     takeEvery(WorkshopTypes.UPDATE_EXISTING_WORKSHOP, updateExistingWorkshop),
+    takeEvery(WorkshopTypes.DELETE_WORKSHOP, deleteWorkshop),
   ])
 }

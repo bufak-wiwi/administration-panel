@@ -46,7 +46,10 @@ class WorkshopListPage extends React.Component {
                     <th>#</th>
                     <th>Name</th>
                     <th>Leiter</th>
-                    <th>Zeitpunkt</th>        
+                    <th>Zeitpunkt</th>     
+                    <th>Max. Teilnehmer</th> 
+                    <th>Raum</th> 
+                    <th>Anmerkung (z.B. Material)</th> 
                 </tr></thead>
                 <tbody>
                     { this.getFilteredWorkshopList().map((x, i) => 
@@ -55,6 +58,9 @@ class WorkshopListPage extends React.Component {
                             <td>{x.name}</td>
                             <td>{x.hostName}</td>
                             <td>{moment(x.start).format('dddd HH:mm') + ' Uhr'}</td>
+                            <td>{x.maxVisitors}</td>
+                            <td>{x.place || 'kA'}</td>
+                            <td>{x.materialNote}</td>
                         </tr>
                     )}
                 </tbody>
@@ -70,12 +76,13 @@ class WorkshopListPage extends React.Component {
                 || x.nameShort.includes(search)
                 || x.hostName.includes(search)
                 || x.place.includes(search)
+                || x.maxVisitors.toString().includes(search)
+                || x.materialNote.includes(search)
             )
     }
 
     render() {
         const {workshopList} = this.props
-        console.log([...new Set(workshopList.map(x => x.start))])
         return (
             <Page
                 className="WorkshopListPage"

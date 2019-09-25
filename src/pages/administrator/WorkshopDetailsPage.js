@@ -8,7 +8,7 @@ import {
     Col,
     FormGroup,
     Label,
-    Alert
+    Alert,
 } from 'reactstrap'
 import CreatableSelect from 'react-select/creatable';
 import WorkshopActions from '../../redux/workshopRedux'
@@ -16,6 +16,7 @@ import PageSpinner from '../../components/PageSpinner';
 import DetailsHeader from '../../components/DetailsHeader'
 import DetailsBody from '../../components/DetailsBody'
 import { Redirect } from 'react-router-dom';
+import Delete from '../../components/Delete';
 
 const emptyWorkshop = {
     name: '',
@@ -38,21 +39,22 @@ class WorkshopDetailsPage extends React.Component {
         this.state = {
             editing: false,
             workshop: null,
+            redirect: false,
             workshopProperties: [
                 { name: 'Name*', type: 'text', id: 'name', md: 6, xs: 12},
                 { name: 'Name Abgekürzt', type: 'text', id: 'nameShort', md: 6, xs: 12},
-                { name: 'Beschreibung', type: 'textarea', id: 'overview', md: 12, xs: 12},
+                { name: 'Beschreibung', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
                 { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12},
                 { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
                     { value: 'Basic', name: 'Basic'},
                     { value: 'Fortgeschritten', name: 'Fortgeschritten'},
                     { value: 'Profi', name: 'Profi'}
                 ], md: 6, xs: 12},
-                { name: 'Startzeitpunkt*', type: 'datetime-local', id: 'start', md: 6, xs: 12},
+                { name: 'Startzeitpunkt*', type: 'datetime-local', max: '2100-12-31T23:59', id: 'start', md: 6, xs: 12},
                 { name: 'Dauer (min)*', type: 'number', id: 'duration', md: 6, xs: 12},
                 { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 6, xs: 12},
                 { name: 'Raum', type: 'text', id: 'place', md: 6, xs: 12},
-                { name: 'Anmerkungen (z.B. Material)', type: 'textarea', id: 'materialNote', md: 12, xs: 12}
+                { name: 'Anmerkungen (z.B. Material)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
             ]
         }
     }
@@ -107,10 +109,14 @@ class WorkshopDetailsPage extends React.Component {
         this.props.getWorkshop(id)
     }
 
+    onDelete() {
+        this.props.deleteWorkshop(this.props.workshop.workshopID);
+        this.setState({ editing: false, redirect: true});
+    }
 
     render() {
         const { empty, error, success } = this.props;
-        const { workshop, editing } = this.state;
+        const { workshop, editing, redirect } = this.state;
 
         return (
             <Page
@@ -120,7 +126,7 @@ class WorkshopDetailsPage extends React.Component {
                 <Row>
                     <Col>
                         <Card>
-                            { success && empty && <CardBody><Redirect to="/workshops"/></CardBody>}
+                            { ((success && empty ) || redirect) && <Redirect to="/workshops"/>}
                             { !workshop && !error && <CardBody><PageSpinner /></CardBody>}
                             { error && <CardBody><Alert color="danger">Kein Workshop mit dieser ID gefunden</Alert></CardBody>}
                             { workshop && 
@@ -140,6 +146,12 @@ class WorkshopDetailsPage extends React.Component {
                                         object={workshop}
                                         onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
                                         properties={this.state.workshopProperties}
+                                    />
+                                    <Delete 
+                                        show={editing && !empty}
+                                        onDelete={() => this.onDelete()}
+                                        type="Workshop"
+                                        name={workshop.name}
                                     />
                                 </div>
                             }
@@ -169,6 +181,7 @@ const mapStateToProps = (state) => {
         updateExistingWorkshop: (workshop) => dispatch(WorkshopActions.updateExistingWorkshop(workshop)),
         clearFetching: () => dispatch(WorkshopActions.updateFetching(false)),
         clearSuccess: () => dispatch(WorkshopActions.updateSuccess(false)),
+        deleteWorkshop: (id) => dispatch(WorkshopActions.deleteWorkshop(id)),
     }
   }
   
