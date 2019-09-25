@@ -19,6 +19,7 @@ import {
     FaPlus
   } from 'react-icons/fa';
 import moment from 'moment';
+import Empty from '../../components/Empty';
 require('moment/locale/de.js')
 
 
@@ -119,7 +120,7 @@ class WorkshopListPage extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 { (workshopList && workshopList.length > 0 ) && this.renderList()}
-                                { !(workshopList && workshopList.length > 0 ) && <Delay wait={500}>Hier ist nichts :(</Delay>}
+                                { !(workshopList && workshopList.length > 0 ) && <Delay wait={500}><Empty /></Delay>}
                             </CardBody>
                         </Card>
                     </Col>
