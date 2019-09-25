@@ -19,7 +19,8 @@ import DataProtectionPage from './pages/DataProtectionPage'
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
 import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
-
+import WorkshopListPage from './pages/administrator/WorkshopListPage';
+import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -82,6 +83,26 @@ class App extends React.Component {
               path="/phasen"
               layout={MainLayout}
               component={PhasesPage}
+            />
+            <AdministratorRoute
+              exact
+              path="/workshops"
+              layout={MainLayout}
+              component={WorkshopListPage}
+            />
+            <AdministratorRoute
+              exact
+              path="/workshops/new"
+              layout={MainLayout}
+              component={props => (
+                <WorkshopDetailsPage {...props} empty={true} />
+              )}
+            />
+            <AdministratorRoute
+              exact
+              path="/workshops/:id"
+              layout={MainLayout}
+              component={WorkshopDetailsPage}
             />
             <AdministratorRoute
               exact
