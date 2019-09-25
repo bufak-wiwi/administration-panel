@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import LayoutRoute from './Layout/LayoutRoute'
 import store from '../redux/store'
 import PageSpinner from './PageSpinner';
-import MissingPermissions from './MissinPermissions'
+import MissingPermissions from './MissingPermissions'
 
 export const PrivateRoute = ({...route}) => {
     const { user } = store.getState().auth
