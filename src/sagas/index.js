@@ -4,6 +4,7 @@ import { takeLatest, takeEvery, all } from 'redux-saga/effects'
 import { AuthTypes } from '../redux/authRedux'
 import { ConferenceTypes } from '../redux/conferenceRedux';
 import { CouncilTypes } from '../redux/councilRedux';
+import { WorkshopTypes } from '../redux/workshopRedux';
 
 /* ------------- Sagas ------------- */
 import { 
@@ -26,6 +27,14 @@ import {
   checkPassword,
 } from './conferenceSagas'
 import { getCouncil, getCouncilList } from './councilSagas'
+import { 
+  getWorkshopList,
+  getWorkshop,
+  getUsers,
+  createNewWorkshop,
+  updateExistingWorkshop,
+  deleteWorkshop
+} from './workshopSagas'
 
 /* ------------- Connect Types To Sagas ------------- */
 
@@ -51,5 +60,12 @@ export default function * root () {
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),
+    // Workshop
+    takeEvery(WorkshopTypes.GET_WORKSHOP_LIST, getWorkshopList),
+    takeEvery(WorkshopTypes.GET_WORKSHOP, getWorkshop),
+    takeLatest(WorkshopTypes.GET_USERS, getUsers),
+    takeLatest(WorkshopTypes.CREATE_NEW_WORKSHOP, createNewWorkshop),
+    takeEvery(WorkshopTypes.UPDATE_EXISTING_WORKSHOP, updateExistingWorkshop),
+    takeEvery(WorkshopTypes.DELETE_WORKSHOP, deleteWorkshop),
   ])
 }

@@ -9,6 +9,7 @@ import {
   MdAccessTime,
   MdAssignmentInd,
   MdPerson,
+  MdGroup,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -36,6 +37,7 @@ const navItems = [
 const navAdminItems = [
   { to: '/phasen', name: "Phasen", exact: true, Icon: MdAccessTime},
   { to: '/application', name: "Anmeldungen", exact: false, Icon: MdAssignmentInd},
+  { to: '/workshops', name: "Workshops", exact: false, Icon: MdGroup},
 ];
 
 
