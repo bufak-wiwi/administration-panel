@@ -17,6 +17,7 @@ import DetailsHeader from '../../components/DetailsHeader'
 import DetailsBody from '../../components/DetailsBody'
 import { Redirect } from 'react-router-dom';
 import Delete from '../../components/Delete';
+import { shouldObjectBeUpdated } from '../../utils/functions';
 
 const emptyWorkshop = {
     name: '',
@@ -87,7 +88,7 @@ class WorkshopDetailsPage extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.props.workshop && this.state.workshop === null) {
+        if(shouldObjectBeUpdated(this.state.workshop, this.props.workshop, this.state.editing)) {
             this.setState({ workshop: this.props.workshop})
         }
     }
