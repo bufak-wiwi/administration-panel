@@ -88,7 +88,6 @@ export function* updatePhases(action) {
 export function* getApplicationList() {
     try {
         const result = yield call(apiFetch, 'Conference_Application/forConference', 'get')
-        console.log('Application List', result)
         if (result) {
             yield put(ConferenceActions.updateApplicationList(result))
         }
