@@ -3,19 +3,17 @@ import React from 'react';
 import { connect } from 'react-redux'
 import {
   Card,
-  CardHeader,
-  CardBody,
-  Row,
-  Col,
   FormGroup,
   Label,
   Input,
-  Button,
 } from 'reactstrap'
 import PageSpinner from '../../components/PageSpinner';
 import ConferenceActions from '../../redux/conferenceRedux';
 import CouncilActions from '../../redux/councilRedux'
 import { Tooltip } from '@material-ui/core';
+import DetailsHeader from '../../components/DetailsHeader';
+import DetailsBody from '../../components/DetailsBody';
+import { shouldObjectBeUpdated } from '../../utils/functions';
 
 const priorities = [
     {name: '1', id: 'priority', value: 1},
@@ -36,14 +34,13 @@ class ApplicationDetailsPage extends React.Component {
         this.state = {
           editing: false,
           application: null,
-          loaded: false
         }
     }
 
     componentDidMount() {
-      if (!this.props.application || !this.props.councilList) {
-        const { uid } = this.props.match.params
-        this.props.getApplication(uid)
+      const { uid } = this.props.match.params
+      this.props.getApplication(uid)
+      if (!this.props.councilList || this.props.councilList.length === 0) {
         this.props.getCouncilList()
       }
     }
@@ -52,9 +49,9 @@ class ApplicationDetailsPage extends React.Component {
       this.props.updateApplication()
     }
 
-    componentDidUpdate(prevProps, prevState) {
-      if (!this.state.loaded && this.props.application !== this.state.application) {
-        this.setState({ application: this.props.application, loaded: true})
+    componentDidUpdate() {
+      if (shouldObjectBeUpdated(this.state.application, this.props.application, this.state.editing)) {
+        this.setState({ application: this.props.application})
       }
     }
 
@@ -125,128 +122,91 @@ class ApplicationDetailsPage extends React.Component {
     this.props.uploadApplication(this.state.application)
   }
 
+  renderPriorityFormGroup() {
+    return (
+      <FormGroup key="priority">
+        <Label for="priority">Priorität</Label>
+        <Input
+          type="select"
+          id="priority"
+          disabled={!this.state.editing}
+          value={ this.getPriorityOrType(this.state.application)}
+          onChange={(e) => this.onPriorityChange(e.currentTarget.value)}
+          >
+            { priorities.map(x => <option key={x.name} value={x.id === "priority" ? x.name : x.id}>{x.name}</option>)}
+          </Input>
+      </FormGroup>
+    )
+  }
+
+  renderCouncilFormGroup() {
+    return (
+      <FormGroup key="council">
+        <Label for="council">Fachschaft</Label>
+        <Tooltip title="Diese Information muss der Nutzer selber in seinem Profil ändern">
+         <Input type="text" disabled value={this.getCouncilName(this.state.application.user.councilID)} />
+        </Tooltip>
+      </FormGroup>
+    )
+  }
+
+  renderUniversityFormGroup() {
+    return (
+      <FormGroup key="university">
+        <Label>Hochschule</Label>
+        <Tooltip title="Diese Information muss der Nutzer selber in seinem Profil ändern">
+         <Input type="text" disabled value={this.getCouncilUniversity(this.state.application.user.councilID) } />
+        </Tooltip>
+      </FormGroup>
+    )
+  }
+
   render() {
     const { application, editing } = this.state
     const { councilList } = this.props;
+
     if (!application || councilList.length === 0) {
       return (
         <PageSpinner color="primary" />
       );
     }  
 
+    const properties = [
+      { name: 'Status', type: 'select', id: 'status', options: [
+        { value: 'HasApplied', name: 'Ausstehend' },
+        { value: 'IsAttendee', name: 'Angenommen' },
+        { value: 'IsRejected', name: 'Abgelehnt' },
+      ]},
+      { type: 'custom', component: this.renderPriorityFormGroup(), id: 'priority'},
+      { type: 'custom', component: this.renderCouncilFormGroup(), id: 'council'},
+      { type: 'custom', component: this.renderUniversityFormGroup(), id: 'university'},
+      { name: 'Hotel', type: 'text', id: 'hotel'},
+      { name: 'Zimmer', type: 'text', id: 'room'},
+      { name: 'Anmerkung', type: 'textarea', id: 'note', xs: 12, md: 12, xl: 12}
+    ]
+
     return (
       <Page
         className="ApplicationListPage"
         title={'Anmeldung'}
       >
-        <Row>
-          <Col>
-            <Card>
-                <CardHeader>
-                  <Row style={{ justifyContent: 'space-between'}}>
-                  { application.user.name + ' ' + application.user.surname}
-                  <div>
-                  { !editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
-                  { editing && <Button style={{ marginRight: 10}} onClick={() => this.onCancel()}>Abbrechen</Button>}
-                  { editing && <Button onClick={() => this.onSave()}>Speichern</Button>}
-                  </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                <Row>
-                  <Col xs="12" md="6">
-                    <FormGroup>
-                      <Label for="status">Status</Label>
-                      <Input
-                        type="select"
-                        id="status"
-                        disabled={!this.state.editing}
-                        value={ application.status}
-                        onChange={(e) => this.setState({ application: {...this.state.application, status: e.currentTarget.value}})}
-                        >
-                          <option value="HasApplied">ausstehend</option>
-                          <option value="IsAttendee">angenommen</option>
-                          <option value="IsRejected">abgelehnt</option>
-                        </Input>
-                    </FormGroup>
-                  </Col>
-                  <Col xs="12" md="6">
-                    <FormGroup>
-                      <Label for="">Priorität</Label>
-                      <Input
-                        type="select"
-                        id="priority"
-                        disabled={!this.state.editing}
-                        value={ this.getPriorityOrType(application)}
-                        onChange={(e) => this.onPriorityChange(e.currentTarget.value)}
-                        >
-                          { priorities.map(x => <option key={x.name} value={x.id === "priority" ? x.name : x.id}>{x.name}</option>)}
-                        </Input>
-                      </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="12" md="6">
-                    <FormGroup>
-                      <Label for="council">Fachschaft</Label>
-                      <Tooltip title="Diese Information muss der Nutzer selber in seinem Profil ändern">
-                      <Input type="text" disabled value={this.getCouncilName(application.user.councilID)} />
-                      </Tooltip>
-                    </FormGroup>
-                  </Col>
-                  <Col>
-                    <FormGroup>
-                      <Label>Hochschule</Label>
-                      <Tooltip title="Diese Information muss der Nutzer selber in seinem Profil ändern">
-                      <Input type="text" disabled value={this.getCouncilUniversity(application.user.councilID) } />
-                      </Tooltip>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="12" md="6">
-                    <FormGroup>
-                      <Label for="hotel">Hotel</Label>
-                      <Input
-                        type="text"
-                        disabled={!editing}
-                        id="hotel"
-                        value={application.hotel || ''}
-                        onChange={e => this.setState({ application: {...this.state.application, hotel: e.currentTarget.value}})}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col xs="12" md="6">
-                    <FormGroup>
-                      <Label for="room">Zimmer</Label>
-                      <Input
-                        type="text"
-                        disabled={!editing}
-                        id="room"
-                        value={application.room || ''}
-                        onChange={e => this.setState({ application: {...this.state.application, room: e.currentTarget.value}})}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs="12" md="12">
-                    <FormGroup>
-                      <Label for="note">Anmerkung</Label>
-                      <Input 
-                        type="textarea"
-                        id="note"
-                        disabled={!editing}
-                        value={application.note}
-                        onChange={e => this.setState({ application: {...this.state.application, note: e.currentTarget.value}})}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                </CardBody>
-            </Card>
-            </Col>
-        </Row>
+        <Card>
+          <DetailsHeader
+            title={ application.user.name + ' ' + application.user.surname}
+            empty={false}
+            editing={editing}
+            onEdit={() => this.setState({ editing: true})}
+            onCancel={() => this.onCancel()}
+            onSave={() => this.onSave()}
+            disabled={false}
+          />
+          <DetailsBody
+            disabled={!editing}
+            object={this.state.application}
+            onChange={(id, value) => this.setState({ application: {...application, [id]: value}})}
+            properties={properties}
+          />      
+        </Card>
      </Page>
     );
   }
