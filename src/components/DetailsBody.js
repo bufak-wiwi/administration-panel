@@ -7,6 +7,7 @@ import {
     Label,
     Input,
 } from 'reactstrap'
+import Select from 'react-select'
 
 class DetailsBody extends Component {
     renderFormGroup(property) {
@@ -19,6 +20,7 @@ class DetailsBody extends Component {
                         <Input
                             key={property.id}
                             type="text"
+                            readOnly={property.readOnly}
                             disabled={disabled}
                             id={property.id}
                             value={object[property.id] || ''}
@@ -26,6 +28,21 @@ class DetailsBody extends Component {
                         />
                     </FormGroup>
                 );
+            case 'email': 
+                return (
+                    <FormGroup>
+                        <Label key={property.id + 'label'} for={property.id}>{property.name}</Label>
+                        <Input
+                            key={property.id}
+                            type="email"
+                            readOnly={property.readOnly}
+                            disabled={disabled}
+                            id={property.id}
+                            value={object[property.id] || ''}
+                            onChange={e => this.props.onChange(property.id, e.currentTarget.value)}
+                        />
+                    </FormGroup>
+                )
             case 'textarea':
                 return (
                     <FormGroup>
@@ -87,6 +104,33 @@ class DetailsBody extends Component {
                             { property.options.map(x => <option key={property.id + x.name} value={x.value}>{x.name}</option>)}
                         </Input>
                     </FormGroup>  
+                )
+            case 'react-select':
+                return (
+                    <FormGroup>
+                    <Label key={property.id + 'label'} for={property.id}>{property.name}</Label>
+                    <Select
+                        key={property.id}
+                        isDisabled={disabled}
+                        onChange={e => this.props.onChange(property.id, e.value)}
+                        defaultValue={property.options && property.options.find(option => option.value === object[property.id])}
+                        options={property.options}
+                   />
+                </FormGroup>  
+                )
+            case 'date': 
+                return (
+                    <FormGroup>
+                        <Label key={property.id + 'label'} for={property.id}>{property.name}</Label>
+                        <Input
+                            key={property.id}
+                            type="date"
+                            disabled={disabled}
+                            id={property.id}
+                            value={object[property.id]}
+                            onChange={e => this.props.onChange(property.id, e.currentTarget.value)}
+                        />
+                    </FormGroup> 
                 )
             case 'custom':
                 return property.component

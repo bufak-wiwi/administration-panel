@@ -42,7 +42,7 @@ export const updateToken = (state, { token }) =>
 export const updateUserForConference = (state, { userForConference }) =>
   state.merge({ userForConference })
 
-export const updateUser = (state, { user }) => 
+export const updateUser = (state, { user }) =>
   state.merge({ user, isSuperAdmin: user.isSuperAdmin })
 
 export const updateFetching = (state, { fetching }) =>{
@@ -50,7 +50,7 @@ export const updateFetching = (state, { fetching }) =>{
 }
 
 export const updateError = (state, { error }) => {
-  return   state.merge({ error })
+  return state.merge({ error })
 }
 
 export const resetAuthState = () => 
