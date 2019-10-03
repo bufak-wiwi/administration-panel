@@ -16,6 +16,7 @@ const { Types, Creators } = createActions({
     createNewWorkshop: ['workshop'],
     updateExistingWorkshop: ['workshop'],
     deleteWorkshop: ['id'],
+    uploadWorkshopApplication: ['application'],
 })
 
 export const WorkshopTypes = Types

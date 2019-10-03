@@ -15,6 +15,7 @@ import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
 import ProfilePage from './pages/ProfilePage';
 import DataProtectionPage from './pages/DataProtectionPage'
+import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -77,6 +78,12 @@ class App extends React.Component {
               path="/anmeldung"
               layout={MainLayout}
               component={ApplicationPage}
+            />
+            <PrivateRoute
+              exact
+              path="/workshop"
+              layout={MainLayout}
+              component={WorkshopApplicationPage}
             />
             <AdministratorRoute
               exact

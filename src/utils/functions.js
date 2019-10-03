@@ -1,6 +1,8 @@
 import store from '../redux/store'
 import _ from 'lodash'
 import {baseURL, apiKey} from '../config/globals'
+import moment from 'moment';
+require('moment/locale/de.js')
 
 export function isMobileDevice() {
     return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
@@ -12,6 +14,10 @@ export const shouldObjectBeUpdated = (stateObj, propsObj, editing)  => {
 
 export const isSubset = (subset, superset) => {
     return _.every(subset, (val, key) => _.isEqual(val, superset[key]))
+}
+
+export const toGermanTime = (x) => {
+    return moment(x).format('dddd HH:mm') + ' Uhr'
 }
 
 export async function apiFetch(path, method, body) {
