@@ -55,12 +55,13 @@ export const unknown = 'UNKNOWN';
 export const unapplied = 'UNAPPLIED'; 
 export const applied = 'APPLIED';
 export const attendee = 'ATTENDEE';
+export const noAttendee ='NO_ATTENDEE';
 export const rejected = 'REJECTED';
+export const phaseClosed = 'PHASE_CLOSED';
 
 export function getUserStatusForConference() {
-    const { userForConference }= store.getState().auth
+    const { userForConference } = store.getState().auth
     const { conferenceId } = store.getState().conference
-
     if (!userForConference || !conferenceId) {
         return unknown
     }
@@ -97,3 +98,17 @@ export function isAttendee(userForConference, conferenceId) {
 export function isRejected(userForConference, conferenceId) {
     return getUserStatusForConference(userForConference, conferenceId) === rejected
 }
+
+//#region WorkshopApplication
+export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
+    if (!isApplied(userForConference, conferenceId)) {
+        return noAttendee
+    } else if (workshopApplication !== [] && workshopApplication.length > 0) {
+        return applied
+    } else if (!workshopApplicationPhase) {
+        return phaseClosed
+    } else {
+        return unapplied
+    }
+}
+//#endregion

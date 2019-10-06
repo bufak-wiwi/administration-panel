@@ -29,6 +29,7 @@ import {
 import { getCouncil, getCouncilList } from './councilSagas'
 import { 
   getWorkshopList,
+  getWorkshopApplication,
   getWorkshop,
   getUsers,
   createNewWorkshop,
@@ -63,6 +64,7 @@ export default function * root () {
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),
     // Workshop
     takeEvery(WorkshopTypes.GET_WORKSHOP_LIST, getWorkshopList),
+    takeEvery(WorkshopTypes.GET_WORKSHOP_APPLICATION, getWorkshopApplication),
     takeEvery(WorkshopTypes.GET_WORKSHOP, getWorkshop),
     takeLatest(WorkshopTypes.GET_USERS, getUsers),
     takeLatest(WorkshopTypes.CREATE_NEW_WORKSHOP, createNewWorkshop),

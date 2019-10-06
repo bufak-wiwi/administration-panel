@@ -123,3 +123,16 @@ export function* uploadWorkshopApplication(params) {
         yield put(WorkshopActions.updateFetching(false))
     }
 }
+
+export function* getWorkshopApplication(params) {
+    try {
+        const { uid } = params;
+        const result = yield call(apiFetch, `Workshop_Application/peruser/${uid}`, 'get')
+        if (result) {
+            yield put(WorkshopActions.updateWorkshopApplication(result))
+        }
+    } catch (e) {
+        console.log('Get WorkshopApplication', e)
+    }
+
+}

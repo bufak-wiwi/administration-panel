@@ -5,8 +5,9 @@ import { Card, CardBody, Alert, Button, Row, FormGroup, Input, Label } from 'rea
 import WorkshopActions from '../redux/workshopRedux'
 import { Stepper, Step, StepLabel, StepContent, Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import PageSpinner from '../components/PageSpinner';
-import { toGermanTime } from '../utils/functions';
-
+import { toGermanTime, isApplied } from '../utils/functions';
+import Delay from '../components/Delay'
+import WorkshopApplicationCard from '../components/Widget/WorkshopApplicationCard';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -26,6 +27,7 @@ class WorkshopApplicationPage extends React.Component {
 
   componentDidMount() {
     this.props.getWorkshopList()
+    this.props.getWorkshopApplication(this.props.user.uid)
   }
 
   componentDidUpdate() {
@@ -146,8 +148,30 @@ class WorkshopApplicationPage extends React.Component {
   }
 
   render() {
-    const {workshopList, fetching, success, error} = this.props
+    const {
+      workshopList,
+      fetching,
+      success,
+      error,
+      workshopApplication,
+      conference,
+      userForConference,
+      conferenceId
+    } = this.props
 
+    if ((workshopApplication !== [] && workshopApplication.length !== 0)
+      || (!conference || !conference.workshopApplicationPhase)
+      || !isApplied(userForConference, conferenceId)
+    ) {
+      return (
+        <Page
+        title={'Workshopanmeldung'}
+      >
+        <WorkshopApplicationCard show={true} />
+      </Page>
+      )
+    }
+    
     return (
       <Page
         title={'Workshopanmeldung'}
@@ -156,10 +180,10 @@ class WorkshopApplicationPage extends React.Component {
         { error && <Card><CardBody><Alert color="danger">Deine Workshopanmeldung war fehlerhaft. Bitte versuche es erneut.</Alert></CardBody></Card>}
         { !error && (fetching || !workshopList) && <Card><CardBody><PageSpinner/></CardBody></Card>}
         { !error && !success && workshopList && 
-            <Card>
+            <Delay wait={500}><Card>
                 <CardBody>{this.renderStepper()}</CardBody>
                 { this.renderConfirm() }
-            </Card>
+            </Card></Delay>
         }
      </Page>
     );
@@ -168,16 +192,22 @@ class WorkshopApplicationPage extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    conference: state.conference.conference,
     workshopList: state.workshop.workshopList,
+    workshopApplication: state.workshop.workshopApplication,
     fetching: state.workshop.fetching,
     success: state.workshop.success,
     error: state.workshop.error,
+    user: state.auth.user,
+    conferenceId: state.conference.conferenceId,
+    userForConference: state.auth.userForConference,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getWorkshopList: () => dispatch(WorkshopActions.getWorkshopList()),
+    getWorkshopApplication: (uid) => dispatch(WorkshopActions.getWorkshopApplication(uid)),
     uploadWorkshopApplication: (application) => dispatch(WorkshopActions.uploadWorkshopApplication(application)),
   }
 }

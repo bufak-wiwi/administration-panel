@@ -10,6 +10,7 @@ import {
   MdAssignmentInd,
   MdPerson,
   MdGroup,
+  MdSpeakerNotes,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -31,6 +32,7 @@ const sidebarBackground = {
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
+  { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
   { to: '/profile', name: 'Profil', exact: true, Icon: MdPerson},
 ];
 

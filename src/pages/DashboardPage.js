@@ -6,6 +6,8 @@ import {
   CardHeader,
   CardBody,
   Alert,
+  Row,
+  Col,
 } from 'reactstrap'
 import {Link} from 'react-router-dom';
 import PageSpinner from '../components/PageSpinner';
@@ -15,6 +17,7 @@ import {
 } from 'react-icons/md';
 import { getUserStatusForConference, unapplied, applied, attendee, rejected } from '../utils/functions'
 import ConferenceActions from '../redux/conferenceRedux'
+import WorkshopApplicationCard from '../components/Widget/WorkshopApplicationCard';
 
 class DashboardPage extends React.Component {
   componentDidMount() {
@@ -88,7 +91,7 @@ class DashboardPage extends React.Component {
           <Alert color="danger">
             <MdHighlightOff size={30} /> Deine Anmeldung für die {conference ? conference.names : 'BuFaK'} wurde leider abgelehnt.
           </Alert>
-          Bitte beachte, dass du weiterhin auf der Warteliste stehst und über einen Nachrückerplatz trotzdem an der BuFaK teilnehmen könntest.
+          Bitte beachte, dass du weiterhin auf der Warteliste stehst und über einen Nachrückerplatz trotzdem an der BuFaK teilnehmen kannst.
         </CardBody>
       </Card>
     )
@@ -106,7 +109,10 @@ class DashboardPage extends React.Component {
         className="DashboardPage"
         title={conference ? conference.name : 'Startseite'}
       >
-        { this.renderUserStatusCard()}
+        <Row>
+          <Col md="6" xs="12">{this.renderUserStatusCard()}</Col>
+          <Col md="6" xs="12"><WorkshopApplicationCard show={true} /></Col>
+        </Row>
      </Page>
     );
   }
