@@ -1,6 +1,8 @@
 import store from '../redux/store'
 import _ from 'lodash'
 import {baseURL, apiKey} from '../config/globals'
+import moment from 'moment';
+require('moment/locale/de.js')
 
 export function isMobileDevice() {
     return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
@@ -12,6 +14,10 @@ export const shouldObjectBeUpdated = (stateObj, propsObj, editing)  => {
 
 export const isSubset = (subset, superset) => {
     return _.every(subset, (val, key) => _.isEqual(val, superset[key]))
+}
+
+export const toGermanTime = (x) => {
+    return moment(x).format('dddd HH:mm') + ' Uhr'
 }
 
 export async function apiFetch(path, method, body) {
@@ -49,12 +55,13 @@ export const unknown = 'UNKNOWN';
 export const unapplied = 'UNAPPLIED'; 
 export const applied = 'APPLIED';
 export const attendee = 'ATTENDEE';
+export const noAttendee ='NO_ATTENDEE';
 export const rejected = 'REJECTED';
+export const phaseClosed = 'PHASE_CLOSED';
 
 export function getUserStatusForConference() {
-    const { userForConference }= store.getState().auth
+    const { userForConference } = store.getState().auth
     const { conferenceId } = store.getState().conference
-
     if (!userForConference || !conferenceId) {
         return unknown
     }
@@ -91,3 +98,17 @@ export function isAttendee(userForConference, conferenceId) {
 export function isRejected(userForConference, conferenceId) {
     return getUserStatusForConference(userForConference, conferenceId) === rejected
 }
+
+//#region WorkshopApplication
+export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
+    if (!isApplied(userForConference, conferenceId)) {
+        return noAttendee
+    } else if (workshopApplication !== [] && workshopApplication.length > 0) {
+        return applied
+    } else if (!workshopApplicationPhase) {
+        return phaseClosed
+    } else {
+        return unapplied
+    }
+}
+//#endregion

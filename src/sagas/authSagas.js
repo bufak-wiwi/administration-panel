@@ -2,6 +2,7 @@ import { call, put, select } from 'redux-saga/effects'
 import AuthActions from '../redux/authRedux'
 import ConferenceActions from '../redux/conferenceRedux'
 import { apiFetch } from '../utils/functions'
+import { getWorkshopApplication } from './workshopSagas'
 
 export function* login(action) { 
   try {
@@ -29,6 +30,8 @@ export function* login(action) {
         yield put(ConferenceActions.updateConferenceList(result.conferences))
         yield put(AuthActions.updateUserForConference( result.userForConference))
         yield put(AuthActions.updateFetching(false))
+        // get workshop application
+        yield call(getWorkshopApplication, result.user)
 
       } else {
         yield put(AuthActions.updateError(true))
@@ -80,6 +83,8 @@ export function* getUser(){
     const result = yield call(apiFetch, `Users/${uid}`, 'get')
     if (result) {
       yield put(AuthActions.updateUser(result))
+      // get workshop application
+      yield call(getWorkshopApplication, { uid })
     }
   } catch(e) {
     console.log('Error at getting User', e)

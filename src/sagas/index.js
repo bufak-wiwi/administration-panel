@@ -29,11 +29,13 @@ import {
 import { getCouncil, getCouncilList } from './councilSagas'
 import { 
   getWorkshopList,
+  getWorkshopApplication,
   getWorkshop,
   getUsers,
   createNewWorkshop,
   updateExistingWorkshop,
-  deleteWorkshop
+  deleteWorkshop,
+  uploadWorkshopApplication,
 } from './workshopSagas'
 
 /* ------------- Connect Types To Sagas ------------- */
@@ -62,10 +64,12 @@ export default function * root () {
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),
     // Workshop
     takeEvery(WorkshopTypes.GET_WORKSHOP_LIST, getWorkshopList),
+    takeEvery(WorkshopTypes.GET_WORKSHOP_APPLICATION, getWorkshopApplication),
     takeEvery(WorkshopTypes.GET_WORKSHOP, getWorkshop),
     takeLatest(WorkshopTypes.GET_USERS, getUsers),
     takeLatest(WorkshopTypes.CREATE_NEW_WORKSHOP, createNewWorkshop),
     takeEvery(WorkshopTypes.UPDATE_EXISTING_WORKSHOP, updateExistingWorkshop),
     takeEvery(WorkshopTypes.DELETE_WORKSHOP, deleteWorkshop),
+    takeLatest(WorkshopTypes.UPLOAD_WORKSHOP_APPLICATION, uploadWorkshopApplication)
   ])
 }
