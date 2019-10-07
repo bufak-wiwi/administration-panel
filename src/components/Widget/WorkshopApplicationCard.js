@@ -23,7 +23,7 @@ class WorkshopApplicationCard extends Component {
               <CardHeader>Workshop Anmeldung</CardHeader>
               <CardBody>
                   <Alert color="success">
-                      <MdCheckCircle size={30}/> Deine Anmeldung wurde erfolgreich hochgeladen.
+                      <MdCheckCircle size={30}/> Deine Anmeldung wurde erfolgreich abgeschickt.
                   </Alert>
               </CardBody>
           </Card>
