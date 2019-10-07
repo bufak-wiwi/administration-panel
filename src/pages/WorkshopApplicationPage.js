@@ -141,7 +141,7 @@ class WorkshopApplicationPage extends React.Component {
           </DialogContent>
           <DialogActions>
               <Button outline onClick={() => this.setState({ isOpen: false})} color="primary">Abbrechen</Button>
-              <Button outline onClick={() => this.props.uploadWorkshopApplication(this.state.selected)} color="danger">Hochladen</Button>
+              <Button outline onClick={() => this.props.uploadWorkshopApplication(this.state.selected)} color="danger">Absenden</Button>
           </DialogActions>
       </Dialog>
     )
