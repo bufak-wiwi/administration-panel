@@ -70,13 +70,13 @@ export function* updatePhases(action) {
         const { conferenceId } = yield select(state => state.conference);
         if (data && conferenceId) {
             // make api call
-            const result = yield call(apiFetch, 'Conferences/phases', 'put', data)
+            const result = yield call(apiFetch, `Conferences/phases/${conferenceId}`, 'put', data)
             if (!result) {
                 yield put(ConferenceActions.updateConferenceError(true))
             }
             // stop loading
             yield put(ConferenceActions.updateConferenceFetching(true))
-        } 
+        }
     } catch(e) {
         // catch error and stop loading
         yield put(ConferenceActions.updateConferenceFetching(false))
