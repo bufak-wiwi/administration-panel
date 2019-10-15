@@ -101,7 +101,7 @@ export function isRejected(userForConference, conferenceId) {
 
 //#region WorkshopApplication
 export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
-    if (!isApplied(userForConference, conferenceId)) {
+    if (!isAttendee(userForConference, conferenceId)) {
         return noAttendee
     } else if (workshopApplication !== [] && workshopApplication.length > 0) {
         return applied

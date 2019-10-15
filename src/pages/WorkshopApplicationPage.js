@@ -5,7 +5,7 @@ import { Card, CardBody, Alert, Button, Row, FormGroup, Input, Label } from 'rea
 import WorkshopActions from '../redux/workshopRedux'
 import { Stepper, Step, StepLabel, StepContent, Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import PageSpinner from '../components/PageSpinner';
-import { toGermanTime, isApplied } from '../utils/functions';
+import { toGermanTime, isAttendee } from '../utils/functions';
 import Delay from '../components/Delay'
 import WorkshopApplicationCard from '../components/Widget/WorkshopApplicationCard';
 
@@ -161,7 +161,7 @@ class WorkshopApplicationPage extends React.Component {
 
     if ((workshopApplication !== [] && workshopApplication.length !== 0)
       || (!conference || !conference.workshopApplicationPhase)
-      || !isApplied(userForConference, conferenceId)
+      || !isAttendee(userForConference, conferenceId)
     ) {
       return (
         <Page
