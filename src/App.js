@@ -16,6 +16,7 @@ import ApplicationPage from './pages/ApplicationPage';
 import ProfilePage from './pages/ProfilePage';
 import DataProtectionPage from './pages/DataProtectionPage'
 import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
+import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -84,6 +85,12 @@ class App extends React.Component {
               path="/workshop"
               layout={MainLayout}
               component={WorkshopApplicationPage}
+            />
+            <PrivateRoute
+              exact
+              path="/workshop-uebersicht"
+              layout={MainLayout}
+              component={WorkshopOverviewPage}
             />
             <AdministratorRoute
               exact
