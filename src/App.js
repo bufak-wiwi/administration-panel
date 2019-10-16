@@ -16,6 +16,7 @@ import ApplicationPage from './pages/ApplicationPage';
 import ProfilePage from './pages/ProfilePage';
 import DataProtectionPage from './pages/DataProtectionPage'
 import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
+import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -85,6 +86,12 @@ class App extends React.Component {
               layout={MainLayout}
               component={WorkshopApplicationPage}
             />
+            <PrivateRoute
+              exact
+              path="/workshop-uebersicht"
+              layout={MainLayout}
+              component={WorkshopOverviewPage}
+            />
             <AdministratorRoute
               exact
               path="/phasen"
@@ -93,13 +100,13 @@ class App extends React.Component {
             />
             <AdministratorRoute
               exact
-              path="/workshops"
+              path="/workshop-list"
               layout={MainLayout}
               component={WorkshopListPage}
             />
             <AdministratorRoute
               exact
-              path="/workshops/new"
+              path="/workshop-list/new"
               layout={MainLayout}
               component={props => (
                 <WorkshopDetailsPage {...props} empty={true} />
@@ -107,7 +114,7 @@ class App extends React.Component {
             />
             <AdministratorRoute
               exact
-              path="/workshops/:id"
+              path="/workshop-list/:id"
               layout={MainLayout}
               component={WorkshopDetailsPage}
             />

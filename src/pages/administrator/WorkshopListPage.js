@@ -54,7 +54,7 @@ class WorkshopListPage extends React.Component {
                 </tr></thead>
                 <tbody>
                     { this.getFilteredWorkshopList().map((x, i) => 
-                        <tr key={x.workshopID} onClick={() => this.props.history.push('/workshops/' + x.workshopID)}>
+                        <tr key={x.workshopID} onClick={() => this.props.history.push('/workshop-list/' + x.workshopID)}>
                             <th scope="row">{i+1}</th>
                             <td>{x.name}</td>
                             <td>{x.hostName}</td>
@@ -95,7 +95,7 @@ class WorkshopListPage extends React.Component {
                             <CardHeader>
                                 <Row>
                                     <Col xs="12" md="2">
-                                        <Link to='/workshops/new'>
+                                        <Link to='/workshop-list/new'>
                                             <Button><FaPlus /> Neu</Button>
                                         </Link>
                                     </Col>

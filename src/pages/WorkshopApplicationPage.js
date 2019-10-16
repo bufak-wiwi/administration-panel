@@ -8,6 +8,7 @@ import PageSpinner from '../components/PageSpinner';
 import { toGermanTime, isAttendee } from '../utils/functions';
 import Delay from '../components/Delay'
 import WorkshopApplicationCard from '../components/Widget/WorkshopApplicationCard';
+import {Link} from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -107,6 +108,7 @@ class WorkshopApplicationPage extends React.Component {
                       <StepContent>
                         {this.getStepContent(index)}
                         <Row style={{ justifyContent: 'space-between'}}>
+                            { activeStep == 0 && <Link to="/workshop-uebersicht"><Button>Zur Workshopübersicht</Button></Link>}
                             { activeStep !== 0 && <Button onClick={() => this.setState({ activeStep: activeStep-1})}>Zurück</Button>}
                             <Button
                                 color="primary"

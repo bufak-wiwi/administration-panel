@@ -39,7 +39,7 @@ const navItems = [
 const navAdminItems = [
   { to: '/phasen', name: "Phasen", exact: true, Icon: MdAccessTime},
   { to: '/application', name: "Anmeldungen", exact: false, Icon: MdAssignmentInd},
-  { to: '/workshops', name: "Workshops", exact: false, Icon: MdGroup},
+  { to: '/workshop-list', name: "Workshop-Liste", exact: false, Icon: MdGroup},
 ];
 
 
