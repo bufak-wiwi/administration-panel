@@ -100,13 +100,13 @@ class App extends React.Component {
             />
             <AdministratorRoute
               exact
-              path="/workshops"
+              path="/workshop-list"
               layout={MainLayout}
               component={WorkshopListPage}
             />
             <AdministratorRoute
               exact
-              path="/workshops/new"
+              path="/workshop-list/new"
               layout={MainLayout}
               component={props => (
                 <WorkshopDetailsPage {...props} empty={true} />
@@ -114,7 +114,7 @@ class App extends React.Component {
             />
             <AdministratorRoute
               exact
-              path="/workshops/:id"
+              path="/workshop-list/:id"
               layout={MainLayout}
               component={WorkshopDetailsPage}
             />

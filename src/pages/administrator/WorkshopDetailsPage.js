@@ -127,7 +127,7 @@ class WorkshopDetailsPage extends React.Component {
                 <Row>
                     <Col>
                         <Card>
-                            { ((success && empty ) || redirect) && <Redirect to="/workshops"/>}
+                            { ((success && empty ) || redirect) && <Redirect to="/workshop-list"/>}
                             { !workshop && !error && <CardBody><PageSpinner /></CardBody>}
                             { error && <CardBody><Alert color="danger">Kein Workshop mit dieser ID gefunden</Alert></CardBody>}
                             { workshop && 
