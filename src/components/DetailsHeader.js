@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CardHeader, Button, Row } from 'reactstrap';
+import { CardHeader, Button, Row, Col } from 'reactstrap';
 
 class DetailsHeader extends Component {
 
@@ -25,10 +25,12 @@ class DetailsHeader extends Component {
     render() {
         return (
             <CardHeader>
-                <Row style={{ justifyContent: 'space-between'}}>
-                    { this.props.title ? this.props.title : '' }
-                    { !this.props.onlyTitle && this.renderActions() }
-                </Row>
+                <Col>
+                    <Row style={{ justifyContent: 'space-between'}}>
+                        { this.props.title ? this.props.title : '' }
+                        { !this.props.onlyTitle && this.renderActions() }
+                    </Row>
+                </Col>
             </CardHeader>
         )
     }
