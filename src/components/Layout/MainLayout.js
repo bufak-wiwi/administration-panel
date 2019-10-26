@@ -1,5 +1,6 @@
 import { Content, Footer, Header, Sidebar } from 'components/Layout';
 import React from 'react';
+import { isMobileDevice } from '../../utils/functions';
 
 class MainLayout extends React.Component {
   static isSidebarOpen() {
@@ -8,14 +9,9 @@ class MainLayout extends React.Component {
       .classList.contains('cr-sidebar--open');
   }
 
-  componentWillReceiveProps({ breakpoint }) {
-    if (breakpoint !== this.props.breakpoint) {
-      this.checkBreakpoint(breakpoint);
-    }
-  }
-
   componentDidMount() {
     this.checkBreakpoint(this.props.breakpoint);
+    isMobileDevice() && this.openSidebar('close')
   }
 
   // close sidebar when

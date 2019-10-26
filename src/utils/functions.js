@@ -2,10 +2,11 @@ import store from '../redux/store'
 import _ from 'lodash'
 import {baseURL, apiKey} from '../config/globals'
 import moment from 'moment';
+import {isMobile} from 'react-device-detect';
 require('moment/locale/de.js')
 
 export function isMobileDevice() {
-    return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    return isMobile
 };
 
 export const shouldObjectBeUpdated = (stateObj, propsObj, editing)  => {
@@ -101,10 +102,15 @@ export function isRejected(userForConference, conferenceId) {
 
 //#region WorkshopApplication
 export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
+    console.log(workshopApplication)
     if (!isAttendee(userForConference, conferenceId)) {
         return noAttendee
     } else if (workshopApplication !== [] && workshopApplication.length > 0) {
-        return applied
+        if (workshopApplication.some(x => x.status === "IsAttendee")) {
+            return attendee
+        } else {
+            return applied
+        }
     } else if (!workshopApplicationPhase) {
         return phaseClosed
     } else {
