@@ -60,7 +60,7 @@ class WorkshopListPage extends React.Component {
                             <td>{x.hostName}</td>
                             <td>{moment(x.start).format('dddd HH:mm') + ' Uhr'}</td>
                             <td>{`${x.applicants}/${x.maxVisitors}`}</td>
-                            <td>{x.place || 'kA'}</td>
+                            <td>{x.place || 'tba'}</td>
                             <td>{x.materialNote}</td>
                         </tr>
                     )}

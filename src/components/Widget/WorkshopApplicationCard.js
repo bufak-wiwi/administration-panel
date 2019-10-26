@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WorkshopActions from '../../redux/workshopRedux'
-import { getWorkshopApplicationStatus, applied, unapplied, phaseClosed, noAttendee} from '../../utils/functions'
-import { Card, CardHeader, Alert, CardBody, Button } from 'reactstrap'
+import { getWorkshopApplicationStatus, applied, unapplied, phaseClosed, noAttendee, attendee, toGermanTime, isMobileDevice} from '../../utils/functions'
+import { Card, CardHeader, Alert, CardBody, Button, Table} from 'reactstrap'
 import { MdCheckCircle, MdWatchLater, MdAlarm } from 'react-icons/md';
 import { Redirect } from 'react-router-dom';
 
@@ -28,6 +28,33 @@ class WorkshopApplicationCard extends Component {
               </CardBody>
           </Card>
       )
+  }
+
+  renderAttendeeCard(workshopApplication) {
+
+    return (
+        <div>
+            <CardHeader>Workshopübersicht</CardHeader>
+            <Table size={isMobileDevice() ? "sm" : ""} responsive borderd="true" style={{backgroundColor: 'white'}}>
+                <thead><tr>
+                    <th>Zeitpunkt</th>
+                    <th>Workshop</th>
+                    <th>Raum</th>
+                    <th>Leiter</th>
+                </tr></thead>
+                <tbody>
+                    { [...workshopApplication].sort(x => x.workshop.start).filter(x => x.status === "IsAttendee").map(x => 
+                        <tr key={x.workshop.workshopID} >
+                            <td>{toGermanTime(x.workshop.start)}</td>
+                            <td>{x.workshop.name}</td>
+                            <td>{x.workshop.place || 'tba'}</td>
+                            <td>{x.workshop.hostName}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+        </div>
+    )
   }
 
   renderPhaseClosedCard() {
@@ -75,6 +102,7 @@ class WorkshopApplicationCard extends Component {
 
     switch(status) {
         case noAttendee: return this.renderPhaseClosedCard();
+        case attendee: return this.renderAttendeeCard(workshopApplication);
         case applied: return this.renderAppliedCard();
         case unapplied: return this.renderUnappliedCard();
         case phaseClosed: return this.renderPhaseClosedCard()

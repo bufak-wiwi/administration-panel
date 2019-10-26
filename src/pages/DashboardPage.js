@@ -15,7 +15,7 @@ import {
   MdCheckCircle,
   MdHighlightOff
 } from 'react-icons/md';
-import { getUserStatusForConference, unapplied, applied, attendee, rejected } from '../utils/functions'
+import { getUserStatusForConference, unapplied, applied, attendee, rejected, currentlyBufak } from '../utils/functions'
 import ConferenceActions from '../redux/conferenceRedux'
 import WorkshopApplicationCard from '../components/Widget/WorkshopApplicationCard';
 import UploadInformationCard from '../components/Widget/UploadInformationCard';
@@ -110,15 +110,22 @@ class DashboardPage extends React.Component {
         className="DashboardPage"
         title={conference ? conference.name : 'Startseite'}
       >
+        { currentlyBufak(conference) && 
+          <Row>
+            <Col md="12" xs="12"><WorkshopApplicationCard show={true} /></Col>
+          </Row>
+        }
         <Row>
           <Col md="12" xs="12">
             <UploadInformationCard show={true}/>
           </Col>
         </Row>
-        <Row>
-          <Col md="6" xs="12">{this.renderUserStatusCard()}</Col>
-          <Col md="6" xs="12"><WorkshopApplicationCard show={true} /></Col>
-        </Row>
+        { !currentlyBufak(conference) && 
+          <Row>
+            <Col md="6" xs="12">{this.renderUserStatusCard()}</Col>
+            <Col md="6" xs="12"><WorkshopApplicationCard show={true} /></Col>
+          </Row>
+        }
      </Page>
     );
   }

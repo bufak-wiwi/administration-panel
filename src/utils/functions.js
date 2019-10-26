@@ -100,9 +100,15 @@ export function isRejected(userForConference, conferenceId) {
     return getUserStatusForConference(userForConference, conferenceId) === rejected
 }
 
+export function currentlyBufak(conference) {
+    const currentDay = moment('2019-10-30')
+    const startDay = moment(conference.dateStart)
+    const endDay = moment(conference.dateEnd);
+    return currentDay.isSame(startDay) || currentDay.isSame(endDay) || currentDay.isBetween(startDay, endDay, 'days')
+}
+
 //#region WorkshopApplication
 export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
-    console.log(workshopApplication)
     if (!isAttendee(userForConference, conferenceId)) {
         return noAttendee
     } else if (workshopApplication !== [] && workshopApplication.length > 0) {
