@@ -18,7 +18,8 @@ export function* getWorkshop(params) {
         const { id } = params;
         const workshop = yield call(apiFetch, `workshops/${id}`, 'get');
         if (workshop) {
-            yield put(WorkshopActions.updateWorkshop(workshop))
+            yield put(WorkshopActions.updateWorkshop(workshop.workshop))
+            yield put(WorkshopActions.updateApplicationsForWorkshop(workshop.applications))
         } else {
             yield put(WorkshopActions.updateError(true))
         }

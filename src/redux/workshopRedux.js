@@ -11,6 +11,7 @@ const { Types, Creators } = createActions({
     getWorkshopList: null,
     getWorkshop: ['id'],
     getUsers: null,
+    updateApplicationsForWorkshop: ['applicationsForWorkshop'],
     updateFetching: ['fetching'],
     updateSuccess: ['success'],
     updateError: ['error'],
@@ -30,6 +31,7 @@ export const INITIAL_STATE = Immutable({
     workshopList: [],
     workshopApplication: [],
     workshop: null,
+    applicationsForWorkshop: [],
     users: [],
     error: false,
     fetching: false,
@@ -44,6 +46,10 @@ export const updateWorkshopList = (state, { workshopList }) => {
 
 export const updateWorkshop = (state, { workshop }) => {
   return state.merge({ workshop })
+}
+
+export const updateApplicationsForWorkshop = (state, { applicationsForWorkshop }) => {
+  return state.merge({ applicationsForWorkshop }) 
 }
 
 export const updateUsers = (state, { users }) => {
@@ -71,6 +77,7 @@ export const updateWorkshopApplication = (state, { workshopApplication }) => {
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_WORKSHOP_LIST]: updateWorkshopList,
   [Types.UPDATE_WORKSHOP_APPLICATION]: updateWorkshopApplication,
+  [Types.UPDATE_APPLICATIONS_FOR_WORKSHOP]: updateApplicationsForWorkshop,
   [Types.UPDATE_WORKSHOP]: updateWorkshop,
   [Types.UPDATE_USERS]: updateUsers,
   [Types.UPDATE_ERROR]: updateError,
