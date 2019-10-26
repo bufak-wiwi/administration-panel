@@ -47,10 +47,10 @@ class WorkshopListPage extends React.Component {
                     <th>#</th>
                     <th>Name</th>
                     <th>Leiter</th>
-                    <th>Zeitpunkt</th>     
-                    <th>Max. Teilnehmer</th> 
+                    <th>Zeitpunkt</th>
+                    <th>Teilnehmer</th>    
                     <th>Raum</th> 
-                    <th>Anmerkung (z.B. Material)</th> 
+                    <th>Anmerkung (z.B. Material)</th>
                 </tr></thead>
                 <tbody>
                     { this.getFilteredWorkshopList().map((x, i) => 
@@ -59,7 +59,7 @@ class WorkshopListPage extends React.Component {
                             <td>{x.name}</td>
                             <td>{x.hostName}</td>
                             <td>{moment(x.start).format('dddd HH:mm') + ' Uhr'}</td>
-                            <td>{x.maxVisitors}</td>
+                            <td>{`${x.applicants}/${x.maxVisitors}`}</td>
                             <td>{x.place || 'kA'}</td>
                             <td>{x.materialNote}</td>
                         </tr>
