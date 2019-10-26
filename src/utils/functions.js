@@ -101,7 +101,7 @@ export function isRejected(userForConference, conferenceId) {
 }
 
 export function currentlyBufak(conference) {
-    const currentDay = moment('2019-10-30')
+    const currentDay = moment()
     const startDay = moment(conference.dateStart)
     const endDay = moment(conference.dateEnd);
     return currentDay.isSame(startDay) || currentDay.isSame(endDay) || currentDay.isBetween(startDay, endDay, 'days')
