@@ -31,7 +31,6 @@ class WorkshopApplicationCard extends Component {
   }
 
   renderAttendeeCard(workshopApplication) {
-
     return (
         <div>
             <CardHeader>Workshopübersicht</CardHeader>
@@ -43,7 +42,7 @@ class WorkshopApplicationCard extends Component {
                     <th>Leiter</th>
                 </tr></thead>
                 <tbody>
-                    { [...workshopApplication].sort(x => x.workshop.start).filter(x => x.status === "IsAttendee").map(x => 
+                    { [...workshopApplication].sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1).filter(x => x.status === "IsAttendee").map(x => 
                         <tr key={x.workshop.workshopID} >
                             <td>{toGermanTime(x.workshop.start)}</td>
                             <td>{x.workshop.name}</td>
