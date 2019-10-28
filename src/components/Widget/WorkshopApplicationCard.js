@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import WorkshopActions from '../../redux/workshopRedux'
 import { getWorkshopApplicationStatus, applied, unapplied, phaseClosed, noAttendee, attendee, toGermanTime, isMobileDevice} from '../../utils/functions'
-import { Card, CardHeader, Alert, CardBody, Button, Table} from 'reactstrap'
+import { Card, CardHeader, Alert, CardBody, Button, Table, Row, Col} from 'reactstrap'
 import { MdCheckCircle, MdWatchLater, MdAlarm } from 'react-icons/md';
 import { Redirect } from 'react-router-dom';
+import moment from 'moment';
+require('moment/locale/de.js')
+const ical = require('ical-generator');
 
 class WorkshopApplicationCard extends Component {
   state = {
@@ -30,10 +33,37 @@ class WorkshopApplicationCard extends Component {
       )
   }
 
+  createICal(workshopApplication) {
+    return ical({
+        domain: 'bufak-wiso.de',
+        prodId: {company: 'bufak-wiso', product: 'BuFaK Jena', language: 'DE'},
+        events:  this.getSortedWorkshops(workshopApplication).map(x => ({
+            start: moment(x.workshop.start),
+            end: moment(x.workshop.start).add(x.workshop.duration, 'minutes'),
+            timestamp: moment(x.workshop.start),
+            summary: x.workshop.name,
+            description: x.workshop.overview,
+            location: x.workshop.place || 'tba' , 
+            organizer: x.workshop.hostName + ' <vorstand-fsr.wiwi@uni-jena.de>'
+        }))
+    }).toURL();
+  }
+
+  getSortedWorkshops(workshopApplication) {
+    return [...workshopApplication].sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1).filter(x => x.status === "IsAttendee")
+  }
+
   renderAttendeeCard(workshopApplication) {
     return (
         <div>
-            <CardHeader>Workshopübersicht</CardHeader>
+            <CardHeader>
+                <Col>
+                    <Row style={{justifyContent: 'space-between'}}>
+                        <div>Workshopübersicht</div>             
+                        <a href={this.createICal(workshopApplication)}><Button>Kalender exportieren</Button></a>
+                    </Row>
+                </Col>
+            </CardHeader>
             <Table size={isMobileDevice() ? "sm" : ""} responsive borderd="true" style={{backgroundColor: 'white'}}>
                 <thead><tr>
                     <th>Zeitpunkt</th>
@@ -42,7 +72,7 @@ class WorkshopApplicationCard extends Component {
                     <th>Leiter</th>
                 </tr></thead>
                 <tbody>
-                    { [...workshopApplication].sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1).filter(x => x.status === "IsAttendee").map(x => 
+                    { this.getSortedWorkshops(workshopApplication).map(x => 
                         <tr key={x.workshop.workshopID} >
                             <td>{toGermanTime(x.workshop.start)}</td>
                             <td>{x.workshop.name}</td>
