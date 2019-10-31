@@ -72,13 +72,13 @@ class WorkshopListPage extends React.Component {
     getFilteredWorkshopList() {
         const search = this.state.search.toLowerCase().trim()
         return this.props.workshopList
-            .filter(x => x.start.includes(this.state.selectedStart))
-            .filter(x => x.name.includes(search)
-                || x.nameShort.includes(search)
-                || x.hostName.includes(search)
-                || x.place.includes(search)
-                || x.maxVisitors.toString().includes(search)
-                || x.materialNote.includes(search)
+            .filter(x => x.start.toLowerCase().includes(this.state.selectedStart))
+            .filter(x => (x.name && x.name.toLowerCase().includes(search))
+                || (x.nameShort && x.nameShort.toLowerCase().includes(search))
+                || (x.hostName && x.hostName.toLowerCase().includes(search))
+                || (x.place && x.place.toLowerCase().includes(search))
+                || (x.maxVisitors && x.maxVisitors.toString().includes(search))
+                || (x.materialNote && x.materialNote.toLowerCase().includes(search))
             )
     }
 
@@ -108,7 +108,7 @@ class WorkshopListPage extends React.Component {
                                             onChange={e => this.setState({ selectedStart: e.target.value })}
                                             >
                                                 <option value=''>Jeder Zeitpunkt</option>
-                                                { [...new Set(workshopList.map(x => x.start))].map(x => 
+                                                { [...new Set(workshopList.map(x => x.start))].sort().map(x => 
                                                     <option key={x} value={x}>{moment(x).format('dddd HH:mm') + ' Uhr'}</option>
                                                 )}
                                         </Input>
