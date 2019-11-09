@@ -107,6 +107,61 @@ export function* putUser(params){
   }
 }
 
+export function* changeEmail(action) {
+  try {
+    yield put(AuthActions.updateError(false))
+    yield put(AuthActions.updateSuccess(false))
+    yield put(AuthActions.updateFetching(true))
+
+    const { newEmail, oldPassword } = action;
+    const user = yield select(state => state.auth.user)
+    const result = yield call(apiFetch, 'Users/newemail', 'put', {
+      uid: user.uid,
+      newEmail,
+      password: oldPassword,
+      oldEmail: user.email
+    })
+    if (result) {
+      yield put(AuthActions.updateUser({...user, email: newEmail}))
+      yield put(AuthActions.updateSuccess(true))
+    } else {
+      yield put(AuthActions.updateError(true))
+    }
+    yield put(AuthActions.updateFetching(false))
+  } catch (e) {
+    console.log('Email Change:', e)
+    yield put(AuthActions.updateError(true))
+    yield put(AuthActions.updateFetching(false))
+  }
+}
+
+export function* changePassword(action) {
+  try {
+    yield put(AuthActions.updateError(false))
+    yield put(AuthActions.updateSuccess(false))
+    yield put(AuthActions.updateFetching(true))
+
+    const { newPassword, oldPassword } = action;
+    const user = yield select(state => state.auth.user)
+    const result = yield call(apiFetch, 'Users/passwordchange', 'put', {
+      uid: user.uid,
+      newPassword,
+      oldPassword,
+      email: user.email
+    })
+    if (result) {
+      yield put(AuthActions.updateSuccess(true))
+    } else {
+      yield put(AuthActions.updateError(true))
+    }
+    yield put(AuthActions.updateFetching(false))
+  } catch (e) {
+    console.log('Password Change:', e)
+    yield put(AuthActions.updateError(true))
+    yield put(AuthActions.updateFetching(false))
+  }
+}
+
 export function* logout(action) {
   try {
     localStorage.clear()
