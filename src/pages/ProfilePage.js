@@ -9,6 +9,7 @@ import CouncilActions from '../redux/councilRedux';
 import DetailsHeader from '../components/DetailsHeader';
 import DetailsBody from '../components/DetailsBody';
 import { shouldObjectBeUpdated } from '../utils/functions';
+import ResetForm from '../components/ResetForm';
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -119,6 +120,7 @@ class ProfilePage extends React.Component {
           onChange={(id, value) => this.setState({ user: {...user, [id]: value}})}
           properties={this.state.properties}
         />
+        <ResetForm show={editing} />
         </Card>
      </Page>
     );

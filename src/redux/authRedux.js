@@ -14,10 +14,13 @@ const { Types, Creators } = createActions({
   updateUserForConference: ['userForConference'],
   login: ['email', 'password', 'remeberMe'],
   updateError: ['error'],
+  updateSuccess: ['success'],
   logout: ['history'],
   rehydrateState: null,
   resetAuthState: null,
   resetPassword: ['email'],
+  changeEmail: ['newEmail','oldPassword'],
+  changePassword: ['oldPassword', 'newPassword'],
 })
 
 export const AuthTypes = Types
@@ -31,7 +34,8 @@ export const INITIAL_STATE = Immutable({
     isSuperAdmin: false,
     userForConference: [],
     fetching: false,
-    error: false
+    error: false,
+    success: false
   })
 
 /* ------------- Reducers ------------- */
@@ -53,6 +57,9 @@ export const updateError = (state, { error }) => {
   return state.merge({ error })
 }
 
+export const updateSuccess = (state, { success }) =>
+  state.merge({ success })
+
 export const resetAuthState = () => 
   INITIAL_STATE
 
@@ -65,4 +72,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_USER_FOR_CONFERENCE]: updateUserForConference,
   [Types.UPDATE_FETCHING]: updateFetching,
   [Types.UPDATE_ERROR]: updateError,
+  [Types.UPDATE_SUCCESS]: updateSuccess,
 })
