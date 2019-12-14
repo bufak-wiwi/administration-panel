@@ -39,6 +39,8 @@ export async function apiFetch(path, method, body) {
             if (!res.ok) {
                 if (res.status === 401 || res.status === 418) {
                     store.dispatch({ type: 'LOGOUT'})
+                } else if (res.status > 500 && res.status < 600){
+                    store.dispatch({ type:'UPDATE_SERVER_ERROR',serverError:true})
                 }
                 return false
             }

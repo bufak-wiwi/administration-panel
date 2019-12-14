@@ -10,6 +10,7 @@ import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
 import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
+import { Alert } from 'reactstrap';
 
 import DashboardPage from './pages/DashboardPage';
 import ApplicationPage from './pages/ApplicationPage';
@@ -35,8 +36,13 @@ class App extends React.Component {
       this.props.rehydrateState();
     }
   }
+  
   render() {
     return (
+      <div>
+      {true && <Alert color="danger" style={{position:"absolute",width: "100%",textAlign:"center"}}>
+        Uff, da ist ein Fehler aufgetreten. Bitte versuche es gleich nochmal oder wende dich an die <a href = {"mailto:"+process.env.REACT_APP_ADMIN_MAIL}>Admins</a>
+      </Alert>}
       <BrowserRouter basename={getBasename()}>
         <GAListener>
           <Switch>
@@ -134,6 +140,7 @@ class App extends React.Component {
           </Switch>
         </GAListener>
       </BrowserRouter>
+      </div>
     );
   }
 }
@@ -166,6 +173,7 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     conferenceId: state.conference.conferenceId,
+    serverError: state.auth.serverError
   }
 }
 
