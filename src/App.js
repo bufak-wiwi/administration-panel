@@ -40,7 +40,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-      {true && <Alert color="danger" style={{position:"absolute",width: "100%",textAlign:"center"}}>
+      {this.props.serverError && <Alert color="danger" style={{position:"absolute",width: "100%",textAlign:"center"}}>
         Uff, da ist ein Fehler aufgetreten. Bitte versuche es gleich nochmal oder wende dich an die <a href = {"mailto:"+process.env.REACT_APP_ADMIN_MAIL}>Admins</a>
       </Alert>}
       <BrowserRouter basename={getBasename()}>
