@@ -21,6 +21,7 @@ const { Types, Creators } = createActions({
   resetPassword: ['email'],
   changeEmail: ['newEmail','oldPassword'],
   changePassword: ['oldPassword', 'newPassword'],
+  updateServerError: ['serverError']
 })
 
 export const AuthTypes = Types
@@ -35,7 +36,8 @@ export const INITIAL_STATE = Immutable({
     userForConference: [],
     fetching: false,
     error: false,
-    success: false
+    success: false,
+    serverError:false
   })
 
 /* ------------- Reducers ------------- */
@@ -62,6 +64,9 @@ export const updateSuccess = (state, { success }) =>
 
 export const resetAuthState = () => 
   INITIAL_STATE
+  
+export const updateServerError = (state, { serverError }) =>
+  state.merge({ serverError })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -73,4 +78,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_FETCHING]: updateFetching,
   [Types.UPDATE_ERROR]: updateError,
   [Types.UPDATE_SUCCESS]: updateSuccess,
+  [Types.UPDATE_SERVER_ERROR]: updateServerError,
 })
