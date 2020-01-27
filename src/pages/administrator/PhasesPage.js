@@ -16,6 +16,7 @@ import PageSpinner from '../../components/PageSpinner';
 import ConferenceActions from '../../redux/conferenceRedux';
 
 const phases = [
+    { name: 'Workschopvorschlag einreichen', id: 'workshopSuggestionPhase'},
     { name: 'Anmeldung zur Konferenz', id:'conferenceApplicationPhase'},
     { name: 'Workshop-Anmeldung', id: 'workshopApplicationPhase'}
 ]
@@ -77,7 +78,7 @@ class DashboardPage extends React.Component {
         <PageSpinner color="primary" />
       );
     }
-
+    
     return (
       <Page
         className="PhasesPage"
