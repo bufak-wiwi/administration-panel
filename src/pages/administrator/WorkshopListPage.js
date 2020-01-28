@@ -72,7 +72,7 @@ class WorkshopListPage extends React.Component {
     getFilteredWorkshopList() {
         const search = this.state.search.toLowerCase().trim()
         return this.props.workshopList
-            .filter(x => x.start.toLowerCase().includes(this.state.selectedStart))
+            .filter(x => x.start.includes(this.state.selectedStart))
             .filter(x => (x.name && x.name.toLowerCase().includes(search))
                 || (x.nameShort && x.nameShort.toLowerCase().includes(search))
                 || (x.hostName && x.hostName.toLowerCase().includes(search))
