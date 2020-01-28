@@ -18,6 +18,7 @@ import ProfilePage from './pages/ProfilePage';
 import DataProtectionPage from './pages/DataProtectionPage'
 import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
 import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
+import WorkshopSuggestionPage from './pages/WorkshopSuggestionPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -91,6 +92,12 @@ class App extends React.Component {
               path="/workshop"
               layout={MainLayout}
               component={WorkshopApplicationPage}
+            />
+            <PrivateRoute
+              exact
+              path="/ws-einreichen"
+              layout={MainLayout}
+              component={WorkshopSuggestionPage}
             />
             <PrivateRoute
               exact
