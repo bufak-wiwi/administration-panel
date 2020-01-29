@@ -1,4 +1,4 @@
-import store from '../redux/store'
+import {store} from '../redux/store'
 import _ from 'lodash'
 import {baseURL, apiKey} from '../config/globals'
 import moment from 'moment';

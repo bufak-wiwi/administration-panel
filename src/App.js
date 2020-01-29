@@ -30,12 +30,12 @@ const getBasename = () => {
 };
 
 class App extends React.Component {
-  componentWillMount() {
-    const sessionstore = JSON.parse(sessionStorage.getItem('data'))
-    if (!this.props.auth.user && sessionstore && sessionstore.user) {
-      this.props.rehydrateState();
-    }
-  }
+  // componentWillMount() {
+  //   const sessionstore = JSON.parse(sessionStorage.getItem('data'))
+  //   if (!this.props.auth.user && sessionstore && sessionstore.user) {
+  //     this.props.rehydrateState();
+  //   }
+  // }
   
   render() {
     return (

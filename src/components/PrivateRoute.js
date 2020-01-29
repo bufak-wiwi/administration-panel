@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import LayoutRoute from './Layout/LayoutRoute'
-import store from '../redux/store'
+import {store} from '../redux/store'
 import PageSpinner from './PageSpinner';
 import MissingPermissions from './MissingPermissions'
 
