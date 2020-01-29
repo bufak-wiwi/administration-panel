@@ -73,6 +73,8 @@ export function* updatePhases(action) {
             const result = yield call(apiFetch, `Conferences/phases/${conferenceId}`, 'put', data)
             if (!result) {
                 yield put(ConferenceActions.updateConferenceError(true))
+            } else {
+                yield put(ConferenceActions.updateConference(result))
             }
             // stop loading
             yield put(ConferenceActions.updateConferenceFetching(true))
