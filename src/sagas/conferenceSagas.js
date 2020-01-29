@@ -173,3 +173,14 @@ export function* getUsers() {
         console.log('GetUser', e)
     }
 }
+
+export function* generateAuthenticationKeys(action) {
+    try {
+        const { otherKeysCount } = action
+        console.log("Starting to fetch", otherKeysCount)
+        const result = yield call(apiFetch, 'ApplicationAuths/generate', 'PUT', {otherKeysCount})
+        console.log("result", result)
+    } catch(e) {
+        console.log('Error generating Authentication Keys', e)
+    }
+}

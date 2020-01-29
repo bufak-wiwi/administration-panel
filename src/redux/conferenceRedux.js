@@ -21,6 +21,7 @@ const { Types, Creators } = createActions({
   updateApplication: ['application'],
   uploadApplication: ['application'],
   updatePassword: ['password'],
+  generateAuthenticationKeys: ['otherKeysCount'],
 })
 
 export const ConferenceTypes = Types

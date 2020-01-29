@@ -5,11 +5,13 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardTitle,
   Row,
   Col,
   FormGroup,
   Label,
   Input,
+  Alert,
   Button,
 } from 'reactstrap'
 import PageSpinner from '../../components/PageSpinner';
@@ -30,6 +32,7 @@ class DashboardPage extends React.Component {
             conferenceApplicationPhase: false,
             workshopApplicationPhase: false,
             workshopSuggestionPhase: false,
+            otherKeys: 50,
         }
     }
 
@@ -119,6 +122,28 @@ class DashboardPage extends React.Component {
 
                     </CardBody>
                 </Card>
+                <Card style={{marginTop: 10}}>
+                    <CardHeader>
+                        <CardTitle>
+                            Anmeldecodes
+                        </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                         <Alert color="info">Hier könnt ihr eure Anmeldecodes erstellen und herunterladen. Zu den Weiteren Codes zählen Alumni, Rat und mögliche Helfer-Anmeldungen.<br/><b>Da die Codes nur einmal erstellt werden können, gebt besser ein paar Codes mehr an als nötig.</b></Alert>
+                        <Row>
+                            <Col xs={12} md={2}>
+                                <Input 
+                                    type="number"
+                                    value={this.state.otherKeys}
+                                    onChange={(e) => this.setState({ otherKeys: e.currentTarget.value})}
+                                />
+                            </Col>
+                            <Col>
+                                <Button onClick={() => this.props.generateAuthenticationKeys(this.state.otherKeys)}>Erstellen</Button>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
             </Col>
         </Row>
      </Page>
@@ -134,7 +159,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updatePhases: (data) => dispatch(ConferenceActions.updatePhases(data))
+    updatePhases: (data) => dispatch(ConferenceActions.updatePhases(data)),
+    generateAuthenticationKeys: (otherKeysCount) => dispatch(ConferenceActions.generateAuthenticationKeys(otherKeysCount)),
   }
 }
 
