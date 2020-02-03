@@ -5,6 +5,7 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   updateConferenceList: ['conferenceList'],
+  getConferenceList: null,
   updateConferenceId: ['conferenceId'],
   updateConferenceError: ['error'],
   updateConference: ['conference'],

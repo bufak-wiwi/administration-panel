@@ -9,7 +9,7 @@ import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
-import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
+import { PrivateRoute, AdministratorRoute, SuperAdminRoute } from './components/PrivateRoute'
 import { Alert } from 'reactstrap';
 
 import DashboardPage from './pages/DashboardPage';
@@ -25,6 +25,9 @@ import ApplicationListPage from './pages/administrator/ApplicationListPage';
 import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
 import WorkshopListPage from './pages/administrator/WorkshopListPage';
 import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
+
+//SuperAdmin
+import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -142,6 +145,12 @@ class App extends React.Component {
               path="/application/:uid"
               layout={MainLayout}
               component={ApplicationDetailsPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/conference/"
+              layout={MainLayout}
+              component={ConferenceListPage}
             />
             <Redirect to="/" />
           </Switch>
