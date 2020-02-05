@@ -6,7 +6,7 @@ import {
   MdAssignment,
   MdKeyboardArrowDown,
   MdSettings,
-  MdAccessTime,
+  MdReport,
   MdAssignmentInd,
   MdPerson,
   MdGroup,
@@ -39,7 +39,7 @@ const navItems = [
 ];
 
 const navAdminItems = [
-  { to: '/phasen', name: "Phasen", exact: true, Icon: MdAccessTime},
+  { to: '/phasen', name: "Einstellungen", exact: true, Icon: MdSettings},
   { to: '/application', name: "Anmeldungen", exact: false, Icon: MdAssignmentInd},
   { to: '/workshop-list', name: "Workshop-Liste", exact: false, Icon: MdGroup},
 ];
@@ -98,7 +98,7 @@ class Sidebar extends React.Component {
                   >
                     <BSNavLink className={bem.e('nav-item-collapse')}>
                       <div className="d-flex">
-                        <MdSettings className={bem.e('nav-item-icon')} />
+                        <MdReport className={bem.e('nav-item-icon')} />
                         <span className=" align-self-start">Ausrichter</span>
                       </div>
                       <MdKeyboardArrowDown

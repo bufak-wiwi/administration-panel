@@ -27,6 +27,8 @@ import {
   getApplication,
   uploadApplication,
   checkPassword,
+  generateAuthenticationKeys,
+  getPasswordList,
 } from './conferenceSagas'
 import { getCouncil, getCouncilList } from './councilSagas'
 import { 
@@ -63,6 +65,8 @@ export default function * root () {
     takeEvery(ConferenceTypes.GET_APPLICATION, getApplication),
     takeEvery(ConferenceTypes.UPLOAD_APPLICATION, uploadApplication), 
     takeEvery(ConferenceTypes.CHECK_PASSWORD, checkPassword),
+    takeLatest(ConferenceTypes.GENERATE_AUTHENTICATION_KEYS, generateAuthenticationKeys),
+    takeLatest(ConferenceTypes.GET_PASSWORD_LIST, getPasswordList),
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),

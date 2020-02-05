@@ -173,3 +173,24 @@ export function* getUsers() {
         console.log('GetUser', e)
     }
 }
+
+export function* generateAuthenticationKeys(action) {
+    try {
+        const { otherKeysCount } = action
+        yield call(apiFetch, 'ApplicationAuths/generate', 'PUT', {otherKeysCount})
+        yield call(getPasswordList)
+    } catch(e) {
+        console.log('Error generating Authentication Keys', e)
+    }
+}
+
+export function* getPasswordList() {
+    try {
+        const result = yield call(apiFetch, 'ApplicationAuths/forConference')
+        if (result) {
+            yield put(ConferenceActions.updatePasswordList(result))
+        }
+    } catch (e) {
+        console.log('Error getting Passwordlist', e)
+    }
+}
