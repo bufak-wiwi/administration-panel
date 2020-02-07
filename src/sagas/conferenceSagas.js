@@ -11,13 +11,27 @@ export function* getConference() {
         const { token } = yield select(state => state.auth)
         if (conferenceId && token ) {
             const conference = yield call(apiFetch, `conferences/${conferenceId}`, 'get')
-            yield put(ConferenceActions.updateConference(conference))
+            yield put(ConferenceActions.updateConference(parseAddFields(conference)))
             yield put(ConferenceActions.updateConferenceFetching(false))
         }
     } catch(e) {
         yield put(ConferenceActions.updateConferenceFetching(false))
         yield put(ConferenceActions.updateConferenceError(true))
         console.log('GetConference', e)
+    }
+}
+
+/**
+ * parses the addFields property as JSON and concacts all data to the conference
+ * @param {*} conference the conference
+ */
+function parseAddFields(conference) {
+    try {
+        const addFields = JSON.parse(conference.addFields)
+        return {...addFields, ...conference}
+    } catch (e) {
+        console.log("Error parsing addFields", e)
+        return conference
     }
 }
 
