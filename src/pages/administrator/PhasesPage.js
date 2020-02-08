@@ -82,22 +82,37 @@ class DashboardPage extends React.Component {
     }
 
     getCouncilPasswords(passwordList){
-        var result = [["Passwort", "Priorität", "Fachschafts-ID", "Name", "Stadt", "Hochschule", "Bundesland", "Adresse", "E-Mail-Adresse", "Passwort-ID"]]
-        passwordList.forEach(row => {
-            if (row.council) {
+        var result = [["Fachschafts-ID", "Name", "Stadt", "PLZ", "Hochschule", "Bundesland", "Adresse", "E-Mail-Adresse", "Prio 1", "Prio 2", "Prio 3", "Prio 4", "Prio 5", "Prio 6"]]
+        var councils = {}
+        passwordList.filter(x => x.council != null).forEach(row => {
+            const councilID = row.council.councilID
+            if (councils[councilID]) {
+                councils[councilID].push(row)
+            } else {
+                councils[councilID] = [row]
+            }
+        })
+
+        Object.values(councils).forEach(council => {
+            council = council.sort((a, b) => a.prio < b.prio ? -1 : 1)
+            if (council.length > 5) {
                 result.push([
-                    row.password,
-                    row.priority,
-                    row.council.councilID,
-                    row.council.name,
-                    row.council.city,
-                    row.council.university,
-                    row.council.state,
-                    row.council.address,
-                    row.council.contactEmail,
-                    row.id,
+                    council[0].council.councilID,
+                    council[0].council.name,
+                    council[0].council.city.split(';')[0],
+                    council[0].council.city.split(';')[1],
+                    council[0].council.university,
+                    council[0].council.state,
+                    council[0].council.address,
+                    council[0].council.contactEmail,
+                    council[0].password,
+                    council[1].password,
+                    council[2].password,
+                    council[3].password,
+                    council[4].password,
+                    council[5].password,
                 ])
-            } 
+            }
         })
         return result
     }
@@ -219,7 +234,7 @@ class DashboardPage extends React.Component {
                                             />
                                         </Col>
                                         <Col>
-                                            <Button onClick={() => this.props.generateAuthenticationKeys(this.state.otherKeys)}></Button>
+                                            <Button onClick={() => this.props.generateAuthenticationKeys(this.state.otherKeys)}>Passwörter erzeugen</Button>
                                         </Col>
                                     </Row>
                                 </div>                            
