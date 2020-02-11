@@ -16,9 +16,12 @@ import {
 } from 'reactstrap'
 import PageSpinner from '../../components/PageSpinner';
 import ConferenceActions from '../../redux/conferenceRedux';
+import CouncilActions from '../../redux/councilRedux';
+import WorkshopActions from '../../redux/workshopRedux';
 import { CSVLink } from "react-csv";
 import Delay from '../../components/Delay';
 import { FaDownload } from 'react-icons/fa';
+import { getPriorityOrType, getStatus, getType} from '../../utils/functions'
 
 const phases = [
     { name: 'Workshopvorschlag einreichen', id: 'workshopSuggestionPhase'},
@@ -41,6 +44,10 @@ class DashboardPage extends React.Component {
 
     componentDidMount() {
         this.props.getPasswordList();
+        this.props.getApplicationList();
+        this.props.getCouncilList();
+        this.props.getWorkshopList();
+        this.props.getBadgeList();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -130,9 +137,88 @@ class DashboardPage extends React.Component {
         return result
     }
 
+    getApplications(applicationList) {
+        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
+        applicationList.forEach(x => {
+            result.push([
+                x.timestamp,
+                getStatus(x),
+                getPriorityOrType(x),
+                x.user.name,
+                x.user.surname,
+                x.user.sex,
+                x.user.birthday,
+                x.user.email,
+                x.sensible.telephone || "",
+                x.sensible.extraNote,
+                x.sensible.sleepingPreferences,
+                x.sensible.buFaKCount,
+                this.getCouncilName(x.user.councilID),
+                this.getCouncilUniversity(x.user.councilID),
+                x.hotel,
+                x.room
+            ])
+        })
+        return result
+    }
+
+    getWorkshops(workshopList) {
+        var result = [["Uhrzeit", "Name", "Workshopleiter", "Raum", "Beschreibung", "Anmerkung", "max. Teilnehmer", "Teilnehmer", "WorkshopID"]]
+        workshopList.forEach(x => {
+            result.push([
+                x.start,
+                x.name,
+                x.hostName,
+                x.place,
+                x.overview,
+                x.materialNote,
+                x.maxVisitors,
+                x.applicants,
+                x.workshopID
+            ])
+        })
+        return result
+    }
+
+    getBadges(badgeList) {
+        if (badgeList.length === 0) {
+            return []
+        }
+
+        var workshops = []
+        for(var i = 1; i <= badgeList[0].workshops.length; i++) {
+            workshops.push(`WS_${i}`)
+            workshops.push(`Raum_WS_${i}`)
+        }
+
+        var result = [["Name", "Nachname", "Fachschaft", "Universität", "Status", "FachschaftsID", "userID", ...workshops]]
+        badgeList.forEach(x => {
+            result.push([
+                x.name,
+                x.surname,
+                x.councilName,
+                x.university,
+                getType(x),
+                x.councilID,
+                x.uid,
+                ...x.workshops.map(x => [x.name, x.place]).flat(1)
+            ])
+        })
+        return result;
+    }
+
+    getCouncilName(councilId) {
+        const council = this.props.councilList.find(x => x.councilID === councilId)
+        return council ? council.name : councilId
+    }
+
+    getCouncilUniversity(councilId) {
+        const council = this.props.councilList.find(x => x.councilID === councilId)
+        return council ? council.university : 'unbekannt'
+    }
   render() {
-    const { conference, passwordList } = this.props
-    if (!conference) {
+    const { conference, passwordList, applicationList, councilList, workshopList, badgeList } = this.props
+    if (!conference || !applicationList || !councilList || !workshopList || !badgeList) {
       return (
         <PageSpinner color="primary" />
       );
@@ -144,7 +230,7 @@ class DashboardPage extends React.Component {
         title="Konferenz-Einstellungen"
       >
         <Row>
-            <Col xs="12">
+            <Col xs="12" md="6">
                 <Card>
                     <CardHeader>
                         <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
@@ -181,6 +267,53 @@ class DashboardPage extends React.Component {
                 <Card style={{marginTop: 10}}>
                     <CardHeader>
                         <CardTitle>
+                            Export
+                        </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Alert color="success">Ladet hier alle eure Anmeldungen, eure aktuellen Workshops oder die Daten für die Teilnehmerbadges als CSV herunter.</Alert>
+                        <Row>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getApplications(applicationList)}
+                                    filename={"Anmeldungen.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Anmeldungen
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getWorkshops(workshopList)}
+                                    filename={"Workshops.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Workshopliste
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getBadges(badgeList)}
+                                    filename={"badges.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Teilnehmerbadges
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </Col>
+            <Col xs="12" md="6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>
                             Anmeldecodes
                         </CardTitle>
                     </CardHeader>
@@ -205,16 +338,17 @@ class DashboardPage extends React.Component {
                                                 filename={"FachschaftsPasswörter.csv"}
                                                 style={{marginRight: 10}}
                                             >
-                                                <Button>
+                                                <Button block>
                                                     <FaDownload /> Fachschafts Passwörter
                                                 </Button>
                                             </CSVLink>
+                                            </Col><Col>
                                             <CSVLink 
                                                 data={this.getOtherPasswords(passwordList)}
                                                 filename={"WeiterePasswörter.csv"}
                                                 style={{marginRight: 10}}
                                             >
-                                                <Button>
+                                                <Button block>
                                                     <FaDownload /> Weitere Passwörter
                                                 </Button>
                                             </CSVLink>
@@ -253,6 +387,10 @@ const mapStateToProps = (state) => {
   return {
     conference: state.conference.conference,
     passwordList: state.conference.passwordList,
+    applicationList: state.conference.applicationList,
+    councilList: state.council.councilList,
+    workshopList: state.workshop.workshopList,
+    badgeList: state.conference.badgeList,
   }
 }
 
@@ -261,6 +399,10 @@ const mapDispatchToProps = (dispatch) => {
     updatePhases: (data) => dispatch(ConferenceActions.updatePhases(data)),
     generateAuthenticationKeys: (otherKeysCount) => dispatch(ConferenceActions.generateAuthenticationKeys(otherKeysCount)),
     getPasswordList: () => dispatch(ConferenceActions.getPasswordList()),
+    getApplicationList: () => dispatch(ConferenceActions.getApplicationList()),
+    getCouncilList: () => dispatch(CouncilActions.getCouncilList()),
+    getWorkshopList: () => dispatch(WorkshopActions.getWorkshopList()),
+    getBadgeList: () => dispatch(ConferenceActions.getBadgeList()),
   }
 }
 

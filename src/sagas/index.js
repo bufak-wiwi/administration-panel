@@ -29,6 +29,7 @@ import {
   checkPassword,
   generateAuthenticationKeys,
   getPasswordList,
+  getBadgeList,
 } from './conferenceSagas'
 import { getCouncil, getCouncilList } from './councilSagas'
 import { 
@@ -67,6 +68,7 @@ export default function * root () {
     takeEvery(ConferenceTypes.CHECK_PASSWORD, checkPassword),
     takeLatest(ConferenceTypes.GENERATE_AUTHENTICATION_KEYS, generateAuthenticationKeys),
     takeLatest(ConferenceTypes.GET_PASSWORD_LIST, getPasswordList),
+    takeLatest(ConferenceTypes.GET_BADGE_LIST, getBadgeList),
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),

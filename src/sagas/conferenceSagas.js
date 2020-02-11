@@ -208,3 +208,14 @@ export function* getPasswordList() {
         console.log('Error getting Passwordlist', e)
     }
 }
+
+export function* getBadgeList() {
+    try {
+        const result = yield call(apiFetch, 'Export/badges')
+        if (result) {
+            yield put(ConferenceActions.updateBadgeList(result))
+        }
+    } catch(e) {
+        console.log("Error downloading Badges", e)
+    }
+}
