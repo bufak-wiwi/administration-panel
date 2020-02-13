@@ -47,8 +47,8 @@ class DashboardPage extends React.Component {
       <Card>
         <CardHeader>Du hast dich nicht angemeldet</CardHeader>
         <CardBody>
-          { (!conference || !conference.conferenceApplicationPhase) && 'Keine Laufende Anmelde Phase.'}
-          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">konferenz.bufak-wiso.de/anmeldung</Link></Alert>}
+          { (!conference || !conference.conferenceApplicationPhase) && 'Keine laufende Anmeldephase.'}
+          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">konfetti.bufak-wiso.de/anmeldung</Link></Alert>}
         </CardBody>
       </Card>
     )
@@ -117,7 +117,7 @@ class DashboardPage extends React.Component {
         }
         <Row>
           <Col md="12" xs="12">
-            <UploadInformationCard show={false}/>
+            <UploadInformationCard show={true}/>
           </Col>
         </Row>
         { !currentlyBufak(conference) && 

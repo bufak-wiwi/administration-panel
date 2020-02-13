@@ -6,10 +6,11 @@ import {
   MdAssignment,
   MdKeyboardArrowDown,
   MdSettings,
-  MdAccessTime,
+  MdReport,
   MdAssignmentInd,
   MdPerson,
   MdGroup,
+  MdRecordVoiceOver,
   MdSpeakerNotes,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
@@ -32,12 +33,13 @@ const sidebarBackground = {
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
+  { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},
   { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
   { to: '/profile', name: 'Profil', exact: true, Icon: MdPerson},
 ];
 
 const navAdminItems = [
-  { to: '/phasen', name: "Phasen", exact: true, Icon: MdAccessTime},
+  { to: '/phasen', name: "Einstellungen", exact: true, Icon: MdSettings},
   { to: '/application', name: "Anmeldungen", exact: false, Icon: MdAssignmentInd},
   { to: '/workshop-list', name: "Workshop-Liste", exact: false, Icon: MdGroup},
 ];
@@ -96,7 +98,7 @@ class Sidebar extends React.Component {
                   >
                     <BSNavLink className={bem.e('nav-item-collapse')}>
                       <div className="d-flex">
-                        <MdSettings className={bem.e('nav-item-icon')} />
+                        <MdReport className={bem.e('nav-item-icon')} />
                         <span className=" align-self-start">Ausrichter</span>
                       </div>
                       <MdKeyboardArrowDown

@@ -109,6 +109,58 @@ export function currentlyBufak(conference) {
     return currentDay.isSame(startDay) || currentDay.isSame(endDay) || currentDay.isBetween(startDay, endDay, 'days')
 }
 
+
+/**
+ * In a normal application the priority is returned, whereas in an special application the group is returned
+ * @param {*} application the application
+ */
+export function getPriorityOrType(application) {
+    if (application.isAlumnus) {
+        return 'Alumnus'
+    }
+    if (application.isHelper) {
+        return 'Helfer'
+    }
+    if (application.isBuFaKCouncil) {
+        return 'BuFaK Rat'
+    }
+    return application.priority
+}
+
+/**
+ * Returns the type of an applicant in natural language
+ * @param {*} application the application
+ */
+export function getType(application) {
+    if (application.isAlumnus) {
+        return 'Alumnus'
+    }
+    if (application.isHelper) {
+        return 'Helfer'
+    }
+    if (application.isBuFaKCouncil) {
+        return 'BuFaK Rat'
+    }
+    return 'Teilnehmer'
+}
+
+/**
+ * Returns the status of the application in natural language
+ * @param {*} application the application
+ */
+export function getStatus(application) {
+   switch(application.status) {
+       case 'HasApplied':
+           return 'ausstehend'
+        case 'IsRejected':
+            return 'abgelehnt'
+        case 'IsAttendee':
+            return 'angenommen'
+        default:
+            return 'unbekannt'
+   } 
+}
+
 //#region WorkshopApplication
 export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
     if (!isAttendee(userForConference, conferenceId)) {
