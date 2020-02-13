@@ -23,7 +23,7 @@ class WorkshopApplicationCard extends Component {
   renderAppliedCard() {
       return (
           <Card>
-              <CardHeader>Workshop Anmeldung</CardHeader>
+              <CardHeader>Workshopanmeldung</CardHeader>
               <CardBody>
                   <Alert color="success">
                       <MdCheckCircle size={30}/> Deine Anmeldung wurde erfolgreich abgeschickt.
@@ -89,10 +89,10 @@ class WorkshopApplicationCard extends Component {
   renderPhaseClosedCard() {
     return (
         <Card>
-            <CardHeader>Workshop Anmeldung</CardHeader>
+            <CardHeader>Workshopanmeldung</CardHeader>
             <CardBody>
                 <Alert color="danger">
-                    <MdWatchLater size={30}/> Keine laufende Workshop Anmeldung.
+                    <MdWatchLater size={30}/> Keine laufende Workshopanmeldung.
                 </Alert>
             </CardBody>
         </Card>
@@ -102,7 +102,7 @@ class WorkshopApplicationCard extends Component {
   renderUnappliedCard() {
     return (
         <Card>
-            <CardHeader >Workshop Anmeldung</CardHeader>
+            <CardHeader >Workshopanmeldung</CardHeader>
             <CardBody>
                 <Alert color="info">
                     <MdAlarm size={30}/> Du hast dich noch nicht für deine Workshops angemeldet.
