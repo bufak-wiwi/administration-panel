@@ -59,6 +59,11 @@ class AuthForm extends React.Component {
     this.props.onChangeAuthState(authState);
   };
 
+  validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
   handleSubmit = event => {
     event.preventDefault();
     if(this.isLogin){ this.props.login(this.state.email, this.state.password, (this.state.remeberMe === 'on'))}
@@ -253,9 +258,10 @@ class AuthForm extends React.Component {
       return this.state.email !== ''
         && this.state.password !== ''
     } else {
-      return this.state.email !== ''
+      return this.validateEmail(this.state.email)
         && this.state.password !== ''
         && this.state.passwordConfirm !== ''
+        && this.state.password.length > 7
         && this.state.password === this.state.passwordConfirm
         && this.state.aggreed
         && this.state.birthday !== ''
@@ -307,8 +313,10 @@ class AuthForm extends React.Component {
           <Input 
             value={this.state.email}
             onChange={email => this.setState({ email: email.target.value})}
-            {...usernameInputProps} 
+            {...usernameInputProps}
+            invalid={this.state.email !== '' && !this.validateEmail(this.state.email)} 
           />
+          <FormFeedback>Ungültige E-Mail-Addresse</FormFeedback>
         </FormGroup>
         <FormGroup>
           <Label for={passwordLabel}>{passwordLabel}</Label>
@@ -316,13 +324,15 @@ class AuthForm extends React.Component {
            value={this.state.password}
            onChange={password => this.setState({ password: password.target.value})}
           {...passwordInputProps}
+          invalid={this.state.password !== '' && this.state.password.length < 8}
           />
+          <FormFeedback>Passwörter muss mindestens 8 Zeichen haben</FormFeedback>
         </FormGroup>
         {!this.isSignup && <MDButton variant="outlined" onClick={() => this.setState({ passwordForgot: true})}>Passwort vergessen?</MDButton>}
         { this.renderPasswordForgot()}
         {this.isSignup && this.renderSignup()}
         <hr />
-        { error && <Alert color="danger">{ this.isLogin ? 'Ungültiger Login' : 'Registrierung fehlerhaft'}</Alert>}
+        { error && <Alert color="danger">{ this.isLogin ? 'Ungültiger Login' : 'Registrierung fehlerhaft. Das könnte daran liegen, dass die E-Mail-Addresse bereits verwendet wird.'}</Alert>}
         <Button
           disabled={!this.isInputViable()}
           size="lg"
