@@ -60,7 +60,7 @@ class AuthForm extends React.Component {
   };
 
   validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
 
@@ -314,7 +314,7 @@ class AuthForm extends React.Component {
             value={this.state.email}
             onChange={email => this.setState({ email: email.target.value})}
             {...usernameInputProps}
-            invalid={this.state.email && !this.validateEmail(this.state.email)} 
+            invalid={this.state.email !== '' && !this.validateEmail(this.state.email)} 
           />
           <FormFeedback>Ungültige E-Mail-Addresse</FormFeedback>
         </FormGroup>
@@ -324,7 +324,7 @@ class AuthForm extends React.Component {
            value={this.state.password}
            onChange={password => this.setState({ password: password.target.value})}
           {...passwordInputProps}
-          invalid={this.state.password && this.state.password.length < 8}
+          invalid={this.state.password !== '' && this.state.password.length < 8}
           />
           <FormFeedback>Passwörter muss mindestens 8 Zeichen haben</FormFeedback>
         </FormGroup>
