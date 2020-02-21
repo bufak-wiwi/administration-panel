@@ -1,4 +1,5 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import logoImage from 'assets/img/logo/logo_full_white.png';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
 import {
@@ -68,9 +69,9 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground} />
         <div className={bem.e('content')}>
         <Navbar>
-            <SourceLink className="navbar-brand d-flex">
+            <SourceLink>
               <span className="text-white">
-                BuFaK WiSo
+                <img src={logoImage} alt="BuFaK WiSo" width="100%"></img>
               </span>
             </SourceLink>
           </Navbar>
