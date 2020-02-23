@@ -165,16 +165,19 @@ export function getStatus(application) {
 export function getWorkshopApplicationStatus(workshopApplication, workshopApplicationPhase, userForConference, conferenceId) {
     if (!isAttendee(userForConference, conferenceId)) {
         return noAttendee
-    } else if (workshopApplication !== [] && workshopApplication.length > 0) {
-        if (workshopApplication.some(x => x.status === "IsAttendee")) {
-            return attendee
+    } else  {
+        const workshopsOfConference = workshopApplication.filter(x => x.workshop && x.workshop.conferenceID === conferenceId)
+        if (workshopsOfConference.length > 0) {
+            if (workshopsOfConference.some(x => x.status === "IsAttendee")) {
+                return attendee
+            } else {
+                return applied
+            }
+        } else if (!workshopApplicationPhase) {
+            return phaseClosed
         } else {
-            return applied
+            return unapplied
         }
-    } else if (!workshopApplicationPhase) {
-        return phaseClosed
-    } else {
-        return unapplied
     }
 }
 //#endregion
