@@ -131,7 +131,6 @@ class WorkshopApplicationCard extends Component {
     }
 
     const status = getWorkshopApplicationStatus(workshopApplication, conference.workshopApplicationPhase, userForConference, conferenceId);
-    
     switch(status) {
         case noAttendee: return this.renderPhaseClosedCard();
         case attendee: return this.renderAttendeeCard(workshopApplication);
