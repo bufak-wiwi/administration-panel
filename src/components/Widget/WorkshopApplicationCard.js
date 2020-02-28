@@ -50,7 +50,10 @@ class WorkshopApplicationCard extends Component {
   }
 
   getSortedWorkshops(workshopApplication) {
-    return [...workshopApplication].sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1).filter(x => x.status === "IsAttendee")
+    return [...workshopApplication]
+        .sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1)
+        .filter(x => x.status === "IsAttendee")
+        .filter(x => x.workshop && x.workshop.conferenceID === this.props.conferenceId)
   }
 
   renderAttendeeCard(workshopApplication) {
@@ -128,7 +131,6 @@ class WorkshopApplicationCard extends Component {
     }
 
     const status = getWorkshopApplicationStatus(workshopApplication, conference.workshopApplicationPhase, userForConference, conferenceId);
-
     switch(status) {
         case noAttendee: return this.renderPhaseClosedCard();
         case attendee: return this.renderAttendeeCard(workshopApplication);
