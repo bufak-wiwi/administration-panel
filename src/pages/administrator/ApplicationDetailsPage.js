@@ -180,7 +180,7 @@ class ApplicationDetailsPage extends React.Component {
       { type: 'custom', component: this.renderPriorityFormGroup(), id: 'priority'},
       { type: 'custom', component: this.renderCouncilFormGroup(), id: 'council'},
       { type: 'custom', component: this.renderUniversityFormGroup(), id: 'university'},
-      { name: 'Hotel', type: 'text', id: 'hotel'},
+      { name: 'Unterkunft', type: 'text', id: 'hotel'},
       { name: 'Zimmer', type: 'text', id: 'room'},
       { name: 'Anmerkung', type: 'textarea', id: 'note', xs: 12, md: 12, xl: 12}
     ]

@@ -87,8 +87,8 @@ class AuthForm extends React.Component {
           <DialogTitle id="form-dialog-title">Passwort zurücksetzen</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Falls die eingegebene E-Mail-Adresse im System hinterlegt ist, wirst du in wenigen Minuten eine E-Mail zum zurücksetzen deines Passworts erhalten. 
-              Bitte überprüfe auch den Sam-Ordner.
+              Falls die eingegebene E-Mail-Adresse im System hinterlegt ist, wirst du in wenigen Minuten eine E-Mail zum Zurücksetzen deines Passworts erhalten. 
+              Bitte überprüfe auch den Spam-Ordner.
             </DialogContentText>
             <TextField
               autoFocus
@@ -246,7 +246,7 @@ class AuthForm extends React.Component {
           type="checkbox" 
           onChange={e => this.setState({aggreed: e.currentTarget.checked})}
         />{' '}
-        Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere sie
+        Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und akzeptiere sie.
         </Label>
       </FormGroup>
       </div>
@@ -326,13 +326,13 @@ class AuthForm extends React.Component {
           {...passwordInputProps}
           invalid={this.state.password !== '' && this.state.password.length < 8}
           />
-          <FormFeedback>Passwörter muss mindestens 8 Zeichen haben</FormFeedback>
+          <FormFeedback>Passwort muss mindestens 8 Zeichen enthalten</FormFeedback>
         </FormGroup>
         {!this.isSignup && <MDButton variant="outlined" onClick={() => this.setState({ passwordForgot: true})}>Passwort vergessen?</MDButton>}
         { this.renderPasswordForgot()}
         {this.isSignup && this.renderSignup()}
         <hr />
-        { error && <Alert color="danger">{ this.isLogin ? 'Ungültiger Login' : 'Registrierung fehlerhaft. Das könnte daran liegen, dass die E-Mail-Addresse bereits verwendet wird.'}</Alert>}
+        { error && <Alert color="danger">{ this.isLogin ? 'Ungültiger Login' : 'Registrierung fehlerhaft. Das könnte daran liegen, dass die E-Mail-Adresse bereits verwendet wird.'}</Alert>}
         <Button
           disabled={!this.isInputViable()}
           size="lg"
@@ -390,7 +390,7 @@ AuthForm.propTypes = {
 AuthForm.defaultProps = {
   authState: 'LOGIN',
   showLogo: true,
-  usernameLabel: 'Persönliche Email',
+  usernameLabel: 'Persönliche E-Mail',
   usernameInputProps: {
     type: 'email',
     placeholder: 'your@email.com',
@@ -405,7 +405,7 @@ AuthForm.defaultProps = {
     type: 'password',
     placeholder: 'Passwort wiederholen',
   },
-  councilLabel: 'Fachschauftsrat',
+  councilLabel: 'Fachschaftsrat',
   councilInputProps: {
     type: 'select',
   },

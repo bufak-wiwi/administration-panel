@@ -43,7 +43,7 @@ class WorkshopDetailsPage extends React.Component {
             redirect: false,
             workshopProperties: [
                 { name: 'Name*', type: 'text', id: 'name', md: 6, xs: 12},
-                { name: 'Name Abgekürzt', type: 'text', id: 'nameShort', md: 6, xs: 12},
+                { name: 'Name abgekürzt', type: 'text', id: 'nameShort', md: 6, xs: 12},
                 { name: 'Beschreibung', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
                 { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12},
                 { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
@@ -55,7 +55,7 @@ class WorkshopDetailsPage extends React.Component {
                 { name: 'Dauer (min)*', type: 'number', id: 'duration', md: 6, xs: 12},
                 { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 6, xs: 12},
                 { name: 'Raum', type: 'text', id: 'place', md: 6, xs: 12},
-                { name: 'Anmerkungen (z.B. Material)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
+                { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
             ]
         }
     }
