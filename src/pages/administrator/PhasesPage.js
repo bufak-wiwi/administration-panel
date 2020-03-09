@@ -339,7 +339,7 @@ class DashboardPage extends React.Component {
                                                 style={{marginRight: 10}}
                                             >
                                                 <Button block>
-                                                    <FaDownload /> Fachschafts Passwörter
+                                                    <FaDownload /> Fachschaftspasswörter
                                                 </Button>
                                             </CSVLink>
                                             </Col><Col>
