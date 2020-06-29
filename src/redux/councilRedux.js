@@ -12,6 +12,7 @@ const { Types, Creators } = createActions({
   getCouncilList: null,
   applyForCouncil: ['data'],
   updateCouncilFetching: ['fetching'],
+  resetCouncilState: null,
 })
 
 export const CouncilTypes = Types
@@ -45,6 +46,8 @@ export const updateCouncilError = (state, { error }) =>
 export const updateCouncilFetching = (state, { fetching }) =>
   state.merge({ fetching })
 
+  export const resetCouncilState = () => INITIAL_STATE
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -53,4 +56,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_COUNCIL]: updateCouncil,
   [Types.UPDATE_COUNCIL_ERROR]: updateCouncilError,
   [Types.UPDATE_COUNCIL_FETCHING]: updateCouncilFetching,
+  [Types.RESET_COUNCIL_STATE]: resetCouncilState,
 })
