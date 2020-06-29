@@ -4,21 +4,22 @@ import storage from 'redux-persist/lib/storage'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from '../sagas';
 import { persistStore, persistReducer } from 'redux-persist';
+import { seamlessImmutableReconciler, seamlessImmutableTransformCreator } from 'redux-persist-seamless-immutable'
+
+// 
+const transformerConfig = {
+  // whitelistPerReducer: {
+  //   reducerA: ['keyA', 'keyB']
+  // },
+  blacklistPerReducer: { }
+}
 
 // Middleware: Redux Persist Config
 const persistConfig = {
-    // Root
     key: 'root',
-    // Storage Method (React Native)
     storage,
-    // Whitelist (Save Specific Reducers)
-    // whitelist: [
-    //   'authReducer',
-    // ],
-    // // Blacklist (Don't Save Specific Reducers)
-    // blacklist: [
-    //   'counterReducer',
-    // ],
+    stateReconciler: seamlessImmutableReconciler,
+    transforms: [seamlessImmutableTransformCreator(transformerConfig)]
   };
 
 // Middleware: Redux Persist Persisted Reducer
@@ -31,6 +32,6 @@ const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 
 // Middleware: Redux Persist Persister
-let persistor = persistStore(store);
+const persistor = persistStore(store);
 
 export {store, persistor};
