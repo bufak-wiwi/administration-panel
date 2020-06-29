@@ -43,6 +43,7 @@ class ApplicationPage extends React.Component {
       note: '',
       newsletter: false,
       dataprotection: false,
+      participantAgreement: false,
     }
   }
   
@@ -414,7 +415,18 @@ class ApplicationPage extends React.Component {
         <FormGroup check>
           <Label for="dataprotection" check>
             <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({dataprotection: e.target.checked}) } id="dataprotection" />{' '}
-            Ich habe die Datenschutzerklärung gelesen und stimme ihr zu*
+            Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
+          </Label>
+        </FormGroup>
+        <FormGroup check>
+          <Label for="participantAgreement" check>
+            <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
+            Ich habe die
+            {this.props.conference.participantAgreement ? 
+              <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnehmervereinbarung </a>
+              : " Teilnehmervereinbarung " 
+            }
+            gelesen und stimme ihr zu*
           </Label>
         </FormGroup>
         <FormGroup check>
@@ -431,7 +443,7 @@ class ApplicationPage extends React.Component {
           <Col xs="6" sm="6" >
             <Button
               className="float-right"
-              disabled={!this.state.dataprotection}
+              disabled={!this.state.dataprotection || !this.state.participantAgreement}
               onClick={(e) => this.handleSubmit()}
               >
                 Absenden

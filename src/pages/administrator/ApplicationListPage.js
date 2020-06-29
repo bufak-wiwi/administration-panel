@@ -16,6 +16,7 @@ import ConferenceActions from '../../redux/conferenceRedux';
 import CouncilActions from '../../redux/councilRedux'
 import SearchInput from '../../components/SearchInput';
 import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { getPriorityOrType, getStatus} from '../../utils/functions'
 
 const priorities = [
     {name: '1', id: 'priority', value: 1, normal: true},
@@ -82,32 +83,6 @@ class ApplicationListPage extends React.Component {
     getCouncilUniversity(councilId) {
         const council = this.props.councilList.find(x => x.councilID === councilId)
         return council ? council.university : 'unbekannt'
-    }
-
-    getPriorityOrType(x) {
-        if (x.isAlumnus) {
-            return 'Alumnus'
-        }
-        if (x.isHelper) {
-            return 'Helfer'
-        }
-        if (x.isBuFaKCouncil) {
-            return 'BuFaK Rat'
-        }
-        return x.priority
-    }
-
-    getStatus(x) {
-       switch(x.status) {
-           case 'HasApplied':
-               return 'ausstehend'
-            case 'IsRejected':
-                return 'abgelehnt'
-            case 'IsAttendee':
-                return 'angenommen'
-            default:
-                return 'unbekannt'
-       } 
     }
 
     getStatusIndex(x) {
@@ -262,8 +237,8 @@ class ApplicationListPage extends React.Component {
                                     <td>{ `${x.user.name} ${x.user.surname}` }</td>
                                     <td>{ this.getCouncilName(x.user.councilID) }</td>
                                     <td>{ this.getCouncilUniversity(x.user.councilID)}</td>
-                                    <td>{ this.getPriorityOrType(x) }</td>
-                                    <td>{ this.getStatus(x) }</td>
+                                    <td>{ getPriorityOrType(x) }</td>
+                                    <td>{ getStatus(x) }</td>
                                 </tr>
                             )
                         })}

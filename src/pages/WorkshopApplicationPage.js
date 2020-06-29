@@ -135,7 +135,7 @@ class WorkshopApplicationPage extends React.Component {
           aria-labelledby="title"
           aria-describedby="description"
       >
-          <DialogTitle id="title">Bist du dir Sicher?</DialogTitle>
+          <DialogTitle id="title">Bist du dir sicher?</DialogTitle>
           <DialogContent>
               <DialogContentText id="description">
                 Sind alle deine Eingaben korrekt? Du kannst deine Workshopauswahl nicht mehr verändern.
@@ -178,7 +178,7 @@ class WorkshopApplicationPage extends React.Component {
       <Page
         title={'Workshopanmeldung'}
       >
-        { !fetching && success && <Card><CardBody><Alert color="success">Deine Workshopanmeldung wurde erfolgreich hochgeladen!</Alert></CardBody></Card>}
+        { !fetching && success && <Card><CardBody><Alert color="success">Deine Workshopanmeldung wurde erfolgreich abgesendet!</Alert></CardBody></Card>}
         { error && <Card><CardBody><Alert color="danger">Deine Workshopanmeldung war fehlerhaft. Bitte versuche es erneut.</Alert></CardBody></Card>}
         { !error && (fetching || !workshopList) && <Card><CardBody><PageSpinner/></CardBody></Card>}
         { !error && !success && workshopList && 
