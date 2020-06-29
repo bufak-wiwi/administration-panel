@@ -2,7 +2,7 @@
   "name": "bufak-wiso",
   "version": "1.1.0",
   "private": false,
-  "homepage": "https://konferenz.bufak-wiso.de",
+  "homepage": "https://konfetti.bufak-wiso.de",
   "dependencies": {
     "@material-ui/core": "^4.2.1",
     "bootstrap": "4.3.1",
