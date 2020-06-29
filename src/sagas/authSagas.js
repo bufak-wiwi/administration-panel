@@ -1,6 +1,8 @@
 import { call, put, select } from 'redux-saga/effects'
 import AuthActions from '../redux/authRedux'
 import ConferenceActions from '../redux/conferenceRedux'
+import CouncilActions from '../redux/councilRedux'
+import WorkshopActions from '../redux/workshopRedux'
 import { apiFetch } from '../utils/functions'
 import { getWorkshopApplication } from './workshopSagas'
 
@@ -166,6 +168,9 @@ export function* logout(action) {
   try {
     localStorage.clear()
     sessionStorage.clear()
+    yield put(ConferenceActions.resetConferenceState())
+    yield put(CouncilActions.resetCouncilState())
+    yield put(WorkshopActions.resetWorkshopState())
     yield put(AuthActions.resetAuthState())
   } catch (e) {
     console.log('Error at logging out', e)

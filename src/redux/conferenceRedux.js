@@ -25,7 +25,8 @@ const { Types, Creators } = createActions({
   updatePasswordList: ['passwordList'],
   getPasswordList: null,
   getBadgeList: null,
-  updateBadgeList: ['badgeList']
+  updateBadgeList: ['badgeList'],
+  resetConferenceState: null,
 })
 
 export const ConferenceTypes = Types
@@ -86,6 +87,8 @@ export const updatePasswordList = (state, { passwordList }) =>
 export const updateBadgeList = (state, { badgeList }) =>
   state.merge({ badgeList })
 
+export const resetConferenceState = () => INITIAL_STATE
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -100,4 +103,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_PASSWORD]: updatePassword,
   [Types.UPDATE_PASSWORD_LIST]: updatePasswordList,
   [Types.UPDATE_BADGE_LIST]: updateBadgeList,
+  [Types.RESET_CONFERENCE_STATE]: resetConferenceState,
 })
