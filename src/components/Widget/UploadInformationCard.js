@@ -19,9 +19,11 @@ class UploadInformationCard extends Component {
             <CardBody>
                 <Alert color="grey">
                     Liebe Teilnehmenden,<br />
-                    wie ihr alle wahrscheinlich bereits wisst, wird unsere Konferenz von dem BMBF unterstützt. Um die Zuwendungen zu erhalten ist es allerdings nötig, dass wir eine Immatrikulationsbescheinigung von euch nachweisen können, denn <b>nur dann senkt sich euer Teilnehmerbeitrag</b>.<br />
-                    Ihr könnt sie unter diesem Link <a href="https://www.dropbox.com/request/raC7OjVGjFdzSFqfAdGO" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/raC7OjVGjFdzSFqfAdGO</a> hochladen.<br/>
-                    Bitte füllt neben der eigentlichen Anmeldung auch kurz dieses <a href="https://forms.gle/kdk78Fpy4kgc4vML7" target="_blank" rel="noopener noreferrer">Formular</a> aus! Für unseren internen Ablauf ist das äußerst wichtig, auch wenn sich Abfragen doppeln.<br/>Danke für eure Zeit. :)
+                    willkommen zur ersten, digitalen BuFaK! Diese gilt regulär als unsere 70. BuFaK WiSo, nur, dass wir uns nicht in Präsenz treffen können. Die genauen Infos erfolgen nach eurer erfolgten Anmeldung per Mail. <br />
+                    Wie ihr alle wahrscheinlich bereits wisst, wird unsere Konferenz von dem BMBF unterstützt. Um die Zuwendungen zu erhalten, ist es allerdings nötig, dass wir eine <b>Immatrikulationsbescheinigung</b> von euch nachweisen können.
+                    Ihr könnt sie unter diesem Link <a href="https://cloud.uni-jena.de/s/MP2EGW66GAyGTyb" target="_blank" rel="noopener noreferrer">https://cloud.uni-jena.de/s/MP2EGW66GAyGTyb</a> hochladen.<br />
+                    Bei weiteren Fragen meldet euch gerne bei Ken.<br />
+                    Wir freuen uns auf euch!
                 </Alert>
             </CardBody> 
         </Card>

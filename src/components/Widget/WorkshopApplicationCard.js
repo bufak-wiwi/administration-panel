@@ -36,7 +36,7 @@ class WorkshopApplicationCard extends Component {
   createICal(workshopApplication) {
     return ical({
         domain: 'bufak-wiso.de',
-        prodId: {company: 'bufak-wiso', product: 'BuFaK Jena', language: 'DE'},
+        prodId: {company: 'bufak-wiso', product: this.props.conference.name, language: 'DE'},
         events:  this.getSortedWorkshops(workshopApplication).map(x => ({
             start: moment(x.workshop.start),
             end: moment(x.workshop.start).add(x.workshop.duration, 'minutes'),
@@ -44,7 +44,7 @@ class WorkshopApplicationCard extends Component {
             summary: x.workshop.name,
             description: x.workshop.overview,
             location: x.workshop.place || 'tba' , 
-            organizer: x.workshop.hostName + ' <vorstand-fsr.wiwi@uni-jena.de>'
+            organizer: x.workshop.hostName + ' <rat@bufak-wiso.de>'
         }))
     }).toURL();
   }
