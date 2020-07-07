@@ -20,6 +20,7 @@ const { Types, Creators } = createActions({
     deleteWorkshop: ['id'],
     uploadWorkshopApplication: ['application'],
     getWorkshopApplication: ['uid'],
+    resetWorkshopState: null,
 })
 
 export const WorkshopTypes = Types
@@ -72,6 +73,8 @@ export const updateWorkshopApplication = (state, { workshopApplication }) => {
   return state.merge({ workshopApplication })  
 }
 
+export const resetWorkshopState = () => INITIAL_STATE
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -83,4 +86,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_ERROR]: updateError,
   [Types.UPDATE_FETCHING]: updateFetching,
   [Types.UPDATE_SUCCESS]: updateSuccess,
+  [Types.RESET_WORKSHOP_STATE]: resetWorkshopState,
 })

@@ -418,17 +418,19 @@ class ApplicationPage extends React.Component {
             Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
           </Label>
         </FormGroup>
-        <FormGroup check>
-          <Label for="participantAgreement" check>
-            <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
-            Ich habe die
-            {this.props.conference.participantAgreement ? 
-              <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnehmervereinbarung </a>
-              : " Teilnehmervereinbarung " 
-            }
-            gelesen und stimme ihr zu*
-          </Label>
-        </FormGroup>
+        {this.props.conference.participantAgreement && 
+          <FormGroup check>
+            <Label for="participantAgreement" check>
+              <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
+              Ich habe die
+              {this.props.conference.participantAgreement ? 
+                <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnehmervereinbarung </a>
+                : " Teilnehmervereinbarung " 
+              }
+              gelesen und stimme ihr zu*
+            </Label>
+          </FormGroup>
+        }
         <FormGroup check>
           <Label for="newsletter" check>
             <Input type="checkbox" value={this.state.newsletter} onChange={(e) => this.setState({newsletter: e.target.checked}) } id="newsletter" />{' '}
@@ -443,7 +445,7 @@ class ApplicationPage extends React.Component {
           <Col xs="6" sm="6" >
             <Button
               className="float-right"
-              disabled={!this.state.dataprotection || !this.state.participantAgreement}
+              disabled={!this.state.dataprotection || (this.props.conference.participantAgreement && !this.state.participantAgreement)}
               onClick={(e) => this.handleSubmit()}
               >
                 Absenden
