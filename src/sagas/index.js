@@ -20,6 +20,7 @@ import {
 } from './authSagas'
 import { 
   getConference,
+  getConferenceList,
   applyForConference,
   updatePhases,
   getApplicationList,
@@ -59,6 +60,7 @@ export default function * root () {
     takeLatest(AuthTypes.CHANGE_PASSWORD, changePassword),
     // Conference
     takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
+    takeLatest(ConferenceTypes.GET_CONFERENCE_LIST, getConferenceList),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
     takeEvery(ConferenceTypes.UPDATE_PHASES, updatePhases),
     takeEvery(ConferenceTypes.GET_APPLICATION_LIST, getApplicationList),
