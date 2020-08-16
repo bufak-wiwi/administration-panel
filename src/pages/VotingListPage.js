@@ -40,7 +40,6 @@ class VotingListPage extends React.Component {
     renderList() {
         const openList = this.props.openQuestionList.filter(x =>  getQuestionStatus(x) === open)
         const closedList = this.props.openQuestionList.filter(x =>  getQuestionStatus(x) !== open)
-        console.log(closedList)
         return (
             <div>
                 {openList.map(question => this.renderOpenQuestionCard(question)) }
