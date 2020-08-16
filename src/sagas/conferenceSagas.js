@@ -35,6 +35,17 @@ function parseAddFields(conference) {
     }
 }
 
+export function* getConferenceList() {
+    try {
+        const result = yield call(apiFetch, `conferences/`, 'get')
+        if (result) {
+            yield put(ConferenceActions.updateConferenceList(result))
+        }
+    } catch (e) {
+        console.log('Error getting conferences', e)
+    }
+}
+
 export function* applyForConference(action) {
     try {
         yield put(ConferenceActions.updateConferenceFetching(true))

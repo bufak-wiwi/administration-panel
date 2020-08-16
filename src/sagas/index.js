@@ -5,6 +5,7 @@ import { AuthTypes } from '../redux/authRedux'
 import { ConferenceTypes } from '../redux/conferenceRedux';
 import { CouncilTypes } from '../redux/councilRedux';
 import { WorkshopTypes } from '../redux/workshopRedux';
+import { VotingTypes } from '../redux/votingRedux';
 
 /* ------------- Sagas ------------- */
 import { 
@@ -20,6 +21,7 @@ import {
 } from './authSagas'
 import { 
   getConference,
+  getConferenceList,
   applyForConference,
   updatePhases,
   getApplicationList,
@@ -42,6 +44,17 @@ import {
   deleteWorkshop,
   uploadWorkshopApplication,
 } from './workshopSagas'
+import { 
+  getQuestionList,
+  getOpenQuestionList,
+  getMajorityList,
+  getAnswerList,
+  getQuestion,
+  createNewQuestion,
+  updateExistingQuestion,
+  deleteQuestion,
+  postVote,
+} from './votingSagas'
 
 /* ------------- Connect Types To Sagas ------------- */
 
@@ -59,6 +72,7 @@ export default function * root () {
     takeLatest(AuthTypes.CHANGE_PASSWORD, changePassword),
     // Conference
     takeLatest(ConferenceTypes.GET_CONFERENCE, getConference),
+    takeLatest(ConferenceTypes.GET_CONFERENCE_LIST, getConferenceList),
     takeLatest(ConferenceTypes.APPLY_FOR_CONFERENCE, applyForConference),
     takeEvery(ConferenceTypes.UPDATE_PHASES, updatePhases),
     takeEvery(ConferenceTypes.GET_APPLICATION_LIST, getApplicationList),
@@ -80,6 +94,16 @@ export default function * root () {
     takeLatest(WorkshopTypes.CREATE_NEW_WORKSHOP, createNewWorkshop),
     takeEvery(WorkshopTypes.UPDATE_EXISTING_WORKSHOP, updateExistingWorkshop),
     takeEvery(WorkshopTypes.DELETE_WORKSHOP, deleteWorkshop),
-    takeLatest(WorkshopTypes.UPLOAD_WORKSHOP_APPLICATION, uploadWorkshopApplication)
+    takeLatest(WorkshopTypes.UPLOAD_WORKSHOP_APPLICATION, uploadWorkshopApplication),
+    // Voting
+    takeLatest(VotingTypes.GET_QUESTION_LIST, getQuestionList),
+    takeLatest(VotingTypes.GET_MAJORITY_LIST, getMajorityList),
+    takeLatest(VotingTypes.GET_ANSWER_LIST, getAnswerList),
+    takeLatest(VotingTypes.GET_QUESTION, getQuestion),
+    takeEvery(VotingTypes.CREATE_NEW_QUESTION, createNewQuestion),
+    takeEvery(VotingTypes.UPDATE_EXISTING_QUESTION, updateExistingQuestion),
+    takeEvery(VotingTypes.DELETE_QUESTION, deleteQuestion),
+    takeLatest(VotingTypes.GET_OPEN_QUESTION_LIST, getOpenQuestionList),
+    takeEvery(VotingTypes.POST_VOTE, postVote),
   ])
 }
