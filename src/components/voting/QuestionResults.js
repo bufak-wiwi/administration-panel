@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card, CardBody, Row, Col, Alert } from 'reactstrap';
-import { HorizontalBar } from 'react-chartjs-2';
+import { HorizontalBar, Bar } from 'react-chartjs-2';
 import CouncilVote from './CouncilVote';
+import { isMobile } from 'react-device-detect';
 
 class QuestionResult extends Component {
   
@@ -47,8 +48,14 @@ class QuestionResult extends Component {
                     ticks: {
                         beginAtZero: true,
                     } 
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                    } 
                 }]
             },
+            maintainAspectRatio: false
         }
         return (
             <Card>
@@ -57,8 +64,13 @@ class QuestionResult extends Component {
                 </Alert>
                 <CardBody>
                     <Col>
-                        <Row>
-                            <HorizontalBar data={data} options={options}/>
+                        <Row style={{flex: 1}}>
+                            <div style={{width: "100%", minHeight: 300}}>
+                                { isMobile
+                                    ? <Bar data={data} options={options}/>
+                                    : <HorizontalBar data={data} options={options}/> 
+                                }
+                            </div>
                         </Row>
                     </Col>
                     <Col>
