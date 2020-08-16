@@ -15,6 +15,7 @@ import {
   MdSpeakerNotes,
   MdSecurity,
   MdBusiness,
+  MdPoll
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -35,6 +36,7 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
+  { to: '/abstimmung', name: 'Abstimmung', exact: false, Icon: MdPoll},
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
   { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},
   { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
@@ -48,7 +50,8 @@ const navAdminItems = [
 ];
 
 const navSuperAdminItems = [
-  { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness}
+  { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness},
+  { to: '/question', name: "Abstimmungen", exact: false, Icon: MdPoll},
 ]
 
 
