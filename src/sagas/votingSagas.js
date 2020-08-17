@@ -22,7 +22,7 @@ export function* getOpenQuestionList() {
         yield put(VotingActions.updateError(false))
         const conferenceId = yield select(state => state.conference.conferenceId);
         const questionList = yield call(apiFetch, `VotingQuestions/byConference/${conferenceId}`, 'get')
-        if (questionList && questionList.length > 0) {
+        if (questionList) {
             yield put(VotingActions.updateOpenQuestionList(questionList.filter(x => x.isOpen).sort((a,b) => b.questionID - a.questionID)))
         } else {
             yield put(VotingActions.updateError(true))
@@ -66,6 +66,7 @@ export function* getQuestion(params) {
         if (question) {
             yield put(VotingActions.updateQuestion(question))
         } else {
+            yield put(VotingActions.updateQuestion(null))
             yield put(VotingActions.updateError(true))
         }
         yield put(VotingActions.updateFetching(false))
