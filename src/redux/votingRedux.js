@@ -24,6 +24,7 @@ const { Types, Creators } = createActions({
   updateExistingQuestion: ['question'],
   deleteQuestion: ['id'],
   postVote: ['vote', 'questionID'],
+  closeQuestion: ['id'],
 })
 
 export const VotingTypes = Types

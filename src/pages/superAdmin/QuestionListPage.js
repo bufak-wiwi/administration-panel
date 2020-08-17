@@ -59,12 +59,6 @@ class QuestionListPage extends React.Component {
         }
     }
 
-    closeQuestion(question) {
-        var newQuestion = {...question}
-        newQuestion.resolvedOn = moment()
-        this.props.updateExistingQuestion(newQuestion)
-    }
-
     openQuestion(question) {
         var newQuestion = {...question}
         newQuestion.isOpen = true
@@ -76,7 +70,7 @@ class QuestionListPage extends React.Component {
         if (status === draft) {
             return <Button onClick={() => this.openQuestion(question)}>Frage öffnen</Button>
         } else if (status === open) {
-            return <Button onClick={() => this.closeQuestion(question)}>Frage schließen</Button>
+            return <Button onClick={() => this.props.closeQuestion(question.questionID)}>Frage schließen</Button>
         } else {
             return getQuestionStatusText(question)
         }
@@ -168,6 +162,7 @@ const mapStateToProps = (state) => {
         getQuestionList: () => dispatch(VotingActions.getQuestionList()),
         getMajorityList: () => dispatch(VotingActions.getMajorityList()),
         updateExistingQuestion: (question) => dispatch(VotingActions.updateExistingQuestion(question)),
+        closeQuestion: (id) => dispatch(VotingActions.closeQuestion(id)),
     }
   }
   

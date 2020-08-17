@@ -120,6 +120,26 @@ export function* updateExistingQuestion(params) {
     }
 }
 
+export function* closeQuestion(params) {
+    try {
+        yield put(VotingActions.updateError(false))
+        yield put(VotingActions.updateFetching(true))
+        const { id } = params;
+        const question = yield call(apiFetch, `votingQuestions/closeQuestion/${id}`, 'post', {})
+        if (question) {
+            yield put(VotingActions.updateQuestion(question))
+            yield call(getQuestionList)
+        } else {
+            yield put(VotingActions.updateError(true))
+        }
+        yield put(VotingActions.updateFetching(false))
+    } catch (e) {
+        console.log('updateExistingQuestion', e)
+        yield put(VotingActions.updateError(true))
+        yield put(VotingActions.updateFetching(false))
+    }
+}
+
 export function* deleteQuestion(params) {
     try {
         const { id } = params;

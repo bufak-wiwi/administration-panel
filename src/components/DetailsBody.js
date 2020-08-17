@@ -8,6 +8,8 @@ import {
     Input,
 } from 'reactstrap'
 import Select from 'react-select'
+import moment from 'moment';
+require('moment/locale/de.js')
 
 class DetailsBody extends Component {
     renderFormGroup(property) {
@@ -82,7 +84,7 @@ class DetailsBody extends Component {
                             type="datetime-local"
                             disabled={disabled}
                             id={property.id}
-                            value={object[property.id]}
+                            value={moment(object[property.id]).format('YYYY-MM-DDTHH:mm')}
                             onChange={e => this.props.onChange(property.id, e.currentTarget.value)}
                             min={property.min}
                             max={property.max}
