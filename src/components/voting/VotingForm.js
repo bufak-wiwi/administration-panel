@@ -139,7 +139,9 @@ class VotingForm extends Component {
                 <CardHeader style={{justifyContent: "space-between", flex: 1}}>
                     <Row style={{ justifyContent: 'space-between', marginLeft: 5}}>
                         Abstimmung: {question.questionText}
+                        <div>{question.totalVotes ? `(${question.totalVotes}/${question.arrivedCouncilCount} abgestimmt) ` : ''}
                         <ButtonWithTimeout text="Refresh" onClick={onReload} timeout={5000}/>
+                        </div>
                     </Row>
                 </CardHeader>
                 <CardBody>

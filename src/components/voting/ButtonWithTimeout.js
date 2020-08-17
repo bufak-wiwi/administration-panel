@@ -10,12 +10,22 @@ class ButtonWithTimeout extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.timeout) {
+          clearTimeout(this.timeout)
+        }
+      }
+
     onClick(onClick, timeout) {
         this.setState({
             isButtonDisabled: true
         });
         onClick()
-        setTimeout(() => this.setState({ isButtonDisabled: false }), timeout);
+        // store timeout and cancel on unmounting
+        this.timeout = setTimeout(function() {
+            this.setState({ isButtonDisabled: false })
+            this.timeout = null
+        }.bind(this), timeout)
     }
 
     render() {

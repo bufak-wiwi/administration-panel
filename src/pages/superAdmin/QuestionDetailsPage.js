@@ -9,7 +9,8 @@ import {
     FormGroup,
     Label,
     Alert,
-    Table
+    Table,
+    Button,
 } from 'reactstrap'
 import CreatableSelect from 'react-select/creatable';
 import VotingActions from '../../redux/votingRedux'
@@ -20,6 +21,11 @@ import { Redirect } from 'react-router-dom';
 import Delete from '../../components/Delete';
 import QuestionResults from '../../components/voting/QuestionResults'
 import { shouldObjectBeUpdated, getQuestionStatus, accepted, isQuestionSecret, unknown } from '../../utils/functions';
+import { Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 const emptyQuestion = {
     questionText: '',
@@ -30,6 +36,7 @@ const emptyQuestion = {
     sumNo: 0,
     SumAbstention: 0,
     vote: "Ja;Nein;Enthaltung",
+    arrivedCouncilCount: 0,
 }
 
 class QuestionDetailsPage extends React.Component {
@@ -40,6 +47,7 @@ class QuestionDetailsPage extends React.Component {
             editing: false,
             question: null,
             redirect: false,
+            confirmOpen: false,
             questionProperties: [
                 { name: 'Frage', type: 'text', id: 'questionText', md: 6, xs: 12},
                 { name: 'Status', type: 'select', id: 'isOpen', options: [
@@ -88,6 +96,9 @@ class QuestionDetailsPage extends React.Component {
             this.setState({ question})
         }
         this.addMajorities()
+        if (this.props.empty && this.state.question && this.state.question.arrivedCouncilCount === 0 && this.props.conference && this.props.conference.arrivedCouncilCount) {
+            this.setState({ question: {...this.state.question, arrivedCouncilCount: this.props.conference.arrivedCouncilCount}})
+        }
     }
 
     componentWillUnmount() {
@@ -114,6 +125,35 @@ class QuestionDetailsPage extends React.Component {
     onDelete() {
         this.props.deleteQuestion(this.props.question.questionID);
         this.setState({ editing: false, redirect: true});
+    }
+
+    onConfirm() {
+        this.setState({ confirmOpen: false})
+        this.props.closeQuestion(this.props.question.questionID)
+    }
+
+    renderConfirm() {
+        return (
+            <Dialog
+                open={this.state.confirmOpen}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={() => this.setState({ confirmOpen: false})}
+                aria-labelledby="title"
+                aria-describedby="description"
+            >
+                <DialogTitle id="title">Bist du dir sicher?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="description">
+                        Möchtest du diese Abstimmung wirklich schließen?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button outline onClick={() => this.setState({ confirmOpen: false})} color="primary">Abbrechen</Button>
+                    <Button outline onClick={() => this.onConfirm()} color="danger">Schließen</Button>
+                </DialogActions>
+            </Dialog>
+        )
     }
 
     renderVoteLists(question) {
@@ -196,6 +236,11 @@ class QuestionDetailsPage extends React.Component {
                                         onChange={(id, value) => this.setState({ question: {...question, [id]: value}})}
                                         properties={this.state.questionProperties}
                                     />
+                                    { !question.resolvedOn && !empty && 
+                                        <CardBody>
+                                            <Button block onClick={() => this.setState({ confirmOpen: true})}>Frage schließen</Button>
+                                        </CardBody>
+                                    }
                                     <Delete 
                                         show={editing && !empty}
                                         onDelete={() => this.onDelete()}
@@ -203,6 +248,7 @@ class QuestionDetailsPage extends React.Component {
                                         name={question.name}
                                     />
                                     { question.resolvedOn && !this.state.editing && this.renderResults()}
+                                    { this.renderConfirm() }
                                 </div>
                             }
                         </Card>
@@ -220,7 +266,8 @@ const mapStateToProps = (state) => {
         success: state.voting.success,
         fetching: state.voting.fetching,
         majorityList: state.voting.majorityList,
-        answerList: state.voting.answerList
+        answerList: state.voting.answerList,
+        conference: state.conference.conference,
     }
   }
   
@@ -234,6 +281,7 @@ const mapStateToProps = (state) => {
         deleteQuestion: (id) => dispatch(VotingActions.deleteQuestion(id)),
         getMajorityList: () => dispatch(VotingActions.getMajorityList()),
         getAnswerList: (id) => dispatch(VotingActions.getAnswerList(id)),
+        closeQuestion: (id => dispatch(VotingActions.closeQuestion(id))),
     }
   }
   

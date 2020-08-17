@@ -53,6 +53,7 @@ import {
   createNewQuestion,
   updateExistingQuestion,
   deleteQuestion,
+  closeQuestion,
   postVote,
 } from './votingSagas'
 
@@ -104,6 +105,7 @@ export default function * root () {
     takeEvery(VotingTypes.UPDATE_EXISTING_QUESTION, updateExistingQuestion),
     takeEvery(VotingTypes.DELETE_QUESTION, deleteQuestion),
     takeLatest(VotingTypes.GET_OPEN_QUESTION_LIST, getOpenQuestionList),
+    takeEvery(VotingTypes.CLOSE_QUESTION, closeQuestion),
     takeEvery(VotingTypes.POST_VOTE, postVote),
   ])
 }
