@@ -5,10 +5,7 @@ import { Card, CardBody, Row, Col } from 'reactstrap'
 import WorkshopActions from '../redux/workshopRedux'
 import PageSpinner from '../components/PageSpinner';
 import { toGermanTime } from '../utils/functions';
-
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import {Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 import { MdExpandMore, MdPerson } from 'react-icons/md';
 class WorkshopOverviewPage extends React.Component {
   constructor(props) {
@@ -39,22 +36,22 @@ class WorkshopOverviewPage extends React.Component {
   renderWorkshopsForTime(step) {
     const workshops = this.props.workshopList.filter(x => toGermanTime(x.start) === step)
     return (
-    <div>
+    <div style={{flex: 1}}>
         { workshops.map(x =>
-            <ExpansionPanel key={x.workshopID}>
-                <ExpansionPanelSummary
+            <Accordion key={x.workshopID}>
+                <AccordionSummary
                     expandIcon={<MdExpandMore />}
                     aria-controls="panel1a-content"
                     key={x.workshopID}
-                >{x.name}</ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                >{x.name}</AccordionSummary>
+                <AccordionDetails>
                     <Col>
                         <Row style={{alignItems: 'center'}}><MdPerson /> <b>{x.hostName}</b></Row>
                         <Row><b>Beschreibung:</b></Row>
                         <Row>{x.overview}</Row>
                     </Col>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>  
+                </AccordionDetails>
+            </Accordion>  
         )}
     </div>
     )
@@ -73,14 +70,14 @@ class WorkshopOverviewPage extends React.Component {
         { !workshopList && <Card><CardBody><PageSpinner/></CardBody></Card>}
         { workshopList && 
             steps.map(x => 
-                <ExpansionPanel key={x} TransitionProps={{ unmountOnExit: true }}>
-                    <ExpansionPanelSummary
+                <Accordion key={x} TransitionProps={{ unmountOnExit: true }}>
+                    <AccordionSummary
                         expandIcon={<MdExpandMore />}
                         aria-controls="panel1a-content"
                         key={x}
-                    >{x}</ExpansionPanelSummary>
-                    <ExpansionPanelDetails>{this.renderWorkshopsForTime(x)}</ExpansionPanelDetails>
-                </ExpansionPanel>
+                    >{x}</AccordionSummary>
+                    <AccordionDetails>{this.renderWorkshopsForTime(x)}</AccordionDetails>
+                </Accordion>
             )
         }
      </Page>

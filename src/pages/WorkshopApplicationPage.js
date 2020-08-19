@@ -161,7 +161,7 @@ class WorkshopApplicationPage extends React.Component {
       conferenceId
     } = this.props
 
-    if ((workshopApplication !== [] && workshopApplication.length !== 0)
+    if ((workshopApplication.length !== 0 && workshopApplication.filter(x => x.workshop && x.workshop.conferenceId === conferenceId).length > 0)
       || (!conference || !conference.workshopApplicationPhase)
       || !isAttendee(userForConference, conferenceId)
     ) {
