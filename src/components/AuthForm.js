@@ -286,8 +286,9 @@ class AuthForm extends React.Component {
       onLogoClick,
       error,
       redirectAfterLogin,
+      conferenceId
     } = this.props;
-    if (this.props.user || this.state.user) {
+    if ((this.props.user || this.state.user) && conferenceId) {
       return (
         <Redirect
           to={redirectAfterLogin || '/'}
@@ -441,6 +442,7 @@ const mapStateToProps = (state) => {
     user: state.auth.user,
     council: state.council.council,
     councilList: state.council.councilList,
+    conferenceId: state.conference.conferenceId
   }
 }
 
