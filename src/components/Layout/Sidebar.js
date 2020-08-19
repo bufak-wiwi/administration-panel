@@ -13,6 +13,9 @@ import {
   MdGroup,
   MdRecordVoiceOver,
   MdSpeakerNotes,
+  MdSecurity,
+  MdBusiness,
+  MdPoll
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -23,7 +26,7 @@ import {
   Collapse,
 } from 'reactstrap';
 import bn from 'utils/bemnames';
-import { isAdministrator } from '../PrivateRoute'
+import { isAdministrator, IsSuperAdmin } from '../PrivateRoute'
 
 const sidebarBackground = {
   backgroundImage: `url("${sidebarBgImage}")`,
@@ -33,6 +36,7 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
+  { to: '/abstimmung', name: 'Abstimmung', exact: false, Icon: MdPoll},
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
   { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},
   { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
@@ -45,12 +49,18 @@ const navAdminItems = [
   { to: '/workshop-list', name: "Workshop-Liste", exact: false, Icon: MdGroup},
 ];
 
+const navSuperAdminItems = [
+  { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness},
+  { to: '/question', name: "Abstimmungen", exact: false, Icon: MdPoll},
+]
+
 
 const bem = bn.create('sidebar');
 
 class Sidebar extends React.Component {
   state = {
     isOpenAdministrator: true,
+    isOpenSuperAdmin: true,
   };
 
   handleClick = name => () => {
@@ -133,6 +143,49 @@ class Sidebar extends React.Component {
                 ))}
               </Collapse>
             </div>
+            }
+            { IsSuperAdmin() &&
+              <div>
+                <NavItem
+                  className={bem.e('nav-item')}
+                  onClick={this.handleClick('SuperAdmin')}
+                >
+                  <BSNavLink className={bem.e('nav-item-collapse')}>
+                    <div className="d-flex">
+                      <MdSecurity className={bem.e('nav-item-icon')} />
+                      <span className=" align-self-start">Admin</span>
+                    </div>
+                    <MdKeyboardArrowDown
+                      className={bem.e('nav-item-icon')}
+                      style={{
+                        padding: 0,
+                        transform: this.state.isOpenSuperAdmin
+                          ? 'rotate(0deg)'
+                          : 'rotate(-90deg)',
+                        transitionDuration: '0.3s',
+                        transitionProperty: 'transform',
+                      }}
+                    />
+                </BSNavLink>
+              </NavItem>
+              <Collapse isOpen={this.state.isOpenSuperAdmin}>
+              {navSuperAdminItems.map(({ to, name, exact, Icon }, index) => (
+                <NavItem key={index} className={bem.e('nav-item')}>
+                  <BSNavLink
+                    id={`navItem-${name}-${index}`}
+                    className="text-uppercase"
+                    tag={NavLink}
+                    to={to}
+                    activeClassName="active"
+                    exact={exact}
+                  >
+                    <Icon className={bem.e('nav-item-icon')} />
+                    <span className="">{name}</span>
+                  </BSNavLink>
+                </NavItem>
+                ))}
+              </Collapse>
+              </div>
             }
           </Nav>
         </div>

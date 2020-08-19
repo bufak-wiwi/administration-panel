@@ -4,9 +4,9 @@
   "private": false,
   "homepage": "https://konferenz.bufak-wiso.de",
   "dependencies": {
-    "@material-ui/core": "^4.2.1",
+    "@material-ui/core": "^4.11.0",
     "bootstrap": "4.3.1",
-    "chart.js": "2.7.2",
+    "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "d3-geo": "^1.11.3",
     "deep-extend": "0.5.1",
@@ -19,7 +19,7 @@
     "prop-types": "^15.7.2",
     "randomatic": "3.0.0",
     "react": "^16.8.4",
-    "react-chartjs-2": "^2.7.4",
+    "react-chartjs-2": "^2.10.0",
     "react-component-queries": "^2.3.0",
     "react-csv": "^1.1.2",
     "react-d3-map": "^0.8.3",
@@ -46,7 +46,7 @@
     "**/**/handlebars": "^4.5.3",
     "**/**/braces": "^2.3.1",
     "**/**/mem": "^4.0.0",
-    "**/**/serialize-javascript": "^2.1.1"
+    "**/**/serialize-javascript": "^3.1.0"
   },
   "devDependencies": {
     "gh-pages": "^1.2.0",

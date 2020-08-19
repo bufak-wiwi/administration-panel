@@ -9,7 +9,7 @@ import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
 import './styles/reduction.scss';
-import { PrivateRoute, AdministratorRoute } from './components/PrivateRoute'
+import { PrivateRoute, AdministratorRoute, SuperAdminRoute } from './components/PrivateRoute'
 import { Alert } from 'reactstrap';
 
 import DashboardPage from './pages/DashboardPage';
@@ -19,12 +19,19 @@ import DataProtectionPage from './pages/DataProtectionPage'
 import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
 import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
 import WorkshopSuggestionPage from './pages/WorkshopSuggestionPage'
+import VotingListPage from './pages/VotingListPage'
+import VotingPage from './pages/VotingPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
 import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
 import WorkshopListPage from './pages/administrator/WorkshopListPage';
 import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
+
+//SuperAdmin
+import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
+import QuestionListPage from './pages/superAdmin/QuestionListPage';
+import QuestionDetailsPage from './pages/superAdmin/QuestionDetailsPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -105,6 +112,18 @@ class App extends React.Component {
               layout={MainLayout}
               component={WorkshopOverviewPage}
             />
+            <PrivateRoute
+              exact
+              path="/abstimmung"
+              layout={MainLayout}
+              component={VotingListPage}
+            />
+            <PrivateRoute
+              exact
+              path="/abstimmung/:id"
+              layout={MainLayout}
+              component={VotingPage}
+            />
             <AdministratorRoute
               exact
               path="/phasen"
@@ -142,6 +161,32 @@ class App extends React.Component {
               path="/application/:uid"
               layout={MainLayout}
               component={ApplicationDetailsPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/conference/"
+              layout={MainLayout}
+              component={ConferenceListPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/"
+              layout={MainLayout}
+              component={QuestionListPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/new"
+              layout={MainLayout}
+              component={props => (
+                <QuestionDetailsPage {...props} empty={true} />
+              )}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/:id"
+              layout={MainLayout}
+              component={QuestionDetailsPage}
             />
             <Redirect to="/" />
           </Switch>

@@ -29,6 +29,11 @@ export const isAdministrator = () => {
     }
 }
 
+export const IsSuperAdmin = () => {
+    const { user } = store.getState().auth
+    return user && user.isSuperAdmin
+}
+
 export const AdministratorRoute = ({...route}) => {
     const { conferenceId } = store.getState().conference
     const { user, userForConference } = store.getState().auth
