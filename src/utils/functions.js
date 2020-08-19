@@ -24,13 +24,13 @@ export const toGermanTime = (x) => {
 export async function apiFetch(path, method, body) {
     const { auth } = store.getState()
     const { conferenceId } = store.getState().conference
-    
+
     return await fetch(`${baseURL}/${path}?apikey=${apiKey}`, {
         method,
         headers: {
             'Content-Type': 'application/json',
             'jwttoken': auth ? auth.token : '',
-            'conference_id': conferenceId || 2 // TODO: fix hack
+            'conference_id': conferenceId
         },
         body: JSON.stringify(body)
     })
