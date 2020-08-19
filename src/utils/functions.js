@@ -30,7 +30,7 @@ export async function apiFetch(path, method, body) {
         headers: {
             'Content-Type': 'application/json',
             'jwttoken': auth ? auth.token : '',
-            'conference_id': conferenceId || 2 // TODO: fix hack
+            'conference_id': conferenceId || 4 // TODO: fix hack
         },
         body: JSON.stringify(body)
     })
