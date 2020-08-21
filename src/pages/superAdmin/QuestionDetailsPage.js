@@ -85,9 +85,7 @@ class QuestionDetailsPage extends React.Component {
             const { id } = this.props.match.params
             this.props.getQuestion(id)
         }
-        if (!this.props.majorityList || this.props.majorityList.length === 0) {
-            this.props.getMajorityList();
-        }
+        this.props.getMajorityList();
     }
 
     componentDidUpdate() {
