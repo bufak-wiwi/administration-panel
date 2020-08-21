@@ -28,9 +28,7 @@ class VotingListPage extends React.Component {
 
     componentDidMount() {
         this.props.getOpenQuestionList();
-        if (!this.props.majorityList || this.props.majorityList.length === 0) {
-            this.props.getMajorityList();
-        }
+        this.props.getMajorityList();
     }
 
     refresh() {
