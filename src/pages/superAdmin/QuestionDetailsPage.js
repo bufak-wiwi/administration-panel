@@ -164,6 +164,7 @@ class QuestionDetailsPage extends React.Component {
                 <thead><tr>
                     <th>#</th>
                     <th>Fachschaft</th>
+                    <th>Uni</th>
                     <th>Stimme</th> 
                     <th>Priorität</th> 
                 </tr></thead>
@@ -172,6 +173,7 @@ class QuestionDetailsPage extends React.Component {
                         <tr key={x.answerID}>
                             <th scope="row">{index+1}</th>
                             <td>{x.council ? x.council.name : "unbekannt"}</td>
+                            <td>{x.council ? x.council.university : "unbekannt"}</td>
                             <td>{x.vote}</td>
                             <td>{x.priority}</td>
                         </tr>
