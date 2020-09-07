@@ -90,7 +90,7 @@ class QuestionListPage extends React.Component {
                     <th>Status</th>
                 </tr></thead>
                 <tbody>
-                    { this.getFilteredquestionList().map((x, i) => this.getQuestionRow(x, i))}
+                    { [...this.getFilteredquestionList()].sort((a,b) => moment(a.resolvedOn).isBefore(b.resolvedOn) ? 1 : -1).map((x, i) => this.getQuestionRow(x, i))}
                 </tbody>
             </Table>
         )
