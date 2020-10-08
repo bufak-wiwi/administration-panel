@@ -117,7 +117,7 @@ class DashboardPage extends React.Component {
         }
         <Row>
           <Col md="12" xs="12">
-            <UploadInformationCard show={true}/>
+            <UploadInformationCard show={false}/>
           </Col>
         </Row>
         { !currentlyBufak(conference) && 
