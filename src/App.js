@@ -19,6 +19,8 @@ import DataProtectionPage from './pages/DataProtectionPage'
 import WorkshopApplicationPage from './pages/WorkshopApplicationPage'
 import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
 import WorkshopSuggestionPage from './pages/WorkshopSuggestionPage'
+import VotingListPage from './pages/VotingListPage'
+import VotingPage from './pages/VotingPage'
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -29,6 +31,8 @@ import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
 //SuperAdmin
 import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
 import ConferenceDetailsPage from './pages/superAdmin/ConferenceDetailsPage';
+import QuestionListPage from './pages/superAdmin/QuestionListPage';
+import QuestionDetailsPage from './pages/superAdmin/QuestionDetailsPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -109,6 +113,18 @@ class App extends React.Component {
               layout={MainLayout}
               component={WorkshopOverviewPage}
             />
+            <PrivateRoute
+              exact
+              path="/abstimmung"
+              layout={MainLayout}
+              component={VotingListPage}
+            />
+            <PrivateRoute
+              exact
+              path="/abstimmung/:id"
+              layout={MainLayout}
+              component={VotingPage}
+            />
             <AdministratorRoute
               exact
               path="/phasen"
@@ -154,7 +170,6 @@ class App extends React.Component {
               component={ConferenceListPage}
             />
             <SuperAdminRoute
-              exact
               path="/conference/new"
               layout={MainLayout}
               component={props => (
@@ -162,10 +177,29 @@ class App extends React.Component {
               )}
             />
             <SuperAdminRoute
-              exact
               path="/conference/:id"
               layout={MainLayout}
               component={ConferenceDetailsPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/"
+              layout={MainLayout}
+              component={QuestionListPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/new"
+              layout={MainLayout}
+              component={props => (
+                <QuestionDetailsPage {...props} empty={true} />
+              )}
+            />
+            <SuperAdminRoute
+              exact
+              path="/question/:id"
+              layout={MainLayout}
+              component={QuestionDetailsPage}
             />
             <Redirect to="/" />
           </Switch>

@@ -37,6 +37,12 @@ const { Types, Creators } = createActions({
   updateApplication: ['application'],
   uploadApplication: ['application'],
   updatePassword: ['password'],
+  generateAuthenticationKeys: ['otherKeysCount'],
+  updatePasswordList: ['passwordList'],
+  getPasswordList: null,
+  getBadgeList: null,
+  updateBadgeList: ['badgeList'],
+  resetConferenceState: null,
   // superAdmin
   getTempConference: ['conferenceId'],
   updateTempConference: ['tempConference'],
@@ -60,9 +66,12 @@ export const INITIAL_STATE = Immutable({
     application: null,
     // password protection
     password: '',
+    passwordList: [],
     isPasswordValid: false,
     priority: 0,
     isOtherKey: false,
+    // badge
+    badgeList: [],
     // superAdmin
     tempConference: null,
   })
@@ -99,8 +108,16 @@ export const updateApplication = (state, { application }) =>
 export const updatePassword = (state, { password }) =>
   state.merge({ password })
 
-  export const updateTempConference = (state, { tempConference }) =>
+export const updateTempConference = (state, { tempConference }) =>
   state.merge({ tempConference })
+  
+export const updatePasswordList = (state, { passwordList }) =>
+  state.merge({ passwordList })
+
+export const updateBadgeList = (state, { badgeList }) =>
+  state.merge({ badgeList })
+
+export const resetConferenceState = () => INITIAL_STATE
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -116,4 +133,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_APPLICATION]: updateApplication,
   [Types.UPDATE_PASSWORD]: updatePassword,
   [Types.UPDATE_TEMP_CONFERENCE]: updateTempConference,
+  [Types.UPDATE_PASSWORD_LIST]: updatePasswordList,
+  [Types.UPDATE_BADGE_LIST]: updateBadgeList,
+  [Types.RESET_CONFERENCE_STATE]: resetConferenceState,
 })

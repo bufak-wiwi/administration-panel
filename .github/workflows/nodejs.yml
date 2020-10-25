@@ -22,7 +22,7 @@ jobs:
     - name: Create config directory
       run: mkdir src/config
     - name: Create globals.tsx with secret apiKey and baseURL
-      run: echo -e "export const conferenceID = 3;\nexport const baseURL = \"${{ secrets.baseURL }}\";\nexport const apiKey = \"${{ secrets.apiKey }}\";" > src/config/globals.tsx
+      run: echo -e "export const baseURL = \"${{ secrets.baseURL }}\";\nexport const apiKey = \"${{ secrets.apiKey }}\";" > src/config/globals.tsx
     - name: Build
       run: yarn build
       env:

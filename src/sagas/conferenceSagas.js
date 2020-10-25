@@ -11,13 +11,27 @@ export function* getConference() {
         const { token } = yield select(state => state.auth)
         if (conferenceId && token ) {
             const conference = yield call(apiFetch, `conferences/${conferenceId}`, 'get')
-            yield put(ConferenceActions.updateConference(conference))
+            yield put(ConferenceActions.updateConference(parseAddFields(conference)))
             yield put(ConferenceActions.updateConferenceFetching(false))
         }
     } catch(e) {
         yield put(ConferenceActions.updateConferenceFetching(false))
         yield put(ConferenceActions.updateConferenceError(true))
         console.log('GetConference', e)
+    }
+}
+
+/**
+ * parses the addFields property as JSON and concacts all data to the conference
+ * @param {*} conference the conference
+ */
+function parseAddFields(conference) {
+    try {
+        const addFields = JSON.parse(conference.addFields)
+        return {...addFields, ...conference}
+    } catch (e) {
+        console.log("Error parsing addFields", e)
+        return conference
     }
 }
 
@@ -253,5 +267,37 @@ export function* updateExistingConference(params) {
         yield put(ConferenceActions.updateConferenceFetching(false))
         yield put(ConferenceActions.updateConferenceError(true))
         console.log('updateExistingConference', e)
+    }
+}
+
+export function* generateAuthenticationKeys(action) {
+    try {
+        const { otherKeysCount } = action
+        yield call(apiFetch, 'ApplicationAuths/generate', 'PUT', {otherKeysCount})
+        yield call(getPasswordList)
+    } catch(e) {
+        console.log('Error generating Authentication Keys', e)
+    }
+}
+
+export function* getPasswordList() {
+    try {
+        const result = yield call(apiFetch, 'ApplicationAuths/forConference')
+        if (result) {
+            yield put(ConferenceActions.updatePasswordList(result))
+        }
+    } catch (e) {
+        console.log('Error getting Passwordlist', e)
+    }
+}
+
+export function* getBadgeList() {
+    try {
+        const result = yield call(apiFetch, 'Export/badges')
+        if (result) {
+            yield put(ConferenceActions.updateBadgeList(result))
+        }
+    } catch(e) {
+        console.log("Error downloading Badges", e)
     }
 }

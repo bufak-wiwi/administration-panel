@@ -1,4 +1,5 @@
 import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
+import logoImage from 'assets/img/logo/logo_full_white.png';
 import SourceLink from 'components/SourceLink';
 import React from 'react';
 import {
@@ -6,7 +7,7 @@ import {
   MdAssignment,
   MdKeyboardArrowDown,
   MdSettings,
-  MdAccessTime,
+  MdReport,
   MdAssignmentInd,
   MdPerson,
   MdGroup,
@@ -14,6 +15,7 @@ import {
   MdSpeakerNotes,
   MdSecurity,
   MdBusiness,
+  MdPoll
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -34,6 +36,7 @@ const sidebarBackground = {
 
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
+  { to: '/abstimmung', name: 'Abstimmung', exact: false, Icon: MdPoll},
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
   { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},
   { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
@@ -41,13 +44,14 @@ const navItems = [
 ];
 
 const navAdminItems = [
-  { to: '/phasen', name: "Phasen", exact: true, Icon: MdAccessTime},
+  { to: '/phasen', name: "Einstellungen", exact: true, Icon: MdSettings},
   { to: '/application', name: "Anmeldungen", exact: false, Icon: MdAssignmentInd},
   { to: '/workshop-list', name: "Workshop-Liste", exact: false, Icon: MdGroup},
 ];
 
 const navSuperAdminItems = [
-  { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness}
+  { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness},
+  { to: '/question', name: "Abstimmungen", exact: false, Icon: MdPoll},
 ]
 
 
@@ -75,9 +79,9 @@ class Sidebar extends React.Component {
         <div className={bem.e('background')} style={sidebarBackground} />
         <div className={bem.e('content')}>
         <Navbar>
-            <SourceLink className="navbar-brand d-flex">
+            <SourceLink>
               <span className="text-white">
-                BuFaK WiSo
+                <img src={logoImage} alt="BuFaK WiSo" width="100%"></img>
               </span>
             </SourceLink>
           </Navbar>
@@ -105,8 +109,8 @@ class Sidebar extends React.Component {
                   >
                     <BSNavLink className={bem.e('nav-item-collapse')}>
                       <div className="d-flex">
-                        <MdSettings className={bem.e('nav-item-icon')} />
-                        <span className=" align-self-start">Ausrichter</span>
+                        <MdReport className={bem.e('nav-item-icon')} />
+                        <span className="text-uppercase align-self-start">Ausrichter</span>
                       </div>
                       <MdKeyboardArrowDown
                         className={bem.e('nav-item-icon')}

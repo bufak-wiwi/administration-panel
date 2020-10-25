@@ -5,6 +5,7 @@ const rootReducer = combineReducers({
     conference: require('./conferenceRedux').reducer,
     council: require('./councilRedux').reducer,
     workshop: require('./workshopRedux').reducer,
+    voting: require('./votingRedux').reducer,
 })
 
 export default rootReducer

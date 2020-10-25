@@ -23,7 +23,7 @@ class WorkshopApplicationCard extends Component {
   renderAppliedCard() {
       return (
           <Card>
-              <CardHeader>Workshop Anmeldung</CardHeader>
+              <CardHeader>Workshopanmeldung</CardHeader>
               <CardBody>
                   <Alert color="success">
                       <MdCheckCircle size={30}/> Deine Anmeldung wurde erfolgreich abgeschickt.
@@ -36,7 +36,7 @@ class WorkshopApplicationCard extends Component {
   createICal(workshopApplication) {
     return ical({
         domain: 'bufak-wiso.de',
-        prodId: {company: 'bufak-wiso', product: 'BuFaK Jena', language: 'DE'},
+        prodId: {company: 'bufak-wiso', product: this.props.conference.name, language: 'DE'},
         events:  this.getSortedWorkshops(workshopApplication).map(x => ({
             start: moment(x.workshop.start),
             end: moment(x.workshop.start).add(x.workshop.duration, 'minutes'),
@@ -44,13 +44,16 @@ class WorkshopApplicationCard extends Component {
             summary: x.workshop.name,
             description: x.workshop.overview,
             location: x.workshop.place || 'tba' , 
-            organizer: x.workshop.hostName + ' <vorstand-fsr.wiwi@uni-jena.de>'
+            organizer: x.workshop.hostName + ' <rat@bufak-wiso.de>'
         }))
     }).toURL();
   }
 
   getSortedWorkshops(workshopApplication) {
-    return [...workshopApplication].sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1).filter(x => x.status === "IsAttendee")
+    return [...workshopApplication]
+        .sort((x,y) => x.workshop.start > y.workshop.start ? 1 : -1)
+        .filter(x => x.status === "IsAttendee")
+        .filter(x => x.workshop && x.workshop.conferenceID === this.props.conferenceId)
   }
 
   renderAttendeeCard(workshopApplication) {
@@ -89,10 +92,10 @@ class WorkshopApplicationCard extends Component {
   renderPhaseClosedCard() {
     return (
         <Card>
-            <CardHeader>Workshop Anmeldung</CardHeader>
+            <CardHeader>Workshopanmeldung</CardHeader>
             <CardBody>
                 <Alert color="danger">
-                    <MdWatchLater size={30}/> Keine laufende Workshop Anmeldung.
+                    <MdWatchLater size={30}/> Keine laufende Workshopanmeldung.
                 </Alert>
             </CardBody>
         </Card>
@@ -102,7 +105,7 @@ class WorkshopApplicationCard extends Component {
   renderUnappliedCard() {
     return (
         <Card>
-            <CardHeader >Workshop Anmeldung</CardHeader>
+            <CardHeader >Workshopanmeldung</CardHeader>
             <CardBody>
                 <Alert color="info">
                     <MdAlarm size={30}/> Du hast dich noch nicht für deine Workshops angemeldet.
@@ -128,7 +131,6 @@ class WorkshopApplicationCard extends Component {
     }
 
     const status = getWorkshopApplicationStatus(workshopApplication, conference.workshopApplicationPhase, userForConference, conferenceId);
-
     switch(status) {
         case noAttendee: return this.renderPhaseClosedCard();
         case attendee: return this.renderAttendeeCard(workshopApplication);
