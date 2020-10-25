@@ -17,6 +17,8 @@ jobs:
         node-version: '10.x'
     - name: Install Dependencies
       run: yarn
+    - name: Run tests
+      run: yarn test
     - name: Build
       run: yarn build
       env:

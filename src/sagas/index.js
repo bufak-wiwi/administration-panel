@@ -28,6 +28,9 @@ import {
   getApplication,
   uploadApplication,
   checkPassword,
+  updateExistingConference,
+  createNewConference,
+  getTempConference,
 } from './conferenceSagas'
 import { getCouncil, getCouncilList } from './councilSagas'
 import { 
@@ -65,6 +68,9 @@ export default function * root () {
     takeEvery(ConferenceTypes.GET_APPLICATION, getApplication),
     takeEvery(ConferenceTypes.UPLOAD_APPLICATION, uploadApplication), 
     takeEvery(ConferenceTypes.CHECK_PASSWORD, checkPassword),
+    takeEvery(ConferenceTypes.GET_TEMP_CONFERENCE, getTempConference),
+    takeLatest(ConferenceTypes.CREATE_NEW_CONFERENCE, createNewConference),
+    takeLatest(ConferenceTypes.UPDATE_EXISTING_CONFERENCE, updateExistingConference),
     // Council
     takeEvery(CouncilTypes.GET_COUNCIL, getCouncil),
     takeEvery(CouncilTypes.GET_COUNCIL_LIST, getCouncilList),

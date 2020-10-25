@@ -184,3 +184,74 @@ export function* getUsers() {
         console.log('GetUser', e)
     }
 }
+
+export function* getTempConference(params) {
+    try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+        yield put(ConferenceActions.updateConferenceSuccess(false))
+        const { conferenceId } = params
+        if (conferenceId) {
+            const conference = yield call(apiFetch, `conferences/${conferenceId}`, 'get')
+            yield put(ConferenceActions.updateTempConference(conference))
+            yield put(ConferenceActions.updateConferenceFetching(false))
+            yield put(ConferenceActions.updateConferenceSuccess(true))
+        } else {
+            console.log(conferenceId)
+            yield put(ConferenceActions.updateConferenceFetching(false))
+            yield put(ConferenceActions.updateConferenceError(true))
+            yield put(ConferenceActions.updateConferenceSuccess(false))
+        }
+    } catch(e) {
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+        yield put(ConferenceActions.updateConferenceSuccess(false))
+        console.log('GetTempConference', e)
+    }
+}
+
+export function* createNewConference(params) {
+    try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+        yield put(ConferenceActions.updateConferenceSuccess(false))
+        const { conference } = params
+        if (conference) {
+            const response = yield call(apiFetch, 'conferences', 'post', conference)
+            if (response) {
+                yield put(ConferenceActions.updateTempConference(conference))
+                yield put(ConferenceActions.updateConferenceFetching(false))
+                yield put(ConferenceActions.updateConferenceSuccess(true))
+            } else {
+                yield put(ConferenceActions.updateConferenceFetching(false))
+                yield put(ConferenceActions.updateConferenceError(true))
+            }
+        }
+    } catch(e) {
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+        console.log('createNewConference', e)
+    }
+}
+
+export function* updateExistingConference(params) {
+    try {
+        yield put(ConferenceActions.updateConferenceFetching(true))
+        yield put(ConferenceActions.updateConferenceError(false))
+        const { conference } = params
+        if (conference && conference.conferenceID) {
+            const response = yield call(apiFetch, `conferences/${conference.conferenceID}`, 'put', conference)
+            if (response) {
+                yield put(ConferenceActions.updateTempConference(conference))
+                yield put(ConferenceActions.updateConferenceFetching(false))
+            } else {
+                yield put(ConferenceActions.updateConferenceFetching(false))
+                yield put(ConferenceActions.updateConferenceError(true))
+            }
+        }
+    } catch(e) {
+        yield put(ConferenceActions.updateConferenceFetching(false))
+        yield put(ConferenceActions.updateConferenceError(true))
+        console.log('updateExistingConference', e)
+    }
+}

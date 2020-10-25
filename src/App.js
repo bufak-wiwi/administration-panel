@@ -28,6 +28,7 @@ import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
 
 //SuperAdmin
 import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
+import ConferenceDetailsPage from './pages/superAdmin/ConferenceDetailsPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -151,6 +152,20 @@ class App extends React.Component {
               path="/conference/"
               layout={MainLayout}
               component={ConferenceListPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/conference/new"
+              layout={MainLayout}
+              component={props => (
+                <ConferenceDetailsPage {...props} empty={true} />
+              )}
+            />
+            <SuperAdminRoute
+              exact
+              path="/conference/:id"
+              layout={MainLayout}
+              component={ConferenceDetailsPage}
             />
             <Redirect to="/" />
           </Switch>

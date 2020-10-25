@@ -17,6 +17,8 @@ jobs:
         node-version: '10.x'
     - name: Install Dependencies
       run: yarn
+    - name: Run tests
+      run: yarn test
     - name: Create config directory
       run: mkdir src/config
     - name: Create globals.tsx with secret apiKey and baseURL

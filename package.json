@@ -48,9 +48,11 @@
     "**/**/serialize-javascript": "^2.1.1"
   },
   "devDependencies": {
+    "enzyme": "^3.11.0",
     "gh-pages": "^1.2.0",
     "node-sass": "^4.13.0",
     "react-scripts": "2.1.8",
+    "react-test-renderer": "^17.0.1",
     "serve": "^10.1.2",
     "stylelint": "^9.3.0",
     "stylelint-config-recommended-scss": "^3.2.0",

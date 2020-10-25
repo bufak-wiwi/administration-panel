@@ -1,6 +1,20 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
+/**
+ * Sort the conferences first based on whether the end of the conference is still in the future and then descending from the start date
+ * @param {*} conferenceList unsorted array of conferences
+ * @return sorted array based on date, so that the last conference will always be the latest
+ */
+export const sortedConferenceList = (conferenceList) =>  conferenceList.sort((a,b) => {
+  const today = new Date().setHours(0,0,0,)
+    var endA = (new Date(a.dateEnd) - today) > -1
+    var endB = (new Date(b.dateEnd) - today) > -1
+    if (endA > endB) return 1
+    if (endA < endB) return -1
+    return new Date(b.dateStart) - new Date(a.dateStart)
+})
+
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
@@ -8,6 +22,7 @@ const { Types, Creators } = createActions({
   getConferenceList: null,
   updateConferenceId: ['conferenceId'],
   updateConferenceError: ['error'],
+  updateConferenceSuccess: ['success'],
   updateConference: ['conference'],
   getConference: null,
   applyForConference: ['data'],
@@ -22,6 +37,11 @@ const { Types, Creators } = createActions({
   updateApplication: ['application'],
   uploadApplication: ['application'],
   updatePassword: ['password'],
+  // superAdmin
+  getTempConference: ['conferenceId'],
+  updateTempConference: ['tempConference'],
+  updateExistingConference: ['conference'],
+  createNewConference: ['conference'],
 })
 
 export const ConferenceTypes = Types
@@ -34,6 +54,7 @@ export const INITIAL_STATE = Immutable({
     conferenceId: null,
     conference: null,
     error: false,
+    success: false,
     fetching: false,
     applicationList: [],
     application: null,
@@ -42,12 +63,14 @@ export const INITIAL_STATE = Immutable({
     isPasswordValid: false,
     priority: 0,
     isOtherKey: false,
+    // superAdmin
+    tempConference: null,
   })
 
 /* ------------- Reducers ------------- */
 
 export const updateConferenceList = (state, { conferenceList }) => 
-  state.merge({ conferenceList, conferenceId: conferenceList[conferenceList.length -1].conferenceID })
+  state.merge({ conferenceList, conferenceId: sortedConferenceList(conferenceList)[conferenceList.length -1].conferenceID })
 
 export const updateConferenceId = (state, { conferenceId }) =>
   state.merge({ conferenceId })
@@ -57,6 +80,9 @@ export const updateConference = (state, { conference }) =>
 
 export const updateConferenceError = (state, { error }) =>
   state.merge({ error })
+
+export const updateConferenceSuccess = (state, { success }) =>
+  state.merge({ success })
 
 export const updateConferenceFetching = (state, { fetching }) =>
   state.merge({ fetching })
@@ -73,6 +99,9 @@ export const updateApplication = (state, { application }) =>
 export const updatePassword = (state, { password }) =>
   state.merge({ password })
 
+  export const updateTempConference = (state, { tempConference }) =>
+  state.merge({ tempConference })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -80,9 +109,11 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_CONFERENCE_ID]: updateConferenceId,
   [Types.UPDATE_CONFERENCE]: updateConference,
   [Types.UPDATE_CONFERENCE_ERROR]: updateConferenceError,
+  [Types.UPDATE_CONFERENCE_SUCCESS]: updateConferenceSuccess,
   [Types.UPDATE_CONFERENCE_FETCHING]: updateConferenceFetching,
   [Types.UPDATE_IS_PASSWORD_VALID]: updateIsPasswordValid,
   [Types.UPDATE_APPLICATION_LIST]: updateApplicationList,
   [Types.UPDATE_APPLICATION]: updateApplication,
   [Types.UPDATE_PASSWORD]: updatePassword,
+  [Types.UPDATE_TEMP_CONFERENCE]: updateTempConference,
 })

@@ -41,7 +41,8 @@ class ConferenceListPage extends React.Component {
     }
 
     getCouncileName(id) {
-        return this.props.councilList.filter(x => x.councilID === id)[0].name
+        var council = this.props.councilList.filter(x => x.councilID === id)[0]
+        return council ? council.name : `Fehlerhaft (ID: ${id})`
     }
 
     renderList() {
@@ -58,7 +59,7 @@ class ConferenceListPage extends React.Component {
                 </tr></thead>
                 <tbody>
                     { this.getFilteredConferenceList().map((x, i) => 
-                        <tr key={x.conferenceID} onClick={() => this.props.history.push('/conferences/' + x.conferenceID)}>
+                        <tr key={x.conferenceID} onClick={() => this.props.history.push('/conference/' + x.conferenceID)}>
                             <th scope="row">{i+1}</th>
                             <td>{x.name}</td>
                             <td>{moment(x.dateStart).format('DD.MM.YYYY')}</td>
