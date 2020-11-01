@@ -21,6 +21,18 @@ export const toGermanTime = (x) => {
     return moment(x).format('dddd HH:mm') + ' Uhr'
 }
 
+export const isValidJsonString = (jsonString) => {
+    if(!(jsonString && typeof jsonString === "string")){
+        return false;
+    }
+    try {
+       JSON.parse(jsonString);
+       return true;
+    } catch(error) {
+        return false;
+    } 
+}
+
 export async function apiFetch(path, method, body) {
     const { auth } = store.getState()
     const { conferenceId } = store.getState().conference

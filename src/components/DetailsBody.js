@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 import Select from 'react-select'
 import moment from 'moment';
+import JSONEditor from './JSONEditor';
 require('moment/locale/de.js')
 
 class DetailsBody extends Component {
@@ -131,6 +132,18 @@ class DetailsBody extends Component {
                             id={property.id}
                             value={object[property.id]}
                             onChange={e => this.props.onChange(property.id, e.currentTarget.value)}
+                        />
+                    </FormGroup> 
+                )
+            case 'json': 
+                return (
+                    <FormGroup>
+                        <Label key={property.id + 'label'} for={property.id}>{property.name}</Label>
+                        <JSONEditor 
+                            key={property.id}
+                            disabled={disabled}
+                            value={object[property.id]}
+                            onChange={e => this.props.onChange(property.id, e)}
                         />
                     </FormGroup> 
                 )

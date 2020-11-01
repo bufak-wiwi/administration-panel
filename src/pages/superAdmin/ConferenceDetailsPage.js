@@ -15,7 +15,7 @@ import DetailsHeader from '../../components/DetailsHeader'
 import DetailsBody from '../../components/DetailsBody'
 import { Redirect } from 'react-router-dom';
 import Delete from '../../components/Delete';
-import { shouldObjectBeUpdated } from '../../utils/functions';
+import { shouldObjectBeUpdated, isValidJsonString } from '../../utils/functions';
 
 const emptyConference = {
     name: '',
@@ -57,7 +57,7 @@ class ConferenceDetailsPage extends React.Component {
                 ], md: 12, xs: 12},
                 { name: 'Teilnehmerkosten', type: 'text', id: 'attendeeCost', md: 6, xs: 12},
                 { name: 'Alumnuskosten', type: 'text', id: 'alumnusCost', md: 6, xs: 12},
-                { name: 'Weitere Felder', type: 'custom', id: 'AddFields', md: 12, xs: 12},
+                { name: 'Weitere Felder', type: 'json', id: 'addFields', md: 12, xs: 12, xl: 12},
             ]
         }
     }
@@ -101,19 +101,7 @@ class ConferenceDetailsPage extends React.Component {
 
     isConferenceValid() {
         const { name, dateStart, dateEnd, addFields, councilID} = this.state.conference
-        return name && dateStart && dateEnd && councilID && this.isValidJsonString(addFields)
-    }
-
-    isValidJsonString(jsonString) {
-        if(!(jsonString && typeof jsonString === "string")){
-            return false;
-        }
-        try {
-           JSON.parse(jsonString);
-           return true;
-        } catch(error) {
-            return false;
-        } 
+        return name && dateStart && dateEnd && councilID && isValidJsonString(addFields)
     }
 
     onSave() {
