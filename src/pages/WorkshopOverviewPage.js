@@ -1,4 +1,4 @@
-import Page from 'components/Page';
+import Page from '../components/Page';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Card, CardBody, Row, Col } from 'reactstrap'

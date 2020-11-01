@@ -1,4 +1,4 @@
-import { Content, Footer, Header, Sidebar } from 'components/Layout';
+import { Content, Footer, Header, Sidebar } from './';
 import React from 'react';
 import { isMobileDevice } from '../../utils/functions';
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import PropTypes from 'prop-types';
 
 export default {

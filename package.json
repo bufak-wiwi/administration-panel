@@ -53,9 +53,10 @@
   },
   "devDependencies": {
     "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
     "gh-pages": "^1.2.0",
     "node-sass": "^4.13.0",
-    "react-scripts": "2.1.8",
+    "react-scripts": "^4.0.0",
     "react-test-renderer": "^17.0.1",
     "serve": "^10.1.2",
     "stylelint": "^9.3.0",

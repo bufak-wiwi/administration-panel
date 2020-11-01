@@ -1,6 +1,6 @@
-import sidebarBgImage from 'assets/img/sidebar/sidebar-4.jpg';
-import logoImage from 'assets/img/logo/logo_full_white.png';
-import SourceLink from 'components/SourceLink';
+import sidebarBgImage from '../../assets/img/sidebar/sidebar-4.jpg';
+import logoImage from '../../assets/img/logo/logo_full_white.png';
+import SourceLink from '../SourceLink';
 import React from 'react';
 import {
   MdHome,
@@ -25,7 +25,7 @@ import {
   NavLink as BSNavLink,
   Collapse,
 } from 'reactstrap';
-import bn from 'utils/bemnames';
+import bn from '../../utils/bemnames';
 import { isAdministrator, IsSuperAdmin } from '../PrivateRoute'
 
 const sidebarBackground = {

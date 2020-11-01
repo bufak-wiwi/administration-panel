@@ -1,4 +1,4 @@
-import logo200Image from 'assets/img/logo/logo_200.png';
+import logo200Image from '../assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import React from 'react';

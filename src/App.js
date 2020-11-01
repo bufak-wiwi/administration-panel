@@ -1,10 +1,10 @@
-import GAListener from 'components/GAListener';
-import { MainLayout, EmptyLayout } from 'components/Layout';
-import LayoutRoute from 'components/Layout/LayoutRoute'
+import GAListener from './components/GAListener';
+import { MainLayout, EmptyLayout } from './components/Layout';
+import LayoutRoute from './components/Layout/LayoutRoute'
 import { connect } from 'react-redux'
 import React from 'react';
-import AuthPage from 'pages/AuthPage';
-import { STATE_LOGIN, STATE_SIGNUP } from 'components/AuthForm';
+import AuthPage from './pages/AuthPage';
+import { STATE_LOGIN, STATE_SIGNUP } from './components/AuthForm';
 import componentQueries from 'react-component-queries';
 import { BrowserRouter, Redirect, Switch } from 'react-router-dom';
 import AuthActions from './redux/authRedux';
@@ -26,7 +26,7 @@ import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
 import ApplicationDetailsPage from './pages/administrator/ApplicationDetailsPage';
 import WorkshopListPage from './pages/administrator/WorkshopListPage';
-import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
+import WorkshopDetailsPage from './pages/administrator/WorkshopDetailsPage';
 
 //SuperAdmin
 import ConferenceListPage from './pages/superAdmin/ConferenceListPage';

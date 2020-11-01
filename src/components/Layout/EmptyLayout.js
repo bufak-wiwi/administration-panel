@@ -1,4 +1,4 @@
-import { Content } from 'components/Layout';
+import Content from './Content';
 import React from 'react';
 
 const EmptyLayout = ({ children, ...restProps }) => (

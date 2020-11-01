@@ -14,7 +14,7 @@ import {
   Input,
 } from 'reactstrap';
 import { Redirect } from 'react-router-dom';
-import bn from 'utils/bemnames';
+import bn from '../../utils/bemnames';
 
 const bem = bn.create('header');
 
