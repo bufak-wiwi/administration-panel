@@ -73,7 +73,7 @@ class WorkshopSuggestionPage extends React.Component {
     }
 
     render() {
-        const { error, success, conference } = this.props;
+        const { error, success, conference, fetching } = this.props;
         const { workshop, redirect } = this.state;
 
         if (!conference || !conference.workshopSuggestionPhase) {
@@ -92,6 +92,12 @@ class WorkshopSuggestionPage extends React.Component {
             )
         }
 
+        if (fetching) {
+            return (
+                <PageSpinner />
+            )
+        }
+
         return (
             <Page
                 className="WorkshopDetailsPage"
@@ -107,7 +113,7 @@ class WorkshopSuggestionPage extends React.Component {
                                     <DetailsHeader
                                         title={'Neuen Workshop einreichen'}
                                         empty={true}
-                                        onCreate={() => this.props.createNewWorkshop(workshop)}
+                                        onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
                                         editing={true}
                                         onSave={() => this.onSave()}
                                         disabled={!this.isWorkshopValid()}
@@ -142,7 +148,7 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = (dispatch) => {
     return {
         getUsers: () => dispatch(WorkshopActions.getUsers()),
-        createNewWorkshop: (workshop) => dispatch(WorkshopActions.createNewWorkshop(workshop)),
+        createNewWorkshopSuggestion: (workshop) => dispatch(WorkshopActions.createNewWorkshopSuggestion(workshop)),
         clearFetching: () => dispatch(WorkshopActions.updateFetching(false)),
         clearSuccess: () => dispatch(WorkshopActions.updateSuccess(false)),
     }
