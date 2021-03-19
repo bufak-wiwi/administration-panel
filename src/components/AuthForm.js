@@ -147,7 +147,7 @@ class AuthForm extends React.Component {
 
     if (isFetching) {
       return (
-        <Spinner color="secondary" />
+        <Spinner color="white" />
       )
     }
     if (!buttonText && this.isLogin) {

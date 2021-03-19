@@ -16,6 +16,7 @@ const { Types, Creators } = createActions({
     updateSuccess: ['success'],
     updateError: ['error'],
     createNewWorkshop: ['workshop'],
+    createNewWorkshopSuggestion: ['workshop'],
     updateExistingWorkshop: ['workshop'],
     deleteWorkshop: ['id'],
     uploadWorkshopApplication: ['application'],

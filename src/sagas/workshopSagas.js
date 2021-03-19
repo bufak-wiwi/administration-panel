@@ -53,6 +53,29 @@ export function* createNewWorkshop(params) {
     }
 }
 
+export function* createNewWorkshopSuggestion(params) {
+    try {
+        yield put(WorkshopActions.updateFetching(true))
+        yield put(WorkshopActions.updateError(false))
+        yield put(WorkshopActions.updateSuccess(false))
+        var { workshop } = params;
+        workshop.conferenceID = yield select(state => state.conference.conferenceId);
+        const result = yield call(apiFetch, 'workshops/suggestion/', 'post', workshop)
+        if (result) {
+            yield put(WorkshopActions.updateFetching(false))
+            yield put(WorkshopActions.updateSuccess(true))
+            alert('Workshop-Vorschlag wurde erfolgreich hochgeladen')
+        } else {
+            yield put(WorkshopActions.updateError(true))
+            yield put(WorkshopActions.updateFetching(false))
+        }
+    } catch(e) {
+        console.log('updateWorkshop', e)
+        yield put(WorkshopActions.updateError(true))
+        yield put(WorkshopActions.updateFetching(false))
+    }
+}
+
 export function* updateExistingWorkshop(params) {
     try {
         yield put(WorkshopActions.updateFetching(true))
