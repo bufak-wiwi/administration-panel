@@ -254,11 +254,6 @@ export function getQuestionStatusColor(question) {
     }
 }
 
-export function isQuestionSecret(question) {
-    const majority = getMajorityOfQuestion(question)
-    return majority.secret === "1"
-}
-
 export function getCouncilPriorityOfUser() {
     const { userForConference } = store.getState().auth
     const { conferenceId } = store.getState().conference
@@ -272,7 +267,7 @@ export function getCouncilPriorityOfUser() {
     return confObj.priority
 }
 
-export function isUserAllowedToVote() {
+export function isUserAllowedToVote(question) {
     const { userForConference } = store.getState().auth
     const { conferenceId } = store.getState().conference
     if (!userForConference || !conferenceId) {
@@ -280,7 +275,12 @@ export function isUserAllowedToVote() {
     }
 
     var conferenceObj = userForConference.find(x => x.conference_ID === conferenceId)
-    return conferenceObj && conferenceObj.attendee && !conferenceObj.rejected && !conferenceObj.isAlumnus && !conferenceObj.isHelper
+    return conferenceObj
+        && conferenceObj.attendee
+        && !conferenceObj.rejected
+        && !conferenceObj.isAlumnus
+        && !conferenceObj.isHelper
+        && (!question || !question.isSecret || conferenceObj.priority === 1)
 }
 
 //#endregion

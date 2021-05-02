@@ -67,7 +67,7 @@ class VotingListPage extends React.Component {
         const statusColor = getQuestionStatusColor(question)
         return (
             <Card key={question.questionID} style={{ marginBottom: 10 }}>
-                <Alert color={statusColor}>{statusText.toUpperCase()}: {question.questionText} </Alert>
+                <Alert color={statusColor}>{statusText.toUpperCase()}: {question.questionText}{question.isSecret ? " (geheime Wahl)" : ""} </Alert>
                 <Col>
                     <Link to={`/abstimmung/${question.questionID}`}>
                         <Button block>{ isUserAllowedToVote() ? "zur Abstimmung" : "Details anzeigen"}</Button>

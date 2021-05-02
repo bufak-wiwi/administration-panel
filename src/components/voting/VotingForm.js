@@ -49,11 +49,16 @@ class VotingForm extends Component {
     setHelperText(councilAnswer) {
         var helperText = ""
         var canUserOverwrite = false
+        const { question } = this.props
         if(this.canUserOverwriteVote(councilAnswer)) {
             helperText = "Beachte: Deine Wahl kann von jemanden mit einer höheren Priorität aus deiner Fachschaft überstimmt werden." 
             canUserOverwrite = true
         } else {
-            helperText = "Du kannst leider nicht mehr abstimmen, da bereits jemand aus deiner Fachschaft mit einer höheren Priorität abgestimmt hat"
+            if (question && question.isSecret) {
+                helperText = "Deine Fachschaft hat bereits abgestimmt. Bei einer geheimen Wahl kann die Abstimmung nicht mehr geändert werden."
+            } else {
+                helperText = "Du kannst leider nicht mehr abstimmen, da bereits jemand aus deiner Fachschaft mit einer höheren Priorität abgestimmt hat"
+            }
         }
         this.setState({ helperText, canUserOverwrite })
     }
@@ -64,6 +69,7 @@ class VotingForm extends Component {
                 this.setState({ displayMessage: "Deine Abstimmung war leider fehlerhaft. Jemand aus deiner Fachschaft mit mit einer höheren Priorität hat bereits etwas gewählt."})
             } else if (this.props.success) {
                 this.setState({ displayMessage: "Deine Abstimmung war erfolgreich."})
+                this.setHelperText(this.props.question.councilAnswer)
             }
         }
       }
@@ -74,6 +80,7 @@ class VotingForm extends Component {
     }
 
     renderConfirm(onSubmit, vote, councilAnswer) {
+        const { question } = this.props
         return (
             <Dialog
                 open={this.state.isOpen}
@@ -86,24 +93,31 @@ class VotingForm extends Component {
                 <DialogTitle id="title">Auswahl bestätigen</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="description">
-                        Möchtest du für <b>{vote}</b> stimmen? 
+                        Möchtest du { question && question.isSecret && "wirklich"} für <b>{vote}</b> stimmen? 
                         { councilAnswer && councilAnswer.vote !== vote && " Du überschreibst damit das bisherige Votum deiner Fachschaft."}
+                        { question && question.isSecret && 
+                        <span>
+                            <b><br /><br />Da dies eine geheime Wahl ist, kannst du deine Antwort anschließend nicht mehr ändern.</b>
+                        </span>
+                        }
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button outline onClick={() => this.setState({ isOpen: false})} color="danger">Abbrechen</Button>
-                    <Button outline onClick={() => this.closeDialogAndCallSubmit(onSubmit, vote)} color="primary">Jetzt Abstimmen</Button>
+                    <Button outline onClick={() => this.closeDialogAndCallSubmit(onSubmit, vote)} color="primary">Jetzt {question && question.isSecret && " endgültig "} Abstimmen</Button>
                 </DialogActions>
             </Dialog>
         )
     }
     
     canUserOverwriteVote(councilAnswer) {
-        return !councilAnswer || getCouncilPriorityOfUser() <= councilAnswer.priority
+        const { question } = this.props
+        return !councilAnswer || (getCouncilPriorityOfUser() <= councilAnswer.priority && (!question || !question.isSecret))
     }
 
     renderCardBody() {
         const { question } = this.props
+        console.log("Die Frage ", question)
         const { vote, canUserOverwrite, helperText } = this.state
         return (
             <div>
@@ -138,7 +152,7 @@ class VotingForm extends Component {
             <Card>
                 <CardHeader style={{justifyContent: "space-between", flex: 1}}>
                     <Row style={{ justifyContent: 'space-between', marginLeft: 5}}>
-                        Abstimmung: {question.questionText}
+                        Abstimmung: {question.questionText}{question.isSecret ? " (geheime Wahl)" : ""}
                         <div>{question.totalVotes ? `(${question.totalVotes}/${question.arrivedCouncilCount} abgestimmt) ` : ''}
                         <ButtonWithTimeout text="Refresh" onClick={onReload} timeout={5000}/>
                         </div>
