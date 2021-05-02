@@ -14,7 +14,7 @@ class CouncilVote extends Component {
         }
         return (
             <Alert color="info" style={{flex: 1}}>
-                Deine Fachschaft hat für <b>{question.councilAnswer.vote}</b> abgestimmt (Prio: {question.councilAnswer.priority})
+                Deine Fachschaft hat {!question.isSecret && "für"} <b>{question.councilAnswer.vote}</b> abgestimmt (Prio: {question.councilAnswer.priority})
             </Alert>
         )
     }

@@ -19,10 +19,10 @@ class UploadInformationCard extends Component {
             <CardBody>
                 <Alert color="grey">
                     Liebe Teilnehmenden,<br />
-                    willkommen zur ersten, digitalen BuFaK! Diese gilt regulär als unsere 70. BuFaK WiSo, nur, dass wir uns nicht in Präsenz treffen können. Die genauen Infos erfolgen nach eurer erfolgten Anmeldung per Mail. <br />
+                    willkommen zur digitalen BuFaK in Hohenheim! Diese gilt regulär als unsere 72. BuFaK WiWi, nur, dass wir uns nicht in Präsenz treffen können. Die genauen Infos erfolgen nach eurer erfolgten Anmeldung per Mail. <br />
                     Wie ihr alle wahrscheinlich bereits wisst, wird unsere Konferenz von dem BMBF unterstützt. Um die Zuwendungen zu erhalten, ist es allerdings nötig, dass wir eine <b>Immatrikulationsbescheinigung</b> von euch nachweisen können.
-                    Ihr könnt sie unter diesem Link <a href="https://cloud.uni-jena.de/s/MP2EGW66GAyGTyb" target="_blank" rel="noopener noreferrer">https://cloud.uni-jena.de/s/MP2EGW66GAyGTyb</a> hochladen.<br />
-                    Bei weiteren Fragen meldet euch gerne bei Ken.<br />
+                    Ihr könnt sie unter diesem Link <a href="https://www.dropbox.com/request/0oHgO2KxJY2ea77GLFfr" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/0oHgO2KxJY2ea77GLFfr</a> hochladen.<br />
+                    Bei weiteren Fragen meldet euch gerne bei der Orga.<br />
                     Wir freuen uns auf euch!
                 </Alert>
             </CardBody> 

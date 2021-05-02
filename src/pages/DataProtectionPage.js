@@ -14,13 +14,13 @@ class DataProtectionPage extends React.Component {
             <h3>I Name und Anschrift des Verantwortlichen</h3>
             <p>Der Verantwortliche im Sinne der Datenschutz-Grundverordnung und anderer nationaler Datenschutzgesetze der Mitgliedsstaaten sowie sonstiger datenschutzrechtlicher Bestimmungen ist die:</p>
             <p>
-                BuFaK WiSo<br />
+                BuFaK WiWi<br />
                 Platz der Göttinger Sieben 3<br />
                 37073<br />
                 Deutschland<br />
                 Tel.: +49 (0) 30 27874095<br />
-                E-Mail: administration@bufak-wiso.de<br />
-                Website: <a href="https://www.bufak-wiso.de">www.bufak-wiso.de</a>
+                E-Mail: administration@bufak-wiwi.de<br />
+                Website: <a href="https://www.bufak-wiwi.org">www.bufak-wiwi.org</a>
             </p>
         </div>
         <div class="about-text">

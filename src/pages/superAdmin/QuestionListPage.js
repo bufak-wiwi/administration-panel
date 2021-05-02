@@ -82,11 +82,11 @@ class QuestionListPage extends React.Component {
                 <thead><tr>
                     <th>#</th>
                     <th>Text</th>
-                    <th>Mehrheit</th> 
+                    <th>Mehrheit</th>
                     <th>Dafür</th> 
                     <th>Dagegen</th>
                     <th>Enthaltungen</th>
-                    <th>Zeitpunkt</th>
+                    <th>Abgestimmt am</th>
                     <th>Status</th>
                 </tr></thead>
                 <tbody>
@@ -105,11 +105,11 @@ class QuestionListPage extends React.Component {
             >
                 <th scope="row">{index+1}</th>
                 <td>{question.questionText}</td>
-                <td>{this.getMajorityName(question)}</td>
+                <td>{this.getMajorityName(question)}{question.isSecret ? " (geheime Wahl)" : ""}</td>
                 <td>{question.sumYes}</td>
                 <td>{question.sumNo}</td>
                 <td>{question.sumAbstention}</td>
-                <td>{question.resolvedOn ? moment(question.resolvedOn).format('ddd, HH:mm') : ""}</td>
+                <td>{question.resolvedOn ? moment(question.resolvedOn).format('ddd, HH:mm') : "-"}</td>
                 <td onClick={e => e.stopPropagation()}>{this.getStatusButton(question)}</td>
             </tr>
         )
