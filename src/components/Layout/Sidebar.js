@@ -81,7 +81,7 @@ class Sidebar extends React.Component {
         <Navbar>
             <SourceLink>
               <span className="text-white">
-                <img src={logoImage} alt="BuFaK WiSo" width="100%"></img>
+                <img src={logoImage} alt="BuFaK WiWi" width="100%"></img>
               </span>
             </SourceLink>
           </Navbar>

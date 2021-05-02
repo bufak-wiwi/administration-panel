@@ -48,7 +48,7 @@ class DashboardPage extends React.Component {
         <CardHeader>Du hast dich nicht angemeldet</CardHeader>
         <CardBody>
           { (!conference || !conference.conferenceApplicationPhase) && 'Keine laufende Anmeldephase.'}
-          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">konfetti.bufak-wiso.de/anmeldung</Link></Alert>}
+          { conference && conference.conferenceApplicationPhase  && <Alert color="warning">Melde dich jetzt für die {conference ? conference.name : 'BuFaK'} unter dem folgenden Link an: <Link to="/anmeldung">konfetti.bufak-wiwi.org/anmeldung</Link></Alert>}
         </CardBody>
       </Card>
     )
