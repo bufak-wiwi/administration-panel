@@ -20,8 +20,8 @@ import DetailsBody from '../../components/DetailsBody'
 import { Redirect } from 'react-router-dom';
 import Delete from '../../components/Delete';
 import QuestionResults from '../../components/voting/QuestionResults'
-import { shouldObjectBeUpdated, getQuestionStatus, accepted, isQuestionSecret, unknown } from '../../utils/functions';
-import { Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { shouldObjectBeUpdated, getQuestionStatus, accepted, unknown } from '../../utils/functions';
+import { Dialog, Slide, DialogTitle, DialogContent, DialogContentText, DialogActions, Divider } from '@material-ui/core';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -30,6 +30,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const emptyQuestion = {
     questionText: '',
     isOpen: false,
+    isSecret: false,
     majorityID: 1,
     resolvedOn: null,
     sumYes: 0,
@@ -53,13 +54,19 @@ class QuestionDetailsPage extends React.Component {
                 { name: 'Status', type: 'select', id: 'isOpen', options: [
                     { value: true, name: 'Öffentlich'},
                     { value: false, name: 'Entwurf'},
-                ], md: 6, xs: 12},
+                ], md: 3, xs: 12},
+                { name: 'Abstimmungsart', type: 'select', id: 'isSecret', options: [
+                    { value: false, name: 'Offen'},
+                    { value: true, name: 'Geheim'},
+                ], md: 3, xs: 12},
                 { name: 'Mehrheit', type: 'select', id: 'majorityID', options: [], md: 6, xs: 12},
+                { name: 'Angereiste Fachschaften', type: 'number', id: 'arrivedCouncilCount', min: 0, max: 999, md: 6, xs: 12},
+                { type: "custom", component: <Divider />, md: 12, xs: 12, xl: 12, id: "divider"},
+                { type: "custom", component: <span style={{selfAlign: "center", flex: 1}}>Nur bei externen Abstimmungen eintragen:</span>, id: "title", xs: 12, md: 12, xl: 12},
                 { name: 'Abgestimmt am', type: 'datetime-local', max: '2100-12-31T23:59', id: 'resolvedOn', md: 6, xs: 12},
                 { name: 'Dafür', type: 'number', id: 'sumYes', min: 0, max: 999, md: 6, xs: 12},
                 { name: 'Dagegen', type: 'number', id: 'sumNo', min: 0, max: 999, md: 6, xs: 12},
                 { name: 'Enthaltung', type: 'number', id: 'sumAbstention', min: 0, max: 999, md: 6, xs: 12},
-                { name: 'Angereiste Fachschaften', type: 'number', id: 'arrivedCouncilCount', min: 0, max: 999, md: 6, xs: 12},
             ]
         }
     }
@@ -106,9 +113,9 @@ class QuestionDetailsPage extends React.Component {
 
     addMajorities() {
         const { questionProperties } = this.state
-        const options = questionProperties[2].options
+        const options = questionProperties[3].options
         if (options.length === 0 && this.props.majorityList.length > 0) {
-            questionProperties[2].options = this.props.majorityList.map(x => ({name: x.name, value: x.majorityID}))
+            questionProperties[3].options = this.props.majorityList.map(x => ({name: x.name, value: x.majorityID}))
             this.setState({ questionProperties })
         } 
     }
@@ -155,7 +162,7 @@ class QuestionDetailsPage extends React.Component {
     }
 
     renderVoteLists(question) {
-        if (isQuestionSecret(question) || !question.answerList || question.answerList.length === 0) {
+        if (!question.answerList || question.answerList.length === 0) {
             return <Alert color="warning">Antworten nicht einsehbar</Alert>
         }
 
@@ -165,7 +172,7 @@ class QuestionDetailsPage extends React.Component {
                     <th>#</th>
                     <th>Fachschaft</th>
                     <th>Uni</th>
-                    <th>Stimme</th> 
+                    { !question.isSecret && <th>Stimme</th> }
                     <th>Priorität</th> 
                 </tr></thead>
                 <tbody>
@@ -174,7 +181,7 @@ class QuestionDetailsPage extends React.Component {
                             <th scope="row">{index+1}</th>
                             <td>{x.council ? x.council.name : "unbekannt"}</td>
                             <td>{x.council ? x.council.university : "unbekannt"}</td>
-                            <td>{x.vote}</td>
+                            { !question.isSecret && <td>{x.vote}</td> }
                             <td>{x.priority}</td>
                         </tr>
                     )}

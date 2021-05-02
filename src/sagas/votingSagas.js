@@ -156,7 +156,12 @@ export function* postVote(params) {
         yield put(VotingActions.updateVoteFetching(true))
         const { vote, questionID } = params;
         const result = yield call(apiFetch, 'votingAnswers', 'post', { vote, questionID})
+
         if (result) {
+            const question = yield select(state => state.voting.question)
+            if (question) {
+                yield put(VotingActions.updateQuestion({...question, councilAnswer: result}))
+            }
             yield put(VotingActions.updateVoteSuccess(true))
         } else {
             yield put(VotingActions.updateVoteError(true))
