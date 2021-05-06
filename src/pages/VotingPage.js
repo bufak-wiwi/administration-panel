@@ -50,7 +50,7 @@ class VotingPage extends React.Component {
             case accepted: return <QuestionResults accepted={true} question={question} showVote={true}/>;
             case rejected: return <QuestionResults accepted={false} question={question} showVote={true}/>;
             case open: {
-                if (!isUserAllowedToVote()) {
+                if (!isUserAllowedToVote(question)) {
                     return (
                         <Delay><QuestionVotingActive question={question} fetching={fetching} onReload={() => this.props.getQuestion(this.state.id)}/></Delay>
                     )
