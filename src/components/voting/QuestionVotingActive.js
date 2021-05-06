@@ -23,7 +23,9 @@ class QuestionVotingActive extends Component {
                 <CardBody>
                     { fetching 
                     ? <PageSpinner color="primary" />
-                    : <Alert color="warning">Diese Abstimmung ist offen und wird gerade abgestimmt. Die Ergebnisse siehst du sobald diese geschlossen wurde.</Alert>
+                    : <Alert color="warning">Diese Abstimmung ist offen und wird gerade abgestimmt. Die Ergebnisse siehst du sobald diese geschlossen wurde.
+                        { question.isSecret && <span><br />Beachte, dass bei geheimen Abstimmungen nur die Priorität 1 der Fachschaft abstimmen kann.</span>}
+                    </Alert>
                 }       
                 </CardBody>
             </Card>
