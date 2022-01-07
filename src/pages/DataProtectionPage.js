@@ -87,7 +87,7 @@ class DataProtectionPage extends React.Component {
             <h6>5. Widerspruchs- und Beseitigungsmöglichkeit</h6>
             <p>Als Nutzer haben sie jederzeit die Möglichkeit, die Registrierung aufzulösen. Senden Sie dafür eine formlose E-Mail an 
                     <a href='m&#97;il&#116;o&#58;&#105;n%66o&#64;b%&#55;5%66a&#107;&#46;un&#105;-pad%65&#114;bo%72&#110;&#46;d%6&#53;' target="_blank" rel="noopener noreferrer">info&#64;bufak&#46;&#117;n&#105;-p&#97;der&#98;or&#110;&#46;d&#101;</a>.
-                Die über Sie gespeicherten Daten können Sie jederzeit abändern lassen unter <i>> Profil Aktualisieren > Jetzt Aktualisieren</i>.
+                Die über Sie gespeicherten Daten können Sie jederzeit abändern lassen unter <i> &gt Profil Aktualisieren &gt Jetzt Aktualisieren</i>.
                 Sind die Daten zur Erfüllung eines Vertrages oder zur Durchführung vorvertraglicher Maßnahmen erforderlich, ist eine vorzeitige Löschung der Daten nur möglich, soweit nicht vertragliche oder gesetzliche Verpflichtungen einer Löschung entgegenstehen.
             </p>
             <h4>Anmeldung zu einer BuFaK</h4><br />
