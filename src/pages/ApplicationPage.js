@@ -432,8 +432,8 @@ class ApplicationPage extends React.Component {
                   <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
                   Ich habe die
                   {this.props.conference.participantAgreement ? 
-                    <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnehmervereinbarung </a>
-                    : " Teilnehmervereinbarung " 
+                    <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnahmevereinbarung </a>
+                    : " Teilnahmevereinbarung " 
                   }
                   gelesen und stimme ihr zu*
                 </Label>
