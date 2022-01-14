@@ -412,32 +412,41 @@ class ApplicationPage extends React.Component {
           </Col>
         </Row>
 
-        <FormGroup check>
-          <Label for="dataprotection" check>
-            <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({dataprotection: e.target.checked}) } id="dataprotection" />{' '}
-            Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
-          </Label>
-        </FormGroup>
-        {this.props.conference.participantAgreement && 
-          <FormGroup check>
-            <Label for="participantAgreement" check>
-              <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
-              Ich habe die
-              {this.props.conference.participantAgreement ? 
-                <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnehmervereinbarung </a>
-                : " Teilnehmervereinbarung " 
-              }
-              gelesen und stimme ihr zu*
-            </Label>
-          </FormGroup>
-        }
-        <FormGroup check>
-          <Label for="newsletter" check>
-            <Input type="checkbox" value={this.state.newsletter} onChange={(e) => this.setState({newsletter: e.target.checked}) } id="newsletter" />{' '}
-            Ich möchte mich zum BuFaK-Newsletter anmelden.
-          </Label>
-        </FormGroup>
-
+        <Row>
+          {this.props.conference.informationTextConferenceApplication !== "undefined" &&
+          <Col xs="12" sm="6">
+                <h5>Hinweis des Ausrichters:</h5>
+                <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextConferenceApplication }} />                
+              </Col>
+            }
+            <Col xs="12" sm="6">
+            <FormGroup check>
+              <Label for="dataprotection" check>
+                <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({dataprotection: e.target.checked}) } id="dataprotection" />{' '}
+                Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
+              </Label>
+            </FormGroup >
+            {this.props.conference.participantAgreement && 
+              <FormGroup check>
+                <Label for="participantAgreement" check>
+                  <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
+                  Ich habe die
+                  {this.props.conference.participantAgreement ? 
+                    <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnahmevereinbarung </a>
+                    : " Teilnahmevereinbarung " 
+                  }
+                  gelesen und stimme ihr zu*
+                </Label>
+              </FormGroup>
+            }
+            <FormGroup check>
+              <Label for="newsletter" check>
+                <Input type="checkbox" value={this.state.newsletter} onChange={(e) => this.setState({newsletter: e.target.checked}) } id="newsletter" />{' '}
+                Ich möchte mich zum BuFaK-Newsletter anmelden.
+              </Label>
+            </FormGroup>
+          </Col>
+        </Row>
         <Row>
           <Col xs="6" sm="6">
             <Button onClick={() => this.setState({activeStep: 1})}>Zurück</Button>
