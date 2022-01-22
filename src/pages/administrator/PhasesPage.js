@@ -29,6 +29,15 @@ const phases = [
     { name: 'Workshop-Anmeldung', id: 'workshopApplicationPhase'}
 ]
 
+const infoTexts = [
+    { name: 'Infotext Anmeldung', id: 'informationTextConferenceApplication'},
+    { name: 'Infotext Workshops', id:'informationTextWorkshopSuggestion'}
+]
+
+const links = [
+    { name: 'Teilnahmebedingungen', id: 'linkParticipantAgreement'}
+]
+
 class DashboardPage extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +48,9 @@ class DashboardPage extends React.Component {
             workshopApplicationPhase: false,
             workshopSuggestionPhase: false,
             otherKeys: 50,
+            informationTextConferenceApplication: "Beispieltext",
+            informationTextWorkshopSuggestion: "Beispieltext",
+            linkParticipantAgreement: "Link zum ...",
         }
     }
 
@@ -64,11 +76,14 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
             workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement
         })
     }
 
@@ -79,12 +94,18 @@ class DashboardPage extends React.Component {
         const { 
             conferenceApplicationPhase,
             workshopApplicationPhase,
-            workshopSuggestionPhase
+            workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
             workshopApplicationPhase,
-            workshopSuggestionPhase
+            workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement
         })
     }
 
@@ -234,7 +255,7 @@ class DashboardPage extends React.Component {
                 <Card>
                     <CardHeader>
                         <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
-                            Anmeldephasen
+                            Einstellungen
                             <div>
                             { !this.state.editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
                             { this.state.editing && <Button onClick={() => this.onCancelPress()}>Abbrechen</Button>}
@@ -262,51 +283,40 @@ class DashboardPage extends React.Component {
                             )
                         })}
 
-                    </CardBody>
-                </Card>
-                <Card style={{marginTop: 10}}>
-                    <CardHeader>
-                        <CardTitle>
-                            Export
-                        </CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <Alert color="success">Ladet hier alle eure Anmeldungen, eure aktuellen Workshops oder die Daten für die Teilnehmerbadges als CSV herunter.</Alert>
-                        <Row>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getApplications(applicationList)}
-                                    filename={"Anmeldungen.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Anmeldungen
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getWorkshops(workshopList)}
-                                    filename={"Workshops.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Workshopliste
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getBadges(badgeList)}
-                                    filename={"badges.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Teilnehmerbadges
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                        </Row>
+                        { links.map(x => {
+                            return (
+                                <FormGroup key={'formGroup_' + x.id}>
+                                    <Label for={x.id}>{x.name}</Label>
+                                    <Input 
+                                        type="text"
+                                        id={x.id}
+                                        key={x.id}
+                                        disabled={!this.state.editing}
+                                        value={this.state[x.id]}
+                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                    >
+                                    </Input>
+                                </FormGroup>
+                            )
+                        })} 
+                        
+                        { infoTexts.map(x => {
+                            return (
+                                <FormGroup key={'formGroup_' + x.id}>
+                                    <Label for={x.id}>{x.name}</Label>
+                                    <Input 
+                                        type="textarea"
+                                        id={x.id}
+                                        key={x.id}
+                                        disabled={!this.state.editing}
+                                        value={this.state[x.id]}
+                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                    >
+                                    </Input>
+                                </FormGroup>
+                            )
+                        })} 
+
                     </CardBody>
                 </Card>
             </Col>
@@ -374,6 +384,51 @@ class DashboardPage extends React.Component {
                                 </div>                            
                             }
                         </Delay>
+                    </CardBody>
+                </Card>
+                <Card style={{marginTop: 10}}>
+                    <CardHeader>
+                        <CardTitle>
+                            Export
+                        </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Alert color="success">Ladet hier alle eure Anmeldungen, eure aktuellen Workshops oder die Daten für die Teilnehmerbadges als CSV herunter.</Alert>
+                        <Row>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getApplications(applicationList)}
+                                    filename={"Anmeldungen.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Anmeldungen
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getWorkshops(workshopList)}
+                                    filename={"Workshops.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Workshopliste
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getBadges(badgeList)}
+                                    filename={"badges.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Teilnehmerbadges
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                        </Row>
                     </CardBody>
                 </Card>
             </Col>

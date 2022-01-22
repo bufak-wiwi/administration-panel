@@ -426,13 +426,13 @@ class ApplicationPage extends React.Component {
                 Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
               </Label>
             </FormGroup >
-            {this.props.conference.participantAgreement && 
+            {this.props.conference.linkParticipantAgreement && 
               <FormGroup check>
                 <Label for="participantAgreement" check>
                   <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
                   Ich habe die
-                  {this.props.conference.participantAgreement ? 
-                    <a href={this.props.conference.participantAgreement} rel="noopener noreferrer" target="_blank"> Teilnahmevereinbarung </a>
+                  {this.props.conference.linkParticipantAgreement ? 
+                    <a href={this.props.conference.linkParticipantAgreement} rel="noopener noreferrer" target="_blank"> Teilnahmevereinbarung </a>
                     : " Teilnahmevereinbarung " 
                   }
                   gelesen und stimme ihr zu*
