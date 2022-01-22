@@ -98,39 +98,84 @@ class WorkshopSuggestionPage extends React.Component {
             )
         }
 
-        return (
-            <Page
-                className="WorkshopDetailsPage"
-            >
-                <Row>
-                    <Col>
-                        <Card>
-                            { (redirect || success) && <Redirect to="/"/>}
-                            { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
-                            { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
-                            { !redirect && 
-                                <div>
-                                    <DetailsHeader
-                                        title={'Neuen Workshop einreichen'}
-                                        empty={true}
-                                        onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
-                                        editing={true}
-                                        onSave={() => this.onSave()}
-                                        disabled={!this.isWorkshopValid()}
-                                    />
-                                    <DetailsBody
-                                        disabled={false}
-                                        object={workshop}
-                                        onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
-                                        properties={this.state.workshopProperties}
-                                    />
-                                </div>
-                            }
-                        </Card>
-                    </Col>
-                </Row>
-            </Page>
-        )
+        if (this.props.conference.informationTextWorkshopSuggestion !== undefined){
+            return (
+                <Page
+                    className="WorkshopDetailsPage"
+                >
+                    <Row>
+                        <Col>
+                            <Card>
+                                { (redirect || success) && <Redirect to="/"/>}
+                                { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
+                                { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
+                                { !redirect && 
+                                    <div>
+                                        
+                                        <DetailsHeader
+                                            title={'Neuen Workshop einreichen'}
+                                            empty={true}
+                                            onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
+                                            editing={true}
+                                            onSave={() => this.onSave()}
+                                            disabled={!this.isWorkshopValid()}
+                                        />
+                                        
+                                        <div style={{padding:'1.25rem'}}>
+                                            <h6>Hinweise des Ausrichters:</h6>
+                                            <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextWorkshopSuggestion }} /> 
+                                        </div>
+                                        <DetailsBody
+                                            disabled={false}
+                                            object={workshop}
+                                            onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
+                                            properties={this.state.workshopProperties}
+                                        />
+                                    </div>
+                                }
+                            </Card>
+                        </Col>
+                    </Row>
+                </Page>
+            )
+        } else {
+            return (
+                <Page
+                    className="WorkshopDetailsPage"
+                >
+                    <Row>
+                        <Col>
+                            <Card>
+                                { (redirect || success) && <Redirect to="/"/>}
+                                { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
+                                { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
+                                { !redirect && 
+                                    <div>
+                                        
+                                        <DetailsHeader
+                                            title={'Neuen Workshop einreichen'}
+                                            empty={true}
+                                            onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
+                                            editing={true}
+                                            onSave={() => this.onSave()}
+                                            disabled={!this.isWorkshopValid()}
+                                        />
+                                        <DetailsBody
+                                            disabled={false}
+                                            object={workshop}
+                                            onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
+                                            properties={this.state.workshopProperties}
+                                        />
+                                    </div>
+                                }
+                            </Card>
+                        </Col>
+                    </Row>
+                </Page>
+            )
+
+        }
+
     }
 }
 
