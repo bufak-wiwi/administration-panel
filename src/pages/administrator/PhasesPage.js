@@ -20,6 +20,7 @@ import CouncilActions from '../../redux/councilRedux';
 import WorkshopActions from '../../redux/workshopRedux';
 import { CSVLink } from "react-csv";
 import Delay from '../../components/Delay';
+import Tabs from "../../components/Tabs";
 import { FaDownload } from 'react-icons/fa';
 import { getPriorityOrType, getStatus, getType} from '../../utils/functions'
 
@@ -38,6 +39,11 @@ const links = [
     { name: 'Teilnahmebedingungen', id: 'linkParticipantAgreement'}
 ]
 
+const workshop = [
+    { name: 'Dauer', id: 'workshopDurations'},
+    { name: 'Topics', id: 'workshopTopics'}
+]
+
 class DashboardPage extends React.Component {
     constructor(props) {
         super(props);
@@ -51,6 +57,8 @@ class DashboardPage extends React.Component {
             informationTextConferenceApplication: "Beispieltext",
             informationTextWorkshopSuggestion: "Beispieltext",
             linkParticipantAgreement: "Link zum ...",
+            workshopDurations: "45,90,120",
+            workshopTopics :"Fachschaftsarbeit,Gremien,Rat"
         }
     }
 
@@ -76,14 +84,16 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
             workshopSuggestionPhase,
             informationTextConferenceApplication,
             informationTextWorkshopSuggestion,
-            linkParticipantAgreement
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics
         })
     }
 
@@ -97,7 +107,9 @@ class DashboardPage extends React.Component {
             workshopSuggestionPhase,
             informationTextConferenceApplication,
             informationTextWorkshopSuggestion,
-            linkParticipantAgreement
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
@@ -105,7 +117,9 @@ class DashboardPage extends React.Component {
             workshopSuggestionPhase,
             informationTextConferenceApplication,
             informationTextWorkshopSuggestion,
-            linkParticipantAgreement
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics
         })
     }
 
@@ -283,39 +297,66 @@ class DashboardPage extends React.Component {
                             )
                         })}
 
-                        { links.map(x => {
-                            return (
-                                <FormGroup key={'formGroup_' + x.id}>
-                                    <Label for={x.id}>{x.name}</Label>
-                                    <Input 
-                                        type="text"
-                                        id={x.id}
-                                        key={x.id}
-                                        disabled={!this.state.editing}
-                                        value={this.state[x.id]}
-                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
-                                    >
-                                    </Input>
-                                </FormGroup>
-                            )
-                        })} 
+                        <div>
+                            <Tabs>
+                                <div label="Info Texte">
+                                    { infoTexts.map(x => {
+                                        return (
+                                            <FormGroup key={'formGroup_' + x.id}>
+                                                <Label for={x.id}>{x.name}</Label>
+                                                <Input 
+                                                    type="textarea"
+                                                    id={x.id}
+                                                    key={x.id}
+                                                    disabled={!this.state.editing}
+                                                    value={this.state[x.id]}
+                                                    onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                >
+                                                </Input>
+                                            </FormGroup>
+                                        )
+                                    })} 
+                                </div>
+                                <div label="Workshops">
+                                    { workshop.map(x => {
+                                            return (
+                                                <FormGroup key={'formGroup_' + x.id}>
+                                                    <Label for={x.id}>{x.name}</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id={x.id}
+                                                        key={x.id}
+                                                        disabled={!this.state.editing}
+                                                        value={this.state[x.id]}
+                                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                    >
+                                                    </Input>
+                                                </FormGroup>
+                                            )
+                                        })}
+                                </div>
+                                <div label="Links">
+                                    { links.map(x => {
+                                        return (
+                                            <FormGroup key={'formGroup_' + x.id}>
+                                                <Label for={x.id}>{x.name}</Label>
+                                                <Input 
+                                                    type="text"
+                                                    id={x.id}
+                                                    key={x.id}
+                                                    disabled={!this.state.editing}
+                                                    value={this.state[x.id]}
+                                                    onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                >
+                                                </Input>
+                                            </FormGroup>
+                                        )
+                                    })}
+                                </div>
+                            </Tabs>
+                            </div>
                         
-                        { infoTexts.map(x => {
-                            return (
-                                <FormGroup key={'formGroup_' + x.id}>
-                                    <Label for={x.id}>{x.name}</Label>
-                                    <Input 
-                                        type="textarea"
-                                        id={x.id}
-                                        key={x.id}
-                                        disabled={!this.state.editing}
-                                        value={this.state[x.id]}
-                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
-                                    >
-                                    </Input>
-                                </FormGroup>
-                            )
-                        })} 
+
 
                     </CardBody>
                 </Card>
