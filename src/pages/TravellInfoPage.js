@@ -1,197 +1,131 @@
 import Page from 'components/Page';
-import React from 'react';
-import { connect } from 'react-redux'
-import {getUserTravelInfos} from '../sagas/travelSagas'
+import React, { useEffect, useState } from 'react';
 import {
   Card,
-  CardHeader,
-  CardBody,
-  Input,
-  Row,
-  Col,
-  FormGroup,
-  Form,
-  Label,
-  Button,
-  Alert,
 } from 'reactstrap'
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import PageSpinner from '../components/PageSpinner';
-import { isAttendee,isRejected, isApplied } from '../utils/functions'
-import {
-  MdCheckCircle,
-  MdHighlightOff
-} from 'react-icons/md';
-import PasswordProtection from '../components/PasswordProtection'
-// import { getColor } from 'utils/colors';
+import { useSelector } from "react-redux";
+import { CircularProgress  } from '@material-ui/core';
+import DetailsHeader from '../components/DetailsHeader';
+import DetailsBody from '../components/DetailsBody';
+import { apiFetch } from '../utils/functions';
 
-class TravelInformationPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      participant: 'alumnus',
-      priority: 1,
-      bufakCount: 1,
-      activeStep: 0,
-      eat: 'carnivorous',
-      intolerance: 'no',
-      sleep: 'same council',
-      phone: '',
-      intolerance_note: '',
-      note: '',
-      newsletter: false,
-      dataprotection: false,
-      participantAgreement: false,
+export default function TravelInformationPage() {
+  // select relevant redux state here
+  const conference = useSelector(state => state.conference.conference)
+  const user = useSelector(state => state.auth.user)
+
+  // you can use 'const dispatch = useDispatch()' to later call existing redux functions like "dispatch({ type: ConferenceTypes.GET_CONFERENCE })"
+  // or just call async functions inside this component
+
+  const [editing, setEditing] = useState(false)
+  const [travelProperties, setTravelproperties] = useState([])
+  const [data, setData] = useState({
+    transportation: "",
+    parkingSpace: false,
+    arrivalPlace: "",
+    arrivalTimestamp: "",
+    departureTimestamp: "",
+    extraNote: "",
+    loading: true,
+    empty: true
+  })
+
+  useEffect(() => {
+    async function fetchData() {
+      const result = await  apiFetch(`/travel/peruser/${user.uid}`, 'GET')
+      if (result) {
+        const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace } = result
+        setData({
+          arrivalPlace,
+          arrivalTimestamp,
+          departureTimestamp,
+          extraNote,
+          transportation,
+          parkingSpace,
+          loading: false,
+          empty: false,
+        })
+      } else {
+        setData({
+          ...data,
+          arrivalTimestamp: conference.dateStart + "T10:00",
+          departureTimestamp: conference.dateEnd + "T17:00",
+          loading: false,
+          empty: true
+        })
+        setEditing(true)
+      }
     }
-  }
-  
-  componentDidMount() {
-    this.props.getUserTravelInfos(this.props.user.uid)
-  }
 
-  renderUserIsRejected = () => {
-      return (
-        <Card>
-            <CardHeader>Anmeldung zur Konferenz wurde nicht angenommen.</CardHeader>
-            <CardBody>
-                Deine Anmeldung für {this.props.conference ? this.props.conference.name : 'ausgewählte BuFaK'} wurde abgelehnt.
-            </CardBody>
-        </Card>
-      )
-  }
-
-  renderUserIsApplied = () => {
-    return (
-      <Card>
-          <CardHeader>Anmeldung zur Konferenz ist eingegangen.</CardHeader>
-          <CardBody>
-              Deine Anmeldung für {this.props.conference ? this.props.conference.name : 'ausgewählte BuFaK'} ist beim Ausrichter eigegangen. Sobald die Anmeldung angenommen wurde, kannst du deine Informationen zu An und Abreise hinterlegen.
-          </CardBody>
-      </Card>
-    )
-}
-
-  renderTravelInfos = () => {
-    return (
-      <Card>
-          <CardHeader>Test</CardHeader>
-          <CardBody>
-              Test
-          </CardBody>
-      </Card>
-    )
-  }
-
-  renderResult() {
-    const { fetching, error} = this.props
-    if (fetching) {
-      return (
-        <PageSpinner color="primary"/>
-      )
-    } else if (error) {
-      return (
-        <Alert color="danger"><MdHighlightOff size={30}/>Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
-      )
-    } else {
-      this.renderApplied();
+    // wait for conference data
+    if (conference && conference.conferenceID) {
+      setTravelproperties([
+        { name: "Anreiseort*", type: 'select', id: 'arrivalPlace', xs: 12, md: 6, options: [
+          {value: "", name: "Anreiseort auswählen", disabled: true},
+          ...(conference.travelArrivalPlaces || "").split(",").map(option => ({ value: option, name: option}))
+        ]},
+        { name: "Reiseart", type: 'text', id: 'transportation', xs: 12, md: 6 },
+        { name: "Braucht ihr einen Parkplatz", type: 'select', id: 'parkingSpace', xs: 12, md: 6, options: [
+          { value: false, name: "Nein"},
+          { value: true, name: "Ja"},
+        ]},
+        { name: "Vor. Ankunftszeit", type: 'datetime-local', id: 'arrivalTimestamp', xs: 12, md: 6 },
+        { name: "Vor. Abfahrtszeit", type: 'datetime-local', id: 'departureTimestamp', xs: 12, md: 6 },
+        { name: "Sonstige Anmerkungen", type: 'textarea', id: 'extraNote', lg: 12, xs: 12},
+      ])
+      fetchData()
     }
-  }
+  }, [conference])
 
-  renderConferenceLoading() {
-    return (
-      <Card>
-        <CardBody><PageSpinner color="secondary" /></CardBody>
-      </Card>
-    )
-  }
 
-  renderConferenceError() {
-    return (
-      <Card>
-        <CardHeader>Fehler</CardHeader>
-        <CardBody>
-          <Alert color="danger">Die gewünschte Konferenz kann nicht geladen werden. Bitte versuche es später.</Alert>
-        </CardBody>
-      </Card>
-    )
-  }
+  const isValid = () => data.transportation && data.arrivalTimestamp && data.departureTimestamp && data.arrivalPlace
 
-  renderApplied() {
-    return (
-      <Card>
-        <CardHeader>Anmeldung eingegangen</CardHeader>
-        <CardBody>
-          <Alert color="success"><MdCheckCircle size={30}/> Deine Anmeldung ist erfolgreich bei uns eingegangen.</Alert>
-        </CardBody>
-      </Card>
-    )
-  }
-
-  handleSubmit() {
-    this.setState({activeStep: 3})
-    const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep} = this.state
-    const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
-
-    this.props.applyForConference({
-      conferenceId: this.props.conferenceId,
-      applicantUID: this.props.user.uid,
-      isAlumnus: participant === 'alumnus',
-      isBuFaKCouncil: participant === 'rat',
-      isHelper: participant === 'helper',
-      count: bufakCount,
-      sleepingPref: sleep,
-      tel: phone,
-      eating: eat,
-      priority: this.props.priority,
-      intolerance: intolerance === 'yes' ? intolerance_note : 'none',
-      note,
-      status: 0,
-      key: this.props.password,
-      newsletter: this.state.newsletter,
+  const onCreate = async () => {
+    setData({...data, loading: true, empty: false})
+    const result = await apiFetch('/api/Travel/Suggestion', 'POST', {
+      ...data,
+      conferenceID: conference.conferenceID,
+      uid: user.uid
     })
+
+    if (result) {
+      setEditing(false)
+      setData({...data, loading: false})
+    } else {
+      alert("Hier hat etwas nicht funktioniert... Versuche es später noch einmal")
+      setData({...data, loading: false, empty: true})
+    }
   }
 
-  render() {
-    const {conference, conferenceId, fetching, error, userForConference} = this.props;
-    const isUserAttendee = () => isAttendee(userForConference , conferenceId)
-    return (
-      <Page
-        className="DashboardPage"
-        title="An und Abreise"
-      >
-        {console.log(isRejected())}
-        {/* { !conference && fetching && this.renderConferenceLoading()}
-        { !conference && error && this.renderConferenceError()} */}
-        { conference && isRejected() &&this.renderUserIsRejected()}
-        { conference && isApplied() &&this.renderUserIsApplied()}
-        { conference && isAttendee() && this.renderTravelInfos()}
-     </Page>
-    );
+  const onSave = async () => {
+    alert("Call update endpoint here")
   }
+
+  return (
+    <Page title="Reiseinformationen" >
+    <Card>
+      { data.loading && <CircularProgress />}
+      { !data.loading &&
+        <div>
+          <DetailsHeader
+            title="Informationen zur Anreise"
+            empty={data.empty}
+            editing={editing}
+            disabled={!isValid()}
+            onSave={onSave}
+            onCreate={onCreate}
+            onEdit={() => setEditing(true)}
+            onCancel={() => setEditing(false)}
+          />
+          <DetailsBody 
+            disabled={!editing}
+            object={data}
+            onChange={(id, value) => setData({ ...data, [id]: value})}
+            properties={travelProperties}
+          />
+        </div> 
+      }
+    </Card>
+    </Page>
+  )
 }
-
-const mapStateToProps = (state) => {
-  return {
-      conferenceId: state.conference.conferenceId,
-      conference: state.conference.conference,
-      user: state.auth.user,
-      userForConference: state.auth.userForConference,
-      fetching: state.conference.fetching,
-      error: state.conference.error,
-      // password protection
-      password: state.conference.password,
-      isPasswordValid: state.conference.isPasswordValid,
-      priority: state.conference.priority,
-      isOtherKey: state.conference.isOtherKey,
-  }
-}
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     dispatch(getUserTravelInfos(uid)),
-//   }
-// }
-
-// export default connect(mapStateToProps, mapDispatchToProps)(TravelInformationPage);
