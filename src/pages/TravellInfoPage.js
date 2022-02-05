@@ -32,7 +32,7 @@ export default function TravelInformationPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const result = await  apiFetch(`/travel/peruser/${user.uid}`, 'GET')
+      const result = await  apiFetch(`travel/peruser/${user.uid}`, 'GET')
       if (result) {
         const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace } = result
         setData({
@@ -82,7 +82,7 @@ export default function TravelInformationPage() {
 
   const onCreate = async () => {
     setData({...data, loading: true, empty: false})
-    const result = await apiFetch('/api/Travel/Suggestion', 'POST', {
+    const result = await apiFetch('Travel/Suggestion', 'POST', {
       ...data,
       conferenceID: conference.conferenceID,
       uid: user.uid

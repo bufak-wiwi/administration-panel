@@ -63,7 +63,7 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement: "Link zum ...",
             workshopDurations: "45,90,120",
             workshopTopics :"Fachschaftsarbeit,Gremien,Rat",
-            arrivalPlaces :"HBF,ZOB,Uni Parkplatz"
+            travelArrivalPlaces :"HBF,ZOB,Uni Parkplatz"
         }
     }
 
@@ -89,7 +89,7 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,arrivalPlaces } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,travelArrivalPlaces } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
@@ -99,7 +99,7 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            arrivalPlaces
+            travelArrivalPlaces
         })
     }
 
@@ -116,7 +116,7 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            arrivalPlaces
+            travelArrivalPlaces
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
@@ -127,7 +127,7 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            arrivalPlaces
+            travelArrivalPlaces
         })
     }
 
