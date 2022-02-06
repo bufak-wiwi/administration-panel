@@ -42,9 +42,10 @@ class WorkshopSuggestionPage extends React.Component {
                     { value: 'Basic', name: 'Basic'},
                     { value: 'Fortgeschritten', name: 'Fortgeschritten'},
                     { value: 'Profi', name: 'Profi'}
-                ], md: 4, xs: 12, xl: 4},
-                { name: 'Dauer (min)', type: 'number', id: 'duration', md: 4, xs: 12, xl: 4},
-                { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 4, xs: 12, xl: 4},
+                ], md: 3, xs: 12, xl: 3},
+                { name: 'Topic', type: 'text', id: 'topic', md: 3, xs: 12, xl: 3},
+                { name: 'Dauer (min)', type: 'number', id: 'duration', md: 3, xs: 12, xl: 3},
+                { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
                 { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
             ]
         }
@@ -52,9 +53,41 @@ class WorkshopSuggestionPage extends React.Component {
 
     componentDidMount() {
         const { user } = this.props;
-        this.setState({
-            workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`}
-        })
+        let {conference}  = this.props;
+        console.log(conference)
+        if(conference){
+            this.setState({
+                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`},
+                workshopProperties:[
+                        { name: 'Name*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
+                        { name: 'Name abgekürzt*', type: 'text', id: 'nameShort', md: 6, xs: 12},
+                        { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
+                        { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
+                        { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
+                            { value: 'Basic', name: 'Basic'},
+                            { value: 'Fortgeschritten', name: 'Fortgeschritten'},
+                            { value: 'Profi', name: 'Profi'}
+                        ], md: 3, xs: 12, xl: 3},
+                        { name: 'Topic', type: 'select', id: 'topic', xs: 12, md:3,xl:3, options: [
+                            {value: "", name: "Topic", disabled: true},
+                            ...(conference.workshopTopics || "").split(",").map(option => ({ value: option, name: option}))
+                          ]},
+                        { name: 'Dauer (min)', type: 'select', id: 'duration', xs: 12, md:3,xl:3, options: [
+                            {value: "", name: "Dauer (min)", disabled: true},
+                            ...(conference.workshopDurations || "").split(",").map(option => ({ value: option, name: option}))
+                          ]},
+                        { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
+                        { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
+                    ]
+            })
+        } else{
+            this.setState({
+                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`}
+        
+            })
+        }
+        
+
     }
 
     componentWillUnmount() {
@@ -109,9 +142,9 @@ class WorkshopSuggestionPage extends React.Component {
                                 { (redirect || success) && <Redirect to="/"/>}
                                 { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
                                 { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
-                                { !redirect && 
+                                { !redirect &&
                                     <div>
-                                        
+
                                         <DetailsHeader
                                             title={'Neuen Workshop einreichen'}
                                             empty={true}
@@ -120,10 +153,10 @@ class WorkshopSuggestionPage extends React.Component {
                                             onSave={() => this.onSave()}
                                             disabled={!this.isWorkshopValid()}
                                         />
-                                        
+
                                         <div style={{padding:'1.25rem'}}>
                                             <h6>Hinweise des Ausrichters:</h6>
-                                            <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextWorkshopSuggestion }} /> 
+                                            <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextWorkshopSuggestion }} />
                                         </div>
                                         <DetailsBody
                                             disabled={false}
@@ -149,9 +182,9 @@ class WorkshopSuggestionPage extends React.Component {
                                 { (redirect || success) && <Redirect to="/"/>}
                                 { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
                                 { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
-                                { !redirect && 
+                                { !redirect &&
                                     <div>
-                                        
+
                                         <DetailsHeader
                                             title={'Neuen Workshop einreichen'}
                                             empty={true}
@@ -189,7 +222,7 @@ const mapStateToProps = (state) => {
         user: state.auth.user
     }
   }
-  
+
   const mapDispatchToProps = (dispatch) => {
     return {
         getUsers: () => dispatch(WorkshopActions.getUsers()),
@@ -198,5 +231,5 @@ const mapStateToProps = (state) => {
         clearSuccess: () => dispatch(WorkshopActions.updateSuccess(false)),
     }
   }
-  
+
   export default connect(mapStateToProps, mapDispatchToProps)(WorkshopSuggestionPage);
