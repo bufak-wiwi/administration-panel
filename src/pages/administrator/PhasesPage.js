@@ -198,7 +198,7 @@ class DashboardPage extends React.Component {
     }
 
     getWorkshops(workshopList) {
-        var result = [["Uhrzeit", "Name", "Workshopleiter", "Raum", "Beschreibung", "Anmerkung", "max. Teilnehmer", "Teilnehmer", "WorkshopID"]]
+        var result = [["Uhrzeit", "Name", "Workshopleiter", "Raum", "Beschreibung","Topic", "Anmerkung", "max. Teilnehmer", "Teilnehmer", "WorkshopID"]]
         workshopList.forEach(x => {
             result.push([
                 x.start,
@@ -206,6 +206,7 @@ class DashboardPage extends React.Component {
                 x.hostName,
                 x.place,
                 x.overview,
+                x.topic,
                 x.materialNote,
                 x.maxVisitors,
                 x.applicants,
