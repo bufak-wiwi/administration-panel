@@ -2,12 +2,16 @@ import Page from 'components/Page';
 import React, { useEffect, useState } from 'react';
 import {
   Card,
+  CardBody,
+  Row,
+  Col,
+  Alert,
 } from 'reactstrap'
 import { useSelector } from "react-redux";
 import { CircularProgress  } from '@material-ui/core';
 import DetailsHeader from '../components/DetailsHeader';
 import DetailsBody from '../components/DetailsBody';
-import { apiFetch } from '../utils/functions';
+import { apiFetch, isAttendee } from '../utils/functions';
 
 export default function TravelInformationPage() {
   // select relevant redux state here
@@ -29,6 +33,22 @@ export default function TravelInformationPage() {
     loading: true,
     empty: true
   })
+
+  if (!isAttendee()){
+    return (
+      <Page title="Reiseinformationen" >
+        <Row>
+            <Col>
+                <Card>
+                    <CardBody>
+                        <Alert color="danger">Die Reiseinformationen können erst eingetragen werden, wenn deine Anmeldung durch den Ausrichter angenommen wurde.</Alert>
+                    </CardBody>
+                </Card>
+            </Col>
+        </Row>
+      </Page>
+    )
+  }
 
   useEffect(() => {
     async function fetchData() {
