@@ -45,8 +45,8 @@ const workshop = [
 ]
 
 const travel = [
-    { name: 'Orte zur Anreise', id: 'travelArrivalPlaces'}
-
+    { name: 'Anreiseorte', id: 'travelArrivalPlaces'},
+    { name: 'Transportmittel', id: 'travelTransportation'}
 ]
 class DashboardPage extends React.Component {
     constructor(props) {
@@ -63,7 +63,8 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement: "Link zum ...",
             workshopDurations: "45,90,120",
             workshopTopics :"Fachschaftsarbeit,Gremien,Rat",
-            travelArrivalPlaces :"HBF,ZOB,Uni Parkplatz"
+            travelArrivalPlaces :"HBF,ZOB,Uni Parkplatz",
+            travelTransportation :"Auto,Zug,Flugzeug"
         }
     }
 
@@ -89,7 +90,7 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,travelArrivalPlaces } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,travelArrivalPlaces,travelTransportation } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
@@ -99,7 +100,8 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            travelArrivalPlaces
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 
@@ -116,7 +118,8 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            travelArrivalPlaces
+            travelArrivalPlaces,
+            travelTransportation
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
@@ -127,7 +130,8 @@ class DashboardPage extends React.Component {
             linkParticipantAgreement,
             workshopDurations,
             workshopTopics,
-            travelArrivalPlaces
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 

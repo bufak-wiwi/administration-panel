@@ -72,15 +72,20 @@ export default function TravelInformationPage() {
             ...(conference.travelArrivalPlaces || "").split(",").map(option => ({ value: option, name: option }))
           ]
         },
-        { name: "Reiseart", type: 'text', id: 'transportation', xs: 12, md: 6 },
         {
-          name: "Braucht ihr einen Parkplatz", type: 'select', id: 'parkingSpace', xs: 12, md: 6, options: [
-            { value: false, name: "Nein" },
+          name: "Transportmittel*", type: 'select', id: 'transportation', xs: 12, md: 6, options: [
+            { value: "", name: "Transportmittel auswählen", disabled: true },
+            ...(conference.travelTransportation || "").split(",").map(option => ({ value: option, name: option }))
+          ]
+        },
+        {
+          name: "Benötigst du einen Parkplatz?", type: 'select', id: 'parkingSpace', xs: 12, md: 6, options: [
+            { value: false, name: "Nein / Ich fahre nicht selbst" },
             { value: true, name: "Ja" },
           ]
         },
-        { name: "Vor. Ankunftszeit", type: 'datetime-local', id: 'arrivalTimestamp', xs: 12, md: 6 },
-        { name: "Vor. Abfahrtszeit", type: 'datetime-local', id: 'departureTimestamp', xs: 12, md: 6 },
+        { name: "Voraussichtliche Ankunftszeit", type: 'datetime-local', id: 'arrivalTimestamp', xs: 12, md: 6 },
+        { name: "Voraussichtliche Abfahrtszeit", type: 'datetime-local', id: 'departureTimestamp', xs: 12, md: 6 },
         { name: "Sonstige Anmerkungen", type: 'textarea', id: 'extraNote', lg: 12, xs: 12 },
       ])
       fetchData()
