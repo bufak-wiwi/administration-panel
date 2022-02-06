@@ -43,9 +43,9 @@ class WorkshopSuggestionPage extends React.Component {
                     { value: 'Fortgeschritten', name: 'Fortgeschritten'},
                     { value: 'Profi', name: 'Profi'}
                 ], md: 3, xs: 12, xl: 3},
-                { name: 'Topic', type: 'text', id: 'topic', md: 3, xs: 12, xl: 3},
+                { name: 'Themenbereich', type: 'text', id: 'topic', md: 3, xs: 12, xl: 3},
                 { name: 'Dauer (min)', type: 'number', id: 'duration', md: 3, xs: 12, xl: 3},
-                { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
+                { name: 'Maximale Besucherzahl', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
                 { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
             ]
         }
@@ -68,15 +68,13 @@ class WorkshopSuggestionPage extends React.Component {
                             { value: 'Fortgeschritten', name: 'Fortgeschritten'},
                             { value: 'Profi', name: 'Profi'}
                         ], md: 3, xs: 12, xl: 3},
-                        { name: 'Topic', type: 'select', id: 'topic', xs: 12, md:3,xl:3, options: [
-                            {value: "", name: "Topic", disabled: true},
+                        { name: 'Themenbereich*', type: 'select', id: 'topic', xs: 12, md:3,xl:3, options: [
                             ...(conference.workshopTopics || "").split(",").map(option => ({ value: option, name: option}))
                           ]},
-                        { name: 'Dauer (min)', type: 'select', id: 'duration', xs: 12, md:3,xl:3, options: [
-                            {value: "", name: "Dauer (min)", disabled: true},
+                        { name: 'Dauer (min)*', type: 'select', id: 'duration', xs: 12, md:3,xl:3, options: [
                             ...(conference.workshopDurations || "").split(",").map(option => ({ value: option, name: option}))
                           ]},
-                        { name: 'Maximale Besucher', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
+                        { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
                         { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
                     ]
             })
