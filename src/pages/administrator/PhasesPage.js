@@ -41,7 +41,7 @@ const links = [
 
 const workshop = [
     { name: 'Dauer', id: 'workshopDurations'},
-    { name: 'Topics', id: 'workshopTopics'}
+    { name: 'Themenbereiche', id: 'workshopTopics'}
 ]
 
 class DashboardPage extends React.Component {
