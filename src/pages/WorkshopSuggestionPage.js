@@ -29,6 +29,7 @@ class WorkshopSuggestionPage extends React.Component {
                 hostName: '',
                 place: '',
                 start: '2020-12-31T23:59',
+                topic: 'default',
                 duration: 90,
                 materialNote: ''
             },
@@ -54,10 +55,13 @@ class WorkshopSuggestionPage extends React.Component {
     componentDidMount() {
         const { user } = this.props;
         let {conference}  = this.props;
-        console.log(conference)
+
+        const getWorkshopTopics = () => (conference.workshopTopics || "").split(",") || "default"
+        const getWorkshopDurations = () => (conference.workshopDurations || "").split(",") || "90"
+
         if(conference){
             this.setState({
-                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`},
+                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`, topic: getWorkshopTopics()[0], duration: getWorkshopDurations()[0]},
                 workshopProperties:[
                         { name: 'Name*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
                         { name: 'Name abgekürzt*', type: 'text', id: 'nameShort', md: 6, xs: 12},
@@ -69,10 +73,10 @@ class WorkshopSuggestionPage extends React.Component {
                             { value: 'Profi', name: 'Profi'}
                         ], md: 3, xs: 12, xl: 3},
                         { name: 'Themenbereich*', type: 'select', id: 'topic', xs: 12, md:3,xl:3, options: [
-                            ...(conference.workshopTopics || "").split(",").map(option => ({ value: option, name: option}))
+                            ...getWorkshopTopics().map(option => ({ value: option, name: option}))
                           ]},
                         { name: 'Dauer (min)*', type: 'select', id: 'duration', xs: 12, md:3,xl:3, options: [
-                            ...(conference.workshopDurations || "").split(",").map(option => ({ value: option, name: option}))
+                            ...getWorkshopDurations().map(option => ({ value: option, name: option}))
                           ]},
                         { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
                         { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
@@ -106,7 +110,7 @@ class WorkshopSuggestionPage extends React.Component {
     render() {
         const { error, success, conference, fetching } = this.props;
         const { workshop, redirect } = this.state;
-
+        
         if (!conference || !conference.workshopSuggestionPhase) {
             return (
                 <Page className="WorkshopDetailsPage">
