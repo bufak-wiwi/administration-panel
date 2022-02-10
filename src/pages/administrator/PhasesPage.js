@@ -173,7 +173,7 @@ class DashboardPage extends React.Component {
     }
 
     getApplications(applicationList) {
-        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
+        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Essen", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
         applicationList.forEach(x => {
             result.push([
                 x.timestamp,
@@ -185,6 +185,7 @@ class DashboardPage extends React.Component {
                 x.user.birthday,
                 x.user.email,
                 x.sensible.telephone || "",
+                x.sensible.eatingPreferences,
                 x.sensible.extraNote,
                 x.sensible.sleepingPreferences,
                 x.sensible.buFaKCount,
