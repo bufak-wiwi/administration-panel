@@ -44,6 +44,10 @@ const workshop = [
     { name: 'Themenbereiche', id: 'workshopTopics'}
 ]
 
+const travel = [
+    { name: 'Anreiseorte', id: 'travelArrivalPlaces'},
+    { name: 'Transportmittel', id: 'travelTransportation'}
+]
 class DashboardPage extends React.Component {
     constructor(props) {
         super(props);
@@ -58,7 +62,9 @@ class DashboardPage extends React.Component {
             informationTextWorkshopSuggestion: "Beispieltext",
             linkParticipantAgreement: "Link zum ...",
             workshopDurations: "45,90,120",
-            workshopTopics :"Fachschaftsarbeit,Gremien,Rat"
+            workshopTopics :"Fachschaftsarbeit,Gremien,Rat",
+            travelArrivalPlaces :"HBF,ZOB,Uni Parkplatz",
+            travelTransportation :"Auto,Zug,Flugzeug"
         }
     }
 
@@ -84,7 +90,7 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,travelArrivalPlaces,travelTransportation } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
@@ -93,7 +99,9 @@ class DashboardPage extends React.Component {
             informationTextWorkshopSuggestion,
             linkParticipantAgreement,
             workshopDurations,
-            workshopTopics
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 
@@ -109,7 +117,9 @@ class DashboardPage extends React.Component {
             informationTextWorkshopSuggestion,
             linkParticipantAgreement,
             workshopDurations,
-            workshopTopics
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
@@ -119,7 +129,9 @@ class DashboardPage extends React.Component {
             informationTextWorkshopSuggestion,
             linkParticipantAgreement,
             workshopDurations,
-            workshopTopics
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 
@@ -321,6 +333,24 @@ class DashboardPage extends React.Component {
                                 </div>
                                 <div label="Workshops">
                                     { workshop.map(x => {
+                                            return (
+                                                <FormGroup key={'formGroup_' + x.id}>
+                                                    <Label for={x.id}>{x.name}</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id={x.id}
+                                                        key={x.id}
+                                                        disabled={!this.state.editing}
+                                                        value={this.state[x.id]}
+                                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                    >
+                                                    </Input>
+                                                </FormGroup>
+                                            )
+                                        })}
+                                </div>
+                                <div label="An und Abreise">
+                                    { travel.map(x => {
                                             return (
                                                 <FormGroup key={'formGroup_' + x.id}>
                                                     <Label for={x.id}>{x.name}</Label>

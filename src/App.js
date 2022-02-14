@@ -32,6 +32,7 @@ import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
 import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
 import QuestionListPage from './pages/superAdmin/QuestionListPage';
 import QuestionDetailsPage from './pages/superAdmin/QuestionDetailsPage';
+import TravellInfoPage from './pages/TravellInfoPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -105,6 +106,12 @@ class App extends React.Component {
               path="/ws-einreichen"
               layout={MainLayout}
               component={WorkshopSuggestionPage}
+            />
+             <PrivateRoute
+              exact
+              path="/reiseinfos"
+              layout={MainLayout}
+              component={TravellInfoPage}
             />
             <PrivateRoute
               exact

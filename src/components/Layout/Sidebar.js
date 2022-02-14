@@ -15,7 +15,8 @@ import {
   MdSpeakerNotes,
   MdSecurity,
   MdBusiness,
-  MdPoll
+  MdPoll,
+  MdTrain
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -38,6 +39,7 @@ const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
   { to: '/abstimmung', name: 'Abstimmung', exact: false, Icon: MdPoll},
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
+  { to: '/reiseinfos', name: 'Reiseinfos', exact: true, Icon: MdTrain},
   { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},
   { to: '/workshop', name: 'Workshop', exact: true, Icon: MdSpeakerNotes},
   { to: '/profile', name: 'Profil', exact: true, Icon: MdPerson},
