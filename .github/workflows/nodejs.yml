@@ -1,35 +1,34 @@
 name: Node CI
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-    - name: Install Dependencies
-      run: yarn
-    - name: Create globals.tsx with secret apiKey and baseURL
-      run: echo -e "export const baseURL = \"${{ secrets.baseURL }}\";\nexport const apiKey = \"${{ secrets.apiKey }}\";" > src/config/globals.tsx
-    - name: Build
-      run: yarn build
-      env:
-        CI: true
-    - name: copy files via ssh password
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        overwrite: true
-        source: "build/"
-        target: "/var/www/konfetti/"
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Install Dependencies
+        run: yarn
+      - name: Create globals.tsx with secret apiKey and baseURL
+        run: echo -e "export const baseURL = \"${{ secrets.baseURL }}\";\nexport const apiKey = \"${{ secrets.apiKey }}\";" > src/config/globals.tsx
+      - name: Build
+        run: yarn build
+        env:
+          CI: true
+      - name: copy files via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          overwrite: true
+          source: 'build/'
+          target: '/var/www/konfetti/'
