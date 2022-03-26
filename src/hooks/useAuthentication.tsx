@@ -13,7 +13,7 @@ export interface AuthStoreState {
   loading: boolean
   error: boolean
   login: (email: string, password: string) => Promise<void>
-  signUp: (test: any) => Promise<void>
+  signUp: (user: any) => Promise<void>
   passwordReset: (email: string) => Promise<void>
   updateUser: (user: User) => void
   signOut: () => void
@@ -38,7 +38,7 @@ export const useAuthentication = create<AuthStoreState>(
         set({ loading: true })
         const response = await api.post('/login', { email, password }).catch((err) => err.response)
         console.log(response.data)
-        if (response.data >= 400 || !response.data?.tokenString) {
+        if (response.status >= 400 || !response.data?.tokenString) {
           useNotifications.getState().addNotification({
             color: 'error',
             message: 'Ungültige Zugangsdaten',
@@ -46,7 +46,6 @@ export const useAuthentication = create<AuthStoreState>(
           return set(INITIAL_STATE)
         }
         useStore.setState({
-          // TODO get latest conference
           conferenceID: (response.data.conferences[0]?.conferenceID as number) || 99,
           conference: response.data.conferences[0],
           conferenceList: response.data.conferences,
@@ -60,8 +59,31 @@ export const useAuthentication = create<AuthStoreState>(
           isAdmin: response.data.user?.isSuperAdmin ?? false,
         })
       },
-      signUp: async (test) => {
-        console.log('Here upload user', test)
+      signUp: async (user) => {
+        set({ loading: true })
+        const response = await api.post('/users', user).catch((err) => err.response)
+        console.log(response.data)
+        if (response.status >= 400) {
+          useNotifications.getState().addNotification({
+            color: 'error',
+            message: 'Es besteht bereits ein Account mit dieser E-Mail-Adresse',
+          })
+          return set(INITIAL_STATE)
+        }
+
+        useNotifications.getState().addNotification({
+          color: 'success',
+          message: 'Account wurde erfolgreich erstellt!',
+        })
+
+        return set({
+          error: false,
+          loading: false,
+          token: response.data.jwtToken,
+          user: response.data.user,
+          uid: response.data.user?.uid || '',
+          isAdmin: response.data.user?.isSuperAdmin ?? false,
+        })
       },
       passwordReset: async (email) => {
         set({ loading: true, error: false })

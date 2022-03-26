@@ -1,21 +1,30 @@
-import { Grid, Paper, Divider, Link } from '@mui/material'
-import { useState } from 'react'
-import { Navigate, Link as NavLink } from 'react-router-dom'
-import { useAuthentication } from '../hooks/useAuthentication'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { Autocomplete, Divider, Grid, Link, Paper, TextField } from '@mui/material'
+import { useState } from 'react'
+import { Link as NavLink, Navigate } from 'react-router-dom'
 import EmailInput from '../components/input/EmailInput'
-import { isValidPassword, isValidName, isValidUser } from '../utils/validation'
 import PasswordInput from '../components/input/PasswordInput'
 import TextInput from '../components/input/TextInput'
 import { LoadingOverlay } from '../features/Feedback'
+import { useAuthentication } from '../hooks/useAuthentication'
+import { useFetch } from '../hooks/useFetch'
+import { Council, Sex } from '../utils/types'
+import { isValidName, isValidPassword, isValidUser, isValidZipCode } from '../utils/validation'
 
 export default function RegisterPage() {
   const { user, loading, signUp } = useAuthentication()
+  const [councilList, councilLoading] = useFetch<Council[]>('/councils')
 
   const [state, setState] = useState({
     name: '',
     surname: '',
     email: '',
+    council: null as Council | null,
+    sex: 'm' as Sex,
+    birthday: '2000-01-01',
+    street: '',
+    zip: '',
+    city: '',
     password: '',
     passwordConfirm: '',
   })
@@ -27,6 +36,8 @@ export default function RegisterPage() {
       state.password === state.passwordConfirm
     )
   }
+
+  const getCouncilLabel = (council: Council) => `${council.name}, ${council.university}`
 
   if (user) {
     return <Navigate to="/" replace />
@@ -72,6 +83,46 @@ export default function RegisterPage() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <TextInput
+                  value={state.street}
+                  label="Straße und Hausnummer"
+                  setValue={(street) => setState({ ...state, street })}
+                  validation={isValidName}
+                  helperText="Straße muss mindestens drei Zeichen lang sein"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextInput
+                  value={state.city}
+                  label="Stadt"
+                  setValue={(city) => setState({ ...state, city })}
+                  validation={isValidName}
+                  helperText="Stadt muss mindestens drei Zeichen lang sein"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextInput
+                  value={state.zip}
+                  label="Postleitzahl"
+                  setValue={(zip) => setState({ ...state, zip })}
+                  validation={isValidZipCode}
+                  helperText="Gültige Postleitzahl angeben"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  disablePortal
+                  options={councilList || []}
+                  onChange={(_, council) => {
+                    setState({ ...state, council })
+                  }}
+                  loading={councilLoading}
+                  isOptionEqualToValue={(option, value) => option.councilID === value.councilID}
+                  getOptionLabel={getCouncilLabel}
+                  renderInput={(params) => <TextField {...params} label="Fachschaftsrat" />}
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <PasswordInput
                   password={state.password}
                   setPassword={(password) => setState({ ...state, password })}
@@ -92,7 +143,18 @@ export default function RegisterPage() {
                   size="large"
                   fullWidth
                   loading={loading}
-                  onClick={() => signUp(state)}
+                  onClick={() =>
+                    signUp({
+                      name: state.name,
+                      surname: state.surname,
+                      birthday: state.birthday,
+                      email: state.email,
+                      password: state.password,
+                      council_id: state.council?.councilID,
+                      sex: state.sex,
+                      address: `${state.street};${state.city};${state.zip}`,
+                    })
+                  }
                   disabled={!isFormValid()}
                   variant="contained"
                 >

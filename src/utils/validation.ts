@@ -14,7 +14,11 @@ export const isValidPassword = (password: string) => {
 }
 
 export const isValidName = (name: string) => {
-  return name.length >= 3 && name.length <= 32
+  return name.length >= 3 && name.length <= 32 && !name.includes(';')
+}
+
+export const isValidZipCode = (zip: string) => {
+  return /^\d{5}(?:[- ]?\d{4})?$/.test(zip)
 }
 
 export const isValidUser = (user?: Partial<User>) => {
