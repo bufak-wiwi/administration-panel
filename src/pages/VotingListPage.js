@@ -16,7 +16,7 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import Empty from '../components/Empty'
 import ButtonWithTimeout from '../components/voting/ButtonWithTimeout'
-import { getQuestionStatus, getQuestionStatusText, open, isUserAllowedToVote, getQuestionStatusColor } from '../utils/functions'
+import { getQuestionStatus, getQuestionStatusText, open, isUserAllowedToVote, getQuestionStatusColor,canVoteinPlenary } from '../utils/functions'
 import { Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core';
 import { MdExpandMore } from 'react-icons/md';
 import PageSpinner from '../components/PageSpinner';
@@ -99,30 +99,51 @@ class VotingListPage extends React.Component {
         if (!majorityList) {
             return <PageSpinner />
         }
-        return (
-            <Page
-                className="questionListPage"
-                title="Abstimmungen"
-            >
-                <Row>
+        if (canVoteinPlenary()){
+            console.log(canVoteinPlenary())
+            return (
+                <Page
+                    className="questionListPage"
+                    title="Abstimmungen"
+                >
+                    <Row>
+                        <Col>
+                            <Card>
+                                <CardHeader>
+                                    <Row style={{ justifyContent: 'space-between', marginLeft: 5}}>
+                                        Übersicht der Abstimmungen
+                                        <ButtonWithTimeout text="Refresh" onClick={() => this.refresh()} timeout={5000}/>
+                                    </Row>
+                                </CardHeader>
+                                <CardBody>
+                                    { fetching && <PageSpinner />}
+                                    { !fetching && openQuestionList && openQuestionList.length > 0 && this.renderList()}
+                                    { !fetching && !(openQuestionList && openQuestionList.length > 0) && <Delay wait={500}><Empty /></Delay>}
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Page>
+            )
+        } else {
+            return (
+                <Page
+                    className="questionListPage"
+                    title="Abstimmungen"
+                >
+                    <Row>
                     <Col>
                         <Card>
-                            <CardHeader>
-                                <Row style={{ justifyContent: 'space-between', marginLeft: 5}}>
-                                    Übersicht der Abstimmungen
-                                    <ButtonWithTimeout text="Refresh" onClick={() => this.refresh()} timeout={5000}/>
-                                </Row>
-                            </CardHeader>
-                            <CardBody>
-                                { fetching && <PageSpinner />}
-                                { !fetching && openQuestionList && openQuestionList.length > 0 && this.renderList()}
-                                { !fetching && !(openQuestionList && openQuestionList.length > 0) && <Delay wait={500}><Empty /></Delay>}
-                            </CardBody>
+                        <CardBody>
+                            <Alert color="danger">Du hast keine Berechtigung an Abstimmungen teilzunehmen. Bei Fragen dazu wende dich an die Ansprechpartner im Rat.</Alert>
+                        </CardBody>
                         </Card>
                     </Col>
-                </Row>
-            </Page>
-        )
+                    </Row>
+                </Page>
+            )
+        }
+       
     }
 }
 
