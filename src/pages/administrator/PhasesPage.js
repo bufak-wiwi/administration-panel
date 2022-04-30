@@ -20,6 +20,7 @@ import CouncilActions from '../../redux/councilRedux';
 import WorkshopActions from '../../redux/workshopRedux';
 import { CSVLink } from "react-csv";
 import Delay from '../../components/Delay';
+import Tabs from "../../components/Tabs";
 import { FaDownload } from 'react-icons/fa';
 import { getPriorityOrType, getStatus, getType} from '../../utils/functions'
 
@@ -29,6 +30,24 @@ const phases = [
     { name: 'Workshop-Anmeldung', id: 'workshopApplicationPhase'}
 ]
 
+const infoTexts = [
+    { name: 'Infotext Anmeldung', id: 'informationTextConferenceApplication'},
+    { name: 'Infotext Workshops', id:'informationTextWorkshopSuggestion'}
+]
+
+const links = [
+    { name: 'Teilnahmebedingungen', id: 'linkParticipantAgreement'}
+]
+
+const workshop = [
+    { name: 'Dauer', id: 'workshopDurations'},
+    { name: 'Themenbereiche', id: 'workshopTopics'}
+]
+
+const travel = [
+    { name: 'Anreiseorte', id: 'travelArrivalPlaces'},
+    { name: 'Transportmittel', id: 'travelTransportation'}
+]
 class DashboardPage extends React.Component {
     constructor(props) {
         super(props);
@@ -39,6 +58,13 @@ class DashboardPage extends React.Component {
             workshopApplicationPhase: false,
             workshopSuggestionPhase: false,
             otherKeys: 50,
+            informationTextConferenceApplication: "Beispieltext",
+            informationTextWorkshopSuggestion: "Beispieltext",
+            linkParticipantAgreement: "Link zum ...",
+            workshopDurations: "45,90,120",
+            workshopTopics :"Fachschaftsarbeit,Gremien,Rat",
+            travelArrivalPlaces :"HBF,ZOB,Uni Parkplatz",
+            travelTransportation :"Auto,Zug,Flugzeug"
         }
     }
 
@@ -64,11 +90,18 @@ class DashboardPage extends React.Component {
     }
 
     savePropsToState() {
-        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase } = this.props.conference
+        const { conferenceApplicationPhase, workshopApplicationPhase, workshopSuggestionPhase,informationTextConferenceApplication,informationTextWorkshopSuggestion,linkParticipantAgreement,workshopDurations,workshopTopics,travelArrivalPlaces,travelTransportation } = this.props.conference
         this.setState({
             conferenceApplicationPhase,
             workshopApplicationPhase,
             workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 
@@ -79,12 +112,26 @@ class DashboardPage extends React.Component {
         const { 
             conferenceApplicationPhase,
             workshopApplicationPhase,
-            workshopSuggestionPhase
+            workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         } = this.state;
         this.props.updatePhases({
             conferenceApplicationPhase,
             workshopApplicationPhase,
-            workshopSuggestionPhase
+            workshopSuggestionPhase,
+            informationTextConferenceApplication,
+            informationTextWorkshopSuggestion,
+            linkParticipantAgreement,
+            workshopDurations,
+            workshopTopics,
+            travelArrivalPlaces,
+            travelTransportation
         })
     }
 
@@ -138,7 +185,7 @@ class DashboardPage extends React.Component {
     }
 
     getApplications(applicationList) {
-        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
+        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Essen", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
         applicationList.forEach(x => {
             result.push([
                 x.timestamp,
@@ -150,6 +197,7 @@ class DashboardPage extends React.Component {
                 x.user.birthday,
                 x.user.email,
                 x.sensible.telephone || "",
+                x.sensible.eatingPreferences,
                 x.sensible.extraNote,
                 x.sensible.sleepingPreferences,
                 x.sensible.buFaKCount,
@@ -163,7 +211,7 @@ class DashboardPage extends React.Component {
     }
 
     getWorkshops(workshopList) {
-        var result = [["Uhrzeit", "Name", "Workshopleiter", "Raum", "Beschreibung", "Anmerkung", "max. Teilnehmer", "Teilnehmer", "WorkshopID"]]
+        var result = [["Uhrzeit", "Name", "Workshopleiter", "Raum", "Beschreibung","Topic", "Anmerkung", "max. Teilnehmer", "Teilnehmer", "WorkshopID"]]
         workshopList.forEach(x => {
             result.push([
                 x.start,
@@ -171,6 +219,7 @@ class DashboardPage extends React.Component {
                 x.hostName,
                 x.place,
                 x.overview,
+                x.topic,
                 x.materialNote,
                 x.maxVisitors,
                 x.applicants,
@@ -234,7 +283,7 @@ class DashboardPage extends React.Component {
                 <Card>
                     <CardHeader>
                         <Row style={{justifyContent: 'space-between', alignItems: 'center'}}>
-                            Anmeldephasen
+                            Einstellungen
                             <div>
                             { !this.state.editing && <Button onClick={() => this.setState({ editing: true})}>Bearbeiten</Button>}
                             { this.state.editing && <Button onClick={() => this.onCancelPress()}>Abbrechen</Button>}
@@ -262,51 +311,85 @@ class DashboardPage extends React.Component {
                             )
                         })}
 
-                    </CardBody>
-                </Card>
-                <Card style={{marginTop: 10}}>
-                    <CardHeader>
-                        <CardTitle>
-                            Export
-                        </CardTitle>
-                    </CardHeader>
-                    <CardBody>
-                        <Alert color="success">Ladet hier alle eure Anmeldungen, eure aktuellen Workshops oder die Daten für die Teilnehmerbadges als CSV herunter.</Alert>
-                        <Row>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getApplications(applicationList)}
-                                    filename={"Anmeldungen.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Anmeldungen
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getWorkshops(workshopList)}
-                                    filename={"Workshops.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Workshopliste
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                            <Col>
-                                <CSVLink 
-                                    data={this.getBadges(badgeList)}
-                                    filename={"badges.csv"}
-                                    style={{marginRight: 10}}
-                                >
-                                    <Button block>
-                                        <FaDownload /> Teilnehmerbadges
-                                    </Button>
-                                </CSVLink>
-                            </Col>
-                        </Row>
+                        <div>
+                            <Tabs>
+                                <div label="Info Texte">
+                                    { infoTexts.map(x => {
+                                        return (
+                                            <FormGroup key={'formGroup_' + x.id}>
+                                                <Label for={x.id}>{x.name}</Label>
+                                                <Input 
+                                                    type="textarea"
+                                                    id={x.id}
+                                                    key={x.id}
+                                                    disabled={!this.state.editing}
+                                                    value={this.state[x.id]}
+                                                    onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                >
+                                                </Input>
+                                            </FormGroup>
+                                        )
+                                    })} 
+                                </div>
+                                <div label="Workshops">
+                                    { workshop.map(x => {
+                                            return (
+                                                <FormGroup key={'formGroup_' + x.id}>
+                                                    <Label for={x.id}>{x.name}</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id={x.id}
+                                                        key={x.id}
+                                                        disabled={!this.state.editing}
+                                                        value={this.state[x.id]}
+                                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                    >
+                                                    </Input>
+                                                </FormGroup>
+                                            )
+                                        })}
+                                </div>
+                                <div label="An und Abreise">
+                                    { travel.map(x => {
+                                            return (
+                                                <FormGroup key={'formGroup_' + x.id}>
+                                                    <Label for={x.id}>{x.name}</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id={x.id}
+                                                        key={x.id}
+                                                        disabled={!this.state.editing}
+                                                        value={this.state[x.id]}
+                                                        onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                    >
+                                                    </Input>
+                                                </FormGroup>
+                                            )
+                                        })}
+                                </div>
+                                <div label="Links">
+                                    { links.map(x => {
+                                        return (
+                                            <FormGroup key={'formGroup_' + x.id}>
+                                                <Label for={x.id}>{x.name}</Label>
+                                                <Input 
+                                                    type="text"
+                                                    id={x.id}
+                                                    key={x.id}
+                                                    disabled={!this.state.editing}
+                                                    value={this.state[x.id]}
+                                                    onChange={(e) => this.setState({ [x.id]: e.currentTarget.value})}
+                                                >
+                                                </Input>
+                                            </FormGroup>
+                                        )
+                                    })}
+                                </div>
+                            </Tabs>
+                            </div>
+                        
+
+
                     </CardBody>
                 </Card>
             </Col>
@@ -374,6 +457,51 @@ class DashboardPage extends React.Component {
                                 </div>                            
                             }
                         </Delay>
+                    </CardBody>
+                </Card>
+                <Card style={{marginTop: 10}}>
+                    <CardHeader>
+                        <CardTitle>
+                            Export
+                        </CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                        <Alert color="success">Ladet hier alle eure Anmeldungen, eure aktuellen Workshops oder die Daten für die Teilnehmerbadges als CSV herunter.</Alert>
+                        <Row>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getApplications(applicationList)}
+                                    filename={"Anmeldungen.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Anmeldungen
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getWorkshops(workshopList)}
+                                    filename={"Workshops.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Workshopliste
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                            <Col>
+                                <CSVLink 
+                                    data={this.getBadges(badgeList)}
+                                    filename={"badges.csv"}
+                                    style={{marginRight: 10}}
+                                >
+                                    <Button block>
+                                        <FaDownload /> Teilnehmerbadges
+                                    </Button>
+                                </CSVLink>
+                            </Col>
+                        </Row>
                     </CardBody>
                 </Card>
             </Col>

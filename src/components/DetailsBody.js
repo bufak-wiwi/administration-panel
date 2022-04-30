@@ -103,7 +103,7 @@ class DetailsBody extends Component {
                             value={object[property.id]}
                             onChange={e => this.props.onChange(property.id, e.currentTarget.value)}
                         >
-                            { property.options.map(x => <option key={property.id + x.name} value={x.value}>{x.name}</option>)}
+                            { property.options.map(x => <option key={property.id + x.name} value={x.value} disabled={x.disabled}>{x.name}</option>)}
                         </Input>
                     </FormGroup>  
                 )

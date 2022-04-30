@@ -15,7 +15,7 @@ import PageSpinner from '../../components/PageSpinner';
 import ConferenceActions from '../../redux/conferenceRedux';
 import CouncilActions from '../../redux/councilRedux'
 import SearchInput from '../../components/SearchInput';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { Tooltip, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import { getPriorityOrType, getStatus} from '../../utils/functions'
 
 const priorities = [
@@ -214,6 +214,11 @@ class ApplicationListPage extends React.Component {
                         </Col>
                         <Col xs="12" md="3">
                             <SearchInput onChange={(e) => this.setState({ search: e.currentTarget.value})} />
+                        </Col>
+                        <Col xs="12" md="2">
+                            <Tooltip title="Die Anzahl Personen in der Liste mit der ausgewählten Priorität und dem ausgewählten Status.">
+                            <ul>Anzahl Personen: {this.getFilteredApplicationsList().length}</ul>
+                            </Tooltip>
                         </Col>
                     </Row>
                 </CardHeader>

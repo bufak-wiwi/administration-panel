@@ -18,11 +18,12 @@ class UploadInformationCard extends Component {
             <CardHeader >Studienbescheinigung hochladen</CardHeader>
             <CardBody>
                 <Alert color="grey">
-                    Liebe Teilnehmenden,<br />
-                    willkommen zur ersten Präsenz BuFaK seit Beginn der Pandemie, in Hohenheim! Weitere Infos zur 73. BuFaK erhaltet ihr per Mail und auf unserer Homepage.<br />
-                    Wie ihr alle wahrscheinlich bereits wisst, wird unsere Konferenz von dem BMBF unterstützt. Um die Zuwendungen zu erhalten, ist es allerdings nötig, dass wir eine Immatrikulationsbescheinigung von euch nachweisen können. Ihr könnt sie unter diesem Link <a href="https://www.dropbox.com/request/ln5XV8fcd12vaC4aWGMR" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/ln5XV8fcd12vaC4aWGMR</a> hochladen.<br /> 
-                    Bei weiteren Fragen meldet euch gerne bei der Orga.<br />
-                    Wir freuen uns auf euch!
+                    Liebe Teilnehmende,<br />
+                    willkommen auf unserem Konfetti Anmeldetool!<br />
+                    Hier könnt Ihr euch mit Eurer Prioritätenliste bis zum 18.02.2022 um 23:59 Uhr anmelden.<br />
+                    Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Personen eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname". <br />
+                    Diese könnt Ihr unter folgendem Link auf OwnCloud hochladen: <a href="https://owncloud.gwdg.de/index.php/s/PxI8hTi1HSRf1C7" target="_blank" rel="noopener noreferrer">https://owncloud.gwdg.de/index.php/s/PxI8hTi1HSRf1C7/</a> <br />
+                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:bufak-teilnehmende@uni-goettingen.de">bufak-teilnehmende@uni-goettingen.de</a>
                 </Alert>
             </CardBody> 
         </Card>
