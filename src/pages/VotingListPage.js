@@ -100,7 +100,6 @@ class VotingListPage extends React.Component {
             return <PageSpinner />
         }
         if (canVoteinPlenary()){
-            console.log(canVoteinPlenary())
             return (
                 <Page
                     className="questionListPage"
