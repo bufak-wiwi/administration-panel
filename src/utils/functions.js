@@ -283,4 +283,20 @@ export function isUserAllowedToVote(question) {
         && (!question || !question.isSecret || conferenceObj.priority === 1)
 }
 
+export function canVoteinPlenary() {
+    const { userForConference } = store.getState().auth
+    const { conferenceId } = store.getState().conference
+    if (!userForConference || !conferenceId) {
+        return false
+    }
+    
+    var conferenceObj = userForConference.find(x => x.conference_ID === conferenceId)
+    if (conferenceObj && conferenceObj.attendee && !conferenceObj.rejected && !conferenceObj.isAlumnus && !conferenceObj.isBuFaKCouncil){
+        return true
+    } else if(conferenceObj && conferenceObj.attendee && !conferenceObj.rejected && conferenceObj.isBuFaKCouncil && conferenceObj.isAllowedToVote){
+        return true
+    }
+    return false
+}
+
 //#endregion
