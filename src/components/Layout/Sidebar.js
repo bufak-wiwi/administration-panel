@@ -54,6 +54,7 @@ const navAdminItems = [
 const navSuperAdminItems = [
   { to: '/conference', name: "Konferenz", exact: false, Icon: MdBusiness},
   { to: '/question', name: "Abstimmungen", exact: false, Icon: MdPoll},
+  { to: '/questionresult', name: "Ergebnisse", exact: false, Icon: MdPoll},
 ]
 
 
