@@ -117,7 +117,6 @@ class VotingForm extends Component {
 
     renderCardBody() {
         const { question } = this.props
-        console.log("Die Frage ", question)
         const { vote, canUserOverwrite, helperText } = this.state
         return (
             <div>

@@ -21,6 +21,7 @@ import WorkshopOverviewPage from './pages/WorkshopOverviewPage'
 import WorkshopSuggestionPage from './pages/WorkshopSuggestionPage'
 import VotingListPage from './pages/VotingListPage'
 import VotingPage from './pages/VotingPage'
+import TravellInfoPage from './pages/TravellInfoPage';
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -32,7 +33,8 @@ import WorkshopDetailsPage from 'pages/administrator/WorkshopDetailsPage';
 import ConferenceListPage from './pages/superAdmin/ConferenceListPage';
 import QuestionListPage from './pages/superAdmin/QuestionListPage';
 import QuestionDetailsPage from './pages/superAdmin/QuestionDetailsPage';
-import TravellInfoPage from './pages/TravellInfoPage';
+import QuestionResultPage from './pages/superAdmin/QuestionResultPage';
+import QuestionResultListPage from './pages/superAdmin/QuestionResultListPage';
 
 const getBasename = () => {
   return `/${process.env.PUBLIC_URL.split('/').pop()}`;
@@ -107,7 +109,7 @@ class App extends React.Component {
               layout={MainLayout}
               component={WorkshopSuggestionPage}
             />
-             <PrivateRoute
+            <PrivateRoute
               exact
               path="/reiseinfos"
               layout={MainLayout}
@@ -194,6 +196,18 @@ class App extends React.Component {
               path="/question/:id"
               layout={MainLayout}
               component={QuestionDetailsPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/questionresult/"
+              layout={MainLayout}
+              component={QuestionResultListPage}
+            />
+            <SuperAdminRoute
+              exact
+              path="/questionresult/:id"
+              layout={MainLayout}
+              component={QuestionResultPage}
             />
             <Redirect to="/" />
           </Switch>
