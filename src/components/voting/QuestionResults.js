@@ -35,7 +35,7 @@ class QuestionResult extends Component {
                     generateLabels: () => [
                         {text: `Ja: ${question.sumYes}`, fillStyle: 'rgba(0,255,0,0.6)'},
                         {text: `Nein: ${question.sumNo}`, fillStyle: 'rgba(255,0,0,0.6)'},
-                        {text: `Enhaltung: ${question.sumAbstention}`, fillStyle: 'rgba(127,127,127,0.6)'}
+                        {text: `Enthaltung: ${question.sumAbstention}`, fillStyle: 'rgba(127,127,127,0.6)'}
                     ]
                 }
             },
