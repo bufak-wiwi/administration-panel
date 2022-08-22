@@ -22,8 +22,8 @@ class UploadInformationCard extends Component {
                     willkommen auf unserem Konfetti-Anmeldetool!<br />
                     Hier könnt Ihr Euch mit Eurer Prioritätenliste bis zum 30.09.2022 um 20 Uhr anmelden.<br />
                     Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname". <br />
-                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://glidser.bufak-wiwi.org/s/Pqqic53P4GmpcSg">https://glidser.bufak-wiwi.org/s/Pqqic53P4GmpcSg</a> <br />
-                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:teilnehmende.bufak@uni-oldenburg.de ">teilnehmende.bufak@uni-oldenburg.de</a>
+                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://glidser.bufak-wiwi.org/s/Pqqic53P4GmpcSg" target="_blank">https://glidser.bufak-wiwi.org/s/Pqqic53P4GmpcSg</a> <br />
+                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:teilnehmende.bufak@uni-oldenburg.de" target="_blank">teilnehmende.bufak@uni-oldenburg.de</a>
                 </Alert>
             </CardBody> 
         </Card>
