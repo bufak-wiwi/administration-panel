@@ -483,6 +483,7 @@ class DashboardPage extends React.Component {
                             <Col>
                                 <CSVLink 
                                     data={this.getWorkshops(workshopList)}
+                                    separator=";"
                                     filename={"Workshops.csv"}
                                     style={{marginRight: 10}}
                                 >
