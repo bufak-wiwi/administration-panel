@@ -471,6 +471,7 @@ class DashboardPage extends React.Component {
                             <Col>
                                 <CSVLink 
                                     data={this.getApplications(applicationList)}
+                                    separator=";"
                                     filename={"Anmeldungen.csv"}
                                     style={{marginRight: 10}}
                                 >
@@ -482,6 +483,7 @@ class DashboardPage extends React.Component {
                             <Col>
                                 <CSVLink 
                                     data={this.getWorkshops(workshopList)}
+                                    separator=";"
                                     filename={"Workshops.csv"}
                                     style={{marginRight: 10}}
                                 >
