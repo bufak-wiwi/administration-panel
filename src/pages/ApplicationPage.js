@@ -472,6 +472,7 @@ class ApplicationPage extends React.Component {
         <PageSpinner color="primary"/>
       )
     } else if (error) {
+      console.error(error)
       return (
         <Alert color="danger"><MdHighlightOff size={30}/>Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
       )
