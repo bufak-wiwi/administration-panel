@@ -299,4 +299,64 @@ export function canVoteinPlenary() {
     return false
 }
 
+export async function reportTogglHand(reportType,uid,raised,onSuccess){
+    const url = raised ? "https://newapi.bufak-wiwi.org/reports/lower_hand" : "https://newapi.bufak-wiwi.org/reports/raise_hand";
+    return await fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"UserID":uid,"ReportType":reportType })
+    })
+    .then(async res => {
+        try {
+            if (!res.ok) {
+                if (res.status === 401 || res.status === 418) {
+                    store.dispatch({ type: 'LOGOUT'})
+                } else if (res.status > 500 && res.status < 600){
+                    store.dispatch({ type:'UPDATE_SERVER_ERROR',serverError:true})
+                }
+                return false
+            }
+            var result = await res.text()
+            onSuccess()
+            return result.length > 0 ? JSON.parse(result) : true
+        } catch(e) {
+            console.log('catched error', e)
+            return false
+        }
+    })
+    .catch(e => console.log('ApiFetch', e))
+}
+
+export async function lowerUsersHand(reportType,uid,onSuccess){
+    const url = "https://newapi.bufak-wiwi.org/reports/lower_hand";
+    return await fetch(`${url}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"UserID":uid,"ReportType":reportType })
+    })
+    .then(async res => {
+        try {
+            if (!res.ok) {
+                if (res.status === 401 || res.status === 418) {
+                    store.dispatch({ type: 'LOGOUT'})
+                } else if (res.status > 500 && res.status < 600){
+                    store.dispatch({ type:'UPDATE_SERVER_ERROR',serverError:true})
+                }
+                return false
+            }
+            var result = await res.text()
+            onSuccess()
+            return result.length > 0 ? JSON.parse(result) : true
+        } catch(e) {
+            console.log('catched error', e)
+            return false
+        }
+    })
+    .catch(e => console.log('ApiFetch', e))
+}
+
 //#endregion
