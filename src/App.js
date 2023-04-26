@@ -130,7 +130,7 @@ class App extends React.Component {
             />
             <PrivateRoute
               exact
-              path="/meldeliste"
+              path="/redeliste"
               layout={MainLayout}
               component={ReportUserPage}
             />

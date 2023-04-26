@@ -299,14 +299,14 @@ export function canVoteinPlenary() {
     return false
 }
 
-export async function reportTogglHand(reportType,uid,raised,onSuccess){
+export async function reportTogglHand(reportType,uid,raised,applicationStatus,onSuccess){
     const url = raised ? "https://newapi.bufak-wiwi.org/reports/lower_hand" : "https://newapi.bufak-wiwi.org/reports/raise_hand";
     return await fetch(`${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"UserID":uid,"ReportType":reportType })
+        body: JSON.stringify({"UserID":uid,"ReportType":reportType,"ReportApplicantInfo":applicationStatus })
     })
     .then(async res => {
         try {
@@ -329,14 +329,14 @@ export async function reportTogglHand(reportType,uid,raised,onSuccess){
     .catch(e => console.log('ApiFetch', e))
 }
 
-export async function lowerUsersHand(reportType,uid,onSuccess){
+export async function lowerUsersHand(reportType,uid,applicationStatus,onSuccess){
     const url = "https://newapi.bufak-wiwi.org/reports/lower_hand";
     return await fetch(`${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"UserID":uid,"ReportType":reportType })
+        body: JSON.stringify({"UserID":uid,"ReportType":reportType,"ReportApplicantInfo":applicationStatus })
     })
     .then(async res => {
         try {

@@ -3,7 +3,7 @@ import {
     Alert,
     Button
   } from 'reactstrap'
-  import { reportTogglHand,lowerUsersHand } from '../../utils/functions';
+  import { reportTogglHand,lowerUsersHand,getType } from '../../utils/functions';
   import { IsSuperAdmin } from '../PrivateRoute'
 
 class UserPage extends React.Component {
@@ -12,6 +12,9 @@ class UserPage extends React.Component {
         this.state = {
             goRaised:false,
             handRaised:false,
+            isCouncil:false,
+            isAlumni:false,
+            isGuest:false,
             reportQueue : [],
             userid:this.props.uid
         }
@@ -21,10 +24,34 @@ class UserPage extends React.Component {
     }
 
     componentDidMount() {
+        this.firstCall()
+    }
+
+    async firstCall(){
         console.log(this.props)
-        this.userHandRaised()
+        await this.getApplicationInfo(this.props.uid)
+        await this.userHandRaised()
         this.getQueue()
-        setInterval(this.getQueue,500)
+        if(IsSuperAdmin()){
+            setInterval(this.getQueue,5000)
+        } else {
+            setInterval(this.getQueue,60000)
+        }
+    }
+
+    async getApplicationInfo(uid){
+        if(uid){
+            const response = await fetch("https://newapi.bufak-wiwi.org/user/"+uid+"/applicationinfos")
+            const applicationInfos = await response.json()
+            if (applicationInfos.applicationinfos){
+                if(applicationInfos.applicationinfos[1] == 1)
+                    this.setState({isAlumni:true})
+                if(applicationInfos.applicationinfos[2] == 1)
+                    this.setState({isCouncil:true})
+            } else {
+                this.setState({isGuest:true})
+            }
+        }
     }
 
     async userHandRaised(uid) {
@@ -59,41 +86,48 @@ class UserPage extends React.Component {
             const handRaisedGo = await responseHandRaisedGo.json()
             this.setState({goRaised:handRaisedGo.user.isQueued})
     }
+
+    toggledHand(type){
+        if (type == "go"){
+            this.setState({...this.state, goRaised: !this.state.goRaised})
+        } else if ("hand"){
+            this.setState({...this.state, handRaised: !this.state.handRaised})
+
+        }
+        this.getQueue()
+
+    }
   
     render() {
-        let goButtonLabel = !this.state.goRaised ? "GO-Antrag" : "GO-Antrag zurückziehen" ;
-        let handButtonLabel = !this.state.handRaised ? "Hand heben" : "Hand senken";
-        if(IsSuperAdmin){
+        const goButtonLabel = !this.state.goRaised ? "Antrag an den Sitzungsvorstand" : "Antrag an den Sitzungsvorstand (Hand senken)" ;
+        const handButtonLabel = !this.state.handRaised ? "Hand heben" : "Hand senken";
+        const applicationStatus = this.state.isAlumni ? "Alumni" : this.state.isCouncil ? "Rat" : this.state.isGuest ? "Gast": "";
+        const goRight = this.state.isAlumni || this.state.isGuest;
+
             return (
                 <div>
-                <Button onClick={() => reportTogglHand(0,this.props.uid,this.state.handRaised, ()=>this.setState({...this.state, handRaised: !this.state.handRaised}))}>{handButtonLabel}</Button>
-                <Button onClick={() => reportTogglHand(1,this.props.uid,this.state.goRaised, ()=>this.setState({...this.state, goRaised: !this.state.goRaised}))}>{goButtonLabel}</Button>
+                <Button className='reportButton' onClick={() => reportTogglHand(0,this.props.uid,this.state.handRaised,applicationStatus, ()=> this.toggledHand("hand"))}>{handButtonLabel}</Button>
+                {!goRight
+                 ? <Button className='reportButton' onClick={() => reportTogglHand(1,this.props.uid,this.state.goRaised,applicationStatus, ()=> this.toggledHand("go"))}>{goButtonLabel}</Button>
+                 : null
+                }
+                <Button className='syncButton' onClick={() => this.getQueue()}>Redeliste abrufen</Button>
                 {this.state.reportQueue.map(function(d){
+                    let time = new Date(d[4])
+                    time = time.toLocaleTimeString()
                     let itemClass = "report-normal";
                     if(d[3] == 1){
                         itemClass = "report-go";
                     }
-                   return (<div className={itemClass}><span>{d[0]} {d[1]}</span> <span>{d[2]}</span><span onClick={() => lowerUsersHand(d[3],d[5])} >Meldung senken</span></div>)
-                 })}
-                 
-                </div>
-            )
-        } else {
-            return (
-                <div>
-                <Button onClick={() => reportTogglHand(0,this.props.uid,this.state.handRaised, ()=>this.setState({...this.state, handRaised: !this.state.handRaised}))}>{handButtonLabel}</Button>
-                <Button onClick={() => reportTogglHand(1,this.props.uid,this.state.goRaised, ()=>this.setState({...this.state, goRaised: !this.state.goRaised}))}>{goButtonLabel}</Button>
-                {this.state.reportQueue.map(function(d){
-                    let itemClass = "report-normal";
-                    if(d[3] == 1){
-                        itemClass = "report-go";
+                    if(IsSuperAdmin()){
+                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus)} >Meldung senken</span></div>)
+                    } else {
+                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span></div>)
                     }
-                   return (<div className={itemClass}><span>{d[0]} {d[1]}</span> <span>{d[2]}</span></div>)
                  })}
                  
                 </div>
             )
-        }
     }
   }
 

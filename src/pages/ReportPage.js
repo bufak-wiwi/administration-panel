@@ -19,25 +19,25 @@ export default function ReportUserPage() {
   const user = useSelector(state => state.auth.user)
 
 
-  if (!isAttendee()) {
+  // if (!isAttendee()) {
+  //   return (
+  //     <Page title="Redeliste" >
+  //       <Row>
+  //         <Col>
+  //           <Card>
+  //             <CardBody>
+  //               <Alert color="danger">Du bist nicht als Teilnehmer für die Konferenz hinterlget.</Alert>
+  //             </CardBody>
+  //           </Card>
+  //         </Col>
+  //       </Row>
+  //     </Page>
+  //   )
+  // } else {
     return (
-      <Page title="Meldeseite" >
-        <Row>
-          <Col>
-            <Card>
-              <CardBody>
-                <Alert color="danger">Du bist nicht als Teilnehmer für die Konferenz hinterlget.</Alert>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Page>
-    )
-  } else {
-    return (
-      <Page title="Meldeseite" >
+      <Page title="Redeliste" >
          <UserPage uid={user.uid}></UserPage>
       </Page>
     )
-  }
+  //}
 }

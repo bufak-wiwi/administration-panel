@@ -1,12 +1,49 @@
 .report-go{
-    background-color: orange;
+    background-color: #ffb74d;
     margin-top: 10px;
     padding: 5px;
     width: 50%;
+
+    .name {
+        font-weight: bold;
+    }
+    .university {
+    }
+    .adminButton{
+        text-decoration: underline;
+        float: right;
+        cursor: pointer;
+    }
+
 }
 
 .report-normal{
+
     margin-top: 10px;
     padding: 5px;
     width: 50%;
+
+    .name {
+        font-weight: bold;
+    }
+    .university {
+
+    }
+    .adminButton{
+        text-decoration: underline;
+        float: right;
+        cursor: pointer;
+    }
+}
+
+.syncButton {
+    float: right;
+}
+
+.reportButton {
+    margin-right: 4em;
+}
+
+.time {
+    margin-left: 2em;
 }
