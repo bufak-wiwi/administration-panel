@@ -46,7 +46,7 @@
     margin-left: 2em;
 }
 
-@include media-breakpoint-up(md) {
+@include media-breakpoint-down(md) {
 
     .syncButton {
         float: none;
@@ -59,7 +59,7 @@
 
 }
 
-@include media-breakpoint-up(sm) {
+@include media-breakpoint-down(sm) {
     .adminButton {
         display: none;
     }
