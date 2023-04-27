@@ -48,6 +48,8 @@ class UserPage extends React.Component {
                     this.setState({isAlumni:true})
                 if(applicationInfos.applicationinfos[2] == 1)
                     this.setState({isCouncil:true})
+                if (applicationInfos.applicationinfos[3] != "IsAttendee")
+                    this.setState({isGuest:true})
             } else {
                 this.setState({isGuest:true})
             }
@@ -122,7 +124,7 @@ class UserPage extends React.Component {
                         itemClass = "report-go";
                     }
                     if(IsSuperAdmin()){
-                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus,()=>this.getQueue(true))} >Meldung senken</span></div>)
+                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={()=> lowerUsersHand(d[3],d[5],applicationStatus,()=>this.getQueue(true))} >Meldung senken</span></div>)
                     } else {
                         return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span></div>)
                     }
