@@ -1,16 +1,7 @@
 import Page from 'components/Page';
-import React, { useEffect, useState } from 'react';
-import {
-  Card,
-  CardBody,
-  Row,
-  Col,
-  Alert,
-} from 'reactstrap'
+import React, {  } from 'react';
 import { useSelector } from "react-redux";
-import { CircularProgress } from '@material-ui/core';
 
-import { apiFetch, isAttendee } from '../utils/functions';
 import UserPage from '../components/report/UserPage';
 
 export default function ReportUserPage() {
