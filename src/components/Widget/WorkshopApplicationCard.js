@@ -134,8 +134,8 @@ class WorkshopApplicationCard extends Component {
     switch(status) {
         case noAttendee: return this.renderPhaseClosedCard();
         case attendee: return this.renderAttendeeCard(workshopApplication);
-        case applied: return this.renderAttendeeCard(workshopApplication);
-        case unapplied: return this.renderUnappliedCard();
+        case applied: return this.renderAppliedCard();
+        case unapplied: return this.renderPhaseClosedCard();
         case phaseClosed: return this.renderAttendeeCard(workshopApplication);
         default: return null;
     }
