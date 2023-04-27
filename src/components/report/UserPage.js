@@ -113,7 +113,7 @@ class UserPage extends React.Component {
                  ? <Button className='reportButton' onClick={() => reportTogglHand(1,this.props.uid,this.state.goRaised,applicationStatus, ()=> this.toggledHand("go"))}>{goButtonLabel}</Button>
                  : null
                 }
-                <Button className='syncButton' onClick={() => this.getQueue()}>Redeliste abrufen</Button>
+                <Button className='syncButton' onClick={() => this.getQueue()}>Redeliste aktualisieren</Button>
                 {this.state.reportQueue.map(function(d){
                     let time = new Date(d[4])
                     time = time.toLocaleTimeString()
@@ -122,7 +122,7 @@ class UserPage extends React.Component {
                         itemClass = "report-go";
                     }
                     if(IsSuperAdmin()){
-                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus,()=>getQueue(true))} >Meldung senken</span></div>)
+                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus,()=>this.getQueue(true))} >Meldung senken</span></div>)
                     } else {
                         return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span></div>)
                     }
