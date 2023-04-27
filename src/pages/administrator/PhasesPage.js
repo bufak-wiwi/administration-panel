@@ -241,6 +241,7 @@ class DashboardPage extends React.Component {
         }
 
         var result = [["Name", "Nachname", "Fachschaft", "Universität", "Status", "FachschaftsID", "userID", ...workshops]]
+        badgeList = badgeList.filter(x => x.workshop && x.workshop.conferenceID === this.props.conferenceId)
         badgeList.forEach(x => {
             result.push([
                 x.name,

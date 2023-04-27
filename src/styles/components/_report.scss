@@ -1,0 +1,68 @@
+.report-go{
+    background-color: #ffb74d;
+    margin-top: 10px;
+    padding: 5px;
+
+    .name {
+        font-weight: bold;
+    }
+    .university {
+    }
+    .adminButton{
+        text-decoration: underline;
+        float: right;
+        cursor: pointer;
+    }
+
+}
+
+.report-normal{
+
+    margin-top: 10px;
+    padding: 5px;
+
+    .name {
+        font-weight: bold;
+    }
+    .university {
+
+    }
+    .adminButton{
+        text-decoration: underline;
+        float: right;
+        cursor: pointer;
+    }
+}
+
+.syncButton {
+    float: right;
+}
+
+.reportButton {
+    margin-right: 4em;
+}
+
+.time {
+    margin-left: 2em;
+}
+
+@include media-breakpoint-down(md) {
+
+    .syncButton {
+        float: none;
+        width: 100%;
+    }
+    .reportButton {
+        width: 100%;
+        margin-bottom: 0.5em;
+    }
+
+}
+
+@include media-breakpoint-down(sm) {
+    .adminButton {
+        display: none;
+    }
+
+
+}

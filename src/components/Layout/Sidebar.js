@@ -16,7 +16,8 @@ import {
   MdSecurity,
   MdBusiness,
   MdPoll,
-  MdTrain
+  MdTrain,
+  MdPanTool,
 } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 import {
@@ -38,6 +39,7 @@ const sidebarBackground = {
 const navItems = [
   { to: '/', name: 'Start', exact: true, Icon: MdHome },
   { to: '/abstimmung', name: 'Abstimmung', exact: false, Icon: MdPoll},
+  { to: '/redeliste', name: 'Redeliste', exact: true, Icon: MdPanTool},
   { to: '/anmeldung', name: 'Anmeldung', exact: true, Icon: MdAssignment},
   { to: '/reiseinfos', name: 'Reiseinfos', exact: true, Icon: MdTrain},
   { to: '/ws-einreichen', name: 'WS einreichen', exact: true, Icon: MdRecordVoiceOver},

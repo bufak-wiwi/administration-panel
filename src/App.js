@@ -22,6 +22,7 @@ import WorkshopSuggestionPage from './pages/WorkshopSuggestionPage'
 import VotingListPage from './pages/VotingListPage'
 import VotingPage from './pages/VotingPage'
 import TravellInfoPage from './pages/TravellInfoPage';
+import ReportUserPage  from './pages/ReportPage';
 // Administrator
 import PhasesPage from './pages/administrator/PhasesPage';
 import ApplicationListPage from './pages/administrator/ApplicationListPage';
@@ -126,6 +127,12 @@ class App extends React.Component {
               path="/abstimmung"
               layout={MainLayout}
               component={VotingListPage}
+            />
+            <PrivateRoute
+              exact
+              path="/redeliste"
+              layout={MainLayout}
+              component={ReportUserPage}
             />
             <PrivateRoute
               exact
