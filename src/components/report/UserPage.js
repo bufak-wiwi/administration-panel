@@ -73,18 +73,20 @@ class UserPage extends React.Component {
 
     }
 
-      async getQueue () {
+      async getQueue (adm=false) {
             const response = await fetch("https://newapi.bufak-wiwi.org/reports/queue",{})
             const queue = await response.json()
             this.setState({reportQueue:queue.queue})
+            if(!adm){
+                const responseHandRaised = await fetch("https://newapi.bufak-wiwi.org/user/"+this.state.userid+"/is_queued")
+                const handRaised = await responseHandRaised.json()
+                this.setState({handRaised:handRaised.user.isQueued})
+    
+                const responseHandRaisedGo = await fetch("https://newapi.bufak-wiwi.org/user/"+this.state.userid+"/is_queued_go")
+                const handRaisedGo = await responseHandRaisedGo.json()
+                this.setState({goRaised:handRaisedGo.user.isQueued})
+            }
 
-            const responseHandRaised = await fetch("https://newapi.bufak-wiwi.org/user/"+this.state.userid+"/is_queued")
-            const handRaised = await responseHandRaised.json()
-            this.setState({handRaised:handRaised.user.isQueued})
-
-            const responseHandRaisedGo = await fetch("https://newapi.bufak-wiwi.org/user/"+this.state.userid+"/is_queued_go")
-            const handRaisedGo = await responseHandRaisedGo.json()
-            this.setState({goRaised:handRaisedGo.user.isQueued})
     }
 
     toggledHand(type){
@@ -101,7 +103,7 @@ class UserPage extends React.Component {
     render() {
         const goButtonLabel = !this.state.goRaised ? "Antrag an den Sitzungsvorstand" : "Antrag an den Sitzungsvorstand (Hand senken)" ;
         const handButtonLabel = !this.state.handRaised ? "Hand heben" : "Hand senken";
-        const applicationStatus = this.state.isAlumni ? "Alumni" : this.state.isCouncil ? "Rat" : this.state.isGuest ? "Gast": "";
+        const applicationStatus = this.state.isAlumni ? "- Alumni" : this.state.isCouncil ? "- Rat" : this.state.isGuest ? "- Gast": "";
         const goRight = this.state.isAlumni || this.state.isGuest;
 
             return (
@@ -120,7 +122,7 @@ class UserPage extends React.Component {
                         itemClass = "report-go";
                     }
                     if(IsSuperAdmin()){
-                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus)} >Meldung senken</span></div>)
+                        return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span><span className='adminButton' onClick={() => lowerUsersHand(d[3],d[5],applicationStatus,()=>getQueue(true))} >Meldung senken</span></div>)
                     } else {
                         return (<div className={itemClass}><span className='name'>{d[0]} {d[1]}</span> <span className='university'>{d[2]} {d[6]}</span><span className='time'>{time} Uhr</span></div>)
                     }
