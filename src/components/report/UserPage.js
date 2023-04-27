@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-    Alert,
     Button
   } from 'reactstrap'
-  import { reportTogglHand,lowerUsersHand,getType } from '../../utils/functions';
+  import { reportTogglHand,lowerUsersHand } from '../../utils/functions';
   import { IsSuperAdmin } from '../PrivateRoute'
 
 class UserPage extends React.Component {
@@ -44,11 +43,11 @@ class UserPage extends React.Component {
             const response = await fetch("https://newapi.bufak-wiwi.org/user/"+uid+"/applicationinfos")
             const applicationInfos = await response.json()
             if (applicationInfos.applicationinfos){
-                if(applicationInfos.applicationinfos[1] == 1)
+                if(applicationInfos.applicationinfos[1] === 1)
                     this.setState({isAlumni:true})
-                if(applicationInfos.applicationinfos[2] == 1)
+                if(applicationInfos.applicationinfos[2] === 1)
                     this.setState({isCouncil:true})
-                if (applicationInfos.applicationinfos[3] != "IsAttendee")
+                if (applicationInfos.applicationinfos[3] !== "IsAttendee")
                     this.setState({isGuest:true})
             } else {
                 this.setState({isGuest:true})
@@ -92,7 +91,7 @@ class UserPage extends React.Component {
     }
 
     toggledHand(type){
-        if (type == "go"){
+        if (type === "go"){
             this.setState({...this.state, goRaised: !this.state.goRaised})
         } else if ("hand"){
             this.setState({...this.state, handRaised: !this.state.handRaised})
@@ -120,7 +119,7 @@ class UserPage extends React.Component {
                     let time = new Date(d[4])
                     time = time.toLocaleTimeString()
                     let itemClass = "report-normal";
-                    if(d[3] == 1){
+                    if(d[3] === 1){
                         itemClass = "report-go";
                     }
                     if(IsSuperAdmin()){
