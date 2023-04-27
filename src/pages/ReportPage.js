@@ -6,7 +6,7 @@ import UserPage from '../components/report/UserPage';
 
 export default function ReportUserPage() {
   // select relevant redux state here
-  const conference = useSelector(state => state.conference.conference)
+  //const conference = useSelector(state => state.conference.conference)
   const user = useSelector(state => state.auth.user)
 
 
