@@ -105,7 +105,7 @@ class UserPage extends React.Component {
     render() {
         const goButtonLabel = !this.state.goRaised ? "Antrag an den Sitzungsvorstand" : "Antrag an den Sitzungsvorstand (Hand senken)" ;
         const handButtonLabel = !this.state.handRaised ? "Hand heben" : "Hand senken";
-        const applicationStatus = this.state.isAlumni ? "- Alumni" : this.state.isCouncil ? "- Rat" : this.state.isGuest ? "- Gast": "";
+        const applicationStatus = (this.state.isAlumni && !this.state.isGuest) ? "- Alumni" : (this.state.isCouncil && !this.state.isGuest)  ? "- Rat" : this.state.isGuest ? "- Gast": "";
         const goRight = this.state.isAlumni || this.state.isGuest;
 
             return (
