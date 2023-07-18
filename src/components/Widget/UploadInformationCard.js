@@ -27,8 +27,8 @@ class UploadInformationCard extends Component {
                     <br />
                     <br />
                     Wir würden euch noch darum bitten, Vorschläge für Workshops über diese Umfrage einzureichen.<br/>
-                    Checkt bitte vor auf unserer <a href = "" target="_blank" rel="noopener noreferrer">Webseite</a>, welche Workshops schon geplant sind, damit Dopplungen in den Vorschlägen vermieden werden können.<br />
-                    Workshop Einreichungen: <a href = "https://forms.gle/oSgeTcg3VCLD8Ask9" target="_blank" rel="noopener noreferrer">https://forms.gle/oSgeTcg3VCLD8Ask9</a>
+                    Checkt bitte vorher auf unserer <a href = "https://www.wi.tu-darmstadt.de/fachschaft/bundesfachschaftenkonferenz/workshops_1/workshops.de.jsp" target="_blank" rel="noopener noreferrer">Webseite</a>, welche Workshops schon geplant sind, damit Dopplungen in den Vorschlägen vermieden werden können.<br />
+                    Workshop-Einreichungen: <a href = "https://forms.gle/oSgeTcg3VCLD8Ask9" target="_blank" rel="noopener noreferrer">https://forms.gle/oSgeTcg3VCLD8Ask9</a>
                 </Alert>
             </CardBody> 
         </Card>
