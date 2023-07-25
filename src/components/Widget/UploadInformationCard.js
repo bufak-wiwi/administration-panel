@@ -20,7 +20,7 @@ class UploadInformationCard extends Component {
                 <Alert color="grey">
                     Liebe Teilnehmende,<br />
                     willkommen auf unserem Konfetti-Anmeldetool!<br />
-                    Hier könnt Ihr Euch mit Eurer Prioritätenliste für die 77. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 24.07.2023 bis zum 07.08.2023 EOD anmelden.<br />
+                    Hier könnt Ihr Euch mit Eurer Prioritätenliste für die 77. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 24.07.2023 bis zum 20.08.2023 EOD anmelden.<br />
                     Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
                     Diese könnt Ihr unter folgendem Link hochladen: <a href="https://cloud.fs1.de/s/PAWg3WYFqzJagrN" target="_blank" rel="noopener noreferrer">https://cloud.fs1.de/s/PAWg3WYFqzJagrN</a><br />
                     Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:bufakteilnehmende@fs1.de" target="_blank" rel="noopener noreferrer">bufakteilnehmende@fs1.de</a>
