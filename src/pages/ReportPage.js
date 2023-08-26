@@ -3,6 +3,7 @@ import React, {  } from 'react';
 import { useSelector } from "react-redux";
 
 import UserPage from '../components/report/UserPage';
+import { conferenceID } from '../config/globals';
 
 export default function ReportUserPage() {
   // select relevant redux state here
@@ -27,7 +28,7 @@ export default function ReportUserPage() {
   // } else {
     return (
       <Page title="Redeliste" >
-         <UserPage uid={user.uid}></UserPage>
+         <UserPage cid = {conferenceID} uid={user.uid}></UserPage>
       </Page>
     )
   //}

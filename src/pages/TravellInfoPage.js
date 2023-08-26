@@ -12,6 +12,7 @@ import { CircularProgress } from '@material-ui/core';
 import DetailsHeader from '../components/DetailsHeader';
 import DetailsBody from '../components/DetailsBody';
 import { apiFetch, isAttendee } from '../utils/functions';
+import UserPage from '../components/report/UserPage';
 
 export default function TravelInformationPage() {
   // select relevant redux state here
@@ -134,29 +135,7 @@ export default function TravelInformationPage() {
 
     return (
       <Page title="Reiseinformationen" >
-        <Card>
-          {data.loading && <CircularProgress />}
-          {!data.loading &&
-            <div>
-              <DetailsHeader
-                title="Informationen zur Anreise"
-                empty={data.empty}
-                editing={editing}
-                disabled={!isValid()}
-                onSave={onSave}
-                onCreate={onCreate}
-                onEdit={() => setEditing(true)}
-                onCancel={() => setEditing(false)}
-              />
-              <DetailsBody
-                disabled={!editing}
-                object={data}
-                onChange={(id, value) => setData({ ...data, [id]: value })}
-                properties={travelProperties}
-              />
-            </div>
-          }
-        </Card>
+        <UserPage cid = {conference.conferenceID} uid={user.uid}></UserPage>
       </Page>
     )
   }
