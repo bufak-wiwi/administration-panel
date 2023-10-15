@@ -31,7 +31,8 @@ export default function TravelInformationPage() {
     departureTimestamp: "",
     extraNote: "",
     loading: true,
-    empty: true
+    empty: true,
+    deutschlandticket: ""
   })
 
 
@@ -50,7 +51,7 @@ export default function TravelInformationPage() {
           parkingSpace,
           loading: false,
           empty: false,
-        })
+          deutschlandticket,
       } else {
         setData({
           ...data,
@@ -81,6 +82,12 @@ export default function TravelInformationPage() {
         {
           name: "Benötigst du einen Parkplatz?", type: 'select', id: 'parkingSpace', xs: 12, md: 6, options: [
             { value: false, name: "Nein / Ich fahre nicht selbst" },
+            { value: true, name: "Ja" },
+          ]
+        },
+        {
+          name: "Hast du zur Konferenz ein Deutschlandticket?", type: 'select', id: 'deutschlandticket', xs: 12, md: 6, options: [
+            { value: false, name: "Nein },
             { value: true, name: "Ja" },
           ]
         },
