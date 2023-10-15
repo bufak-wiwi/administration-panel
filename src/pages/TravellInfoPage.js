@@ -88,7 +88,7 @@ export default function TravelInformationPage() {
         },
         {
           name: "Hast du zur Konferenz ein Deutschlandticket?", type: 'select', id: 'deutschlandticket', xs: 12, md: 6, options: [
-            { value: false, name: "Nein },
+            { value: false, name: "Nein" },
             { value: true, name: "Ja" },
           ]
         },
