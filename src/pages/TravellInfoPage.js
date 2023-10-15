@@ -52,6 +52,7 @@ export default function TravelInformationPage() {
           deutschlandticket,
           loading: false,
           empty: false
+        });
       } else {
         setData({
           ...data,
