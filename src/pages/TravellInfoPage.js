@@ -41,7 +41,7 @@ export default function TravelInformationPage() {
     async function fetchData() {
       const result = await apiFetch(`travel/peruser/${user.uid}`, 'GET')
       if (result) {
-        const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace } = result
+        const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace,deutschlandticket } = result
         setData({
           arrivalPlace,
           arrivalTimestamp,
