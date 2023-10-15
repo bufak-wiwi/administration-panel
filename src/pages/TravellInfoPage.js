@@ -49,9 +49,9 @@ export default function TravelInformationPage() {
           extraNote,
           transportation,
           parkingSpace,
-          loading: false,
-          empty: false,
           deutschlandticket,
+          loading: false,
+          empty: false
       } else {
         setData({
           ...data,
