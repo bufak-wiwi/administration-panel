@@ -30,9 +30,9 @@ export default function TravelInformationPage() {
     arrivalTimestamp: "",
     departureTimestamp: "",
     extraNote: "",
+    deutschlandticket: "",
     loading: true,
-    empty: true,
-    deutschlandticket: ""
+    empty: true
   })
 
 
