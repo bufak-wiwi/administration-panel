@@ -18,17 +18,12 @@ class UploadInformationCard extends Component {
             <CardHeader >Studienbescheinigung hochladen</CardHeader>
             <CardBody>
                 <Alert color="grey">
-                    Liebe Teilnehmende,<br />
-                    willkommen auf unserem Konfetti-Anmeldetool!<br />
-                    Hier könnt Ihr Euch mit Eurer Prioritätenliste für die 77. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 24.07.2023 bis zum 20.08.2023 EOD anmelden.<br />
-                    Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
-                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://cloud.fs1.de/s/PAWg3WYFqzJagrN" target="_blank" rel="noopener noreferrer">https://cloud.fs1.de/s/PAWg3WYFqzJagrN</a><br />
-                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:bufakteilnehmende@fs1.de" target="_blank" rel="noopener noreferrer">bufakteilnehmende@fs1.de</a>
-                    <br />
-                    <br />
-                    Wir würden euch noch darum bitten, Vorschläge für Workshops über diese Umfrage einzureichen.<br/>
-                    Checkt bitte vorher auf unserer <a href = "https://www.wi.tu-darmstadt.de/fachschaft/bundesfachschaftenkonferenz/workshops_1/workshops.de.jsp" target="_blank" rel="noopener noreferrer">Webseite</a>, welche Workshops schon geplant sind, damit Dopplungen in den Vorschlägen vermieden werden können.<br />
-                    Workshop-Einreichungen: <a href = "https://forms.gle/oSgeTcg3VCLD8Ask9" target="_blank" rel="noopener noreferrer">https://forms.gle/oSgeTcg3VCLD8Ask9</a>
+                    Liebe BuFaKis, <br />
+                    willkommen auf unserem Konfetti-Anmeldetool! <br />
+                    Hier könnt Ihr Euch mit Eurer Prioritätenliste für die 78. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 12.01.2024 bis zum 28.02.2024 EOD anmelden. <br />
+                    Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname". <br />
+                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://fsr.wiwi.nrw/s/YSaG3oMGKM4sgQr" target="_blank" rel="noopener noreferrer">https://fsr.wiwi.nrw/s/YSaG3oMGKM4sgQr</a> <br />
+                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:bufakis@fswiwi-dortmund.de " target="_blank" rel="noopener noreferrer">bufakis@fswiwi-dortmund.de </a> 
                 </Alert>
             </CardBody> 
         </Card>
