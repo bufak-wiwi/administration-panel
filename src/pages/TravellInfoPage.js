@@ -51,7 +51,8 @@ export default function TravelInformationPage() {
           parkingSpace,
           loading: false,
           empty: false,
-          deutschlandticket,
+          deutschlandticket
+        })
       } else {
         setData({
           ...data,
