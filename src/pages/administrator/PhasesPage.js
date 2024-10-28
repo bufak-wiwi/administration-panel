@@ -198,7 +198,7 @@ class DashboardPage extends React.Component {
                 x.user.email,
                 x.sensible.telephone || "",
                 x.sensible.eatingPreferences,
-                x.sensible.intolerances
+                x.sensible.intolerances,
                 x.sensible.extraNote,
                 x.sensible.sleepingPreferences,
                 x.sensible.buFaKCount
