@@ -201,7 +201,7 @@ class DashboardPage extends React.Component {
                 x.sensible.intolerances,
                 x.sensible.extraNote,
                 x.sensible.sleepingPreferences,
-                x.sensible.buFaKCount
+                x.sensible.buFaKCount,
                 this.getCouncilName(x.user.councilID),
                 this.getCouncilUniversity(x.user.councilID),
                 x.hotel,
