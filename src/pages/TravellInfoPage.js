@@ -30,9 +30,9 @@ export default function TravelInformationPage() {
     arrivalTimestamp: "",
     departureTimestamp: "",
     extraNote: "",
+    deutschlandticket: "",
     loading: true,
-    empty: true,
-    deutschlandticket: ""
+    empty: true
   })
 
 
@@ -41,7 +41,7 @@ export default function TravelInformationPage() {
     async function fetchData() {
       const result = await apiFetch(`travel/peruser/${user.uid}`, 'GET')
       if (result) {
-        const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace } = result
+        const { arrivalPlace, arrivalTimestamp, departureTimestamp, extraNote, transportation, parkingSpace,deutschlandticket } = result
         setData({
           arrivalPlace,
           arrivalTimestamp,
@@ -49,10 +49,10 @@ export default function TravelInformationPage() {
           extraNote,
           transportation,
           parkingSpace,
+          deutschlandticket,
           loading: false,
-          empty: false,
-          deutschlandticket
-        })
+          empty: false
+        });
       } else {
         setData({
           ...data,
