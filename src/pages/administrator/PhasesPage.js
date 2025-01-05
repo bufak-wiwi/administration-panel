@@ -185,7 +185,7 @@ class DashboardPage extends React.Component {
     }
 
     getApplications(applicationList) {
-        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Essen","Unverträglichkeiten", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
+        var result = [["Zeitpunkt", "Status", "Priorität", "Vorname", "Nachname", "Geschlecht", "Geburtstag", "E-Mail-Adresse", "Telefon", "Essen", "Unverträglichkeiten", "Anmerkung", "Schlafpräferenz", "#BuFaK","Fachschaft", "Universität", "Hotel", "Zimmer"]]
         applicationList.forEach(x => {
             result.push([
                 x.timestamp,
