@@ -23,7 +23,7 @@ class UploadInformationCard extends Component {
                     Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
                     Diese könnt Ihr unter folgendem Link hochladen: <a href="https://www.dropbox.com/request/KXJGATgNINqOT7vwG2UD" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/KXJGATgNINqOT7vwG2UD</a><br /><br />
                     Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:teilnehmende.bufak-wiwi@uni-bayreuth.de" target="_blank" rel="noopener noreferrer">teilnehmende.bufak-wiwi@uni-bayreuth.de</a>
-                </Alert>
+                </Alert> 
             </CardBody>
         </Card>
     )
