@@ -19,10 +19,10 @@ class UploadInformationCard extends Component {
             <CardBody>
                 <Alert color="grey">
                     Herzlich Willkommen auf unserem Konfetti-Anmeldetool!<br /><br />
-                    Hier könnt Ihr Euch mit Eurem Prioritätscode für die 80. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 12.01.2025 bis zum 12.02.2025 EOD anmelden.<br /><br />
+                    Hier könnt Ihr Euch mit Eurem Prioritätscode für die 81. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 28.07.2025 bis zum 31.08.2025 EOD anmelden.<br /><br />
                     Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
-                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://www.dropbox.com/request/KXJGATgNINqOT7vwG2UD" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/KXJGATgNINqOT7vwG2UD</a><br /><br />
-                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:teilnehmende.bufak-wiwi@uni-bayreuth.de" target="_blank" rel="noopener noreferrer">teilnehmende.bufak-wiwi@uni-bayreuth.de</a>
+                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://nc.uni-bremen.de/index.php/s/MFtc3HYqQ5ryfNQ" target="_blank" rel="noopener noreferrer">https://nc.uni-bremen.de/index.php/s/MFtc3HYqQ5ryfNQ</a><br /><br />
+                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:bufak-teilnehmende@ovgu.de" target="_blank" rel="noopener noreferrer">bufak-teilnehmende@ovgu.de</a>
                 </Alert>
             </CardBody>
         </Card>
