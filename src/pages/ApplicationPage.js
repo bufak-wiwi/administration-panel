@@ -38,6 +38,8 @@ class ApplicationPage extends React.Component {
       eat: 'carnivorous',
       intolerance: 'no',
       sleep: 'same council',
+      // NEW: ship sleeping preference (stored into ExtraNote via note field on submit)
+      shipSleep: 'no', // yes | no | maybe
       phone: '',
       intolerance_note: '',
       note: '',
@@ -46,116 +48,127 @@ class ApplicationPage extends React.Component {
       participantAgreement: false,
     }
   }
-  
+
+  // NEW: helper to build the final note that will be saved into the DB (ExtraNote)
+  // Format: "#ship:[antwort]# " + optional user note
+  buildExtraNote = () => {
+    const { shipSleep, note } = this.state;
+    const shipTag = `#ship:${shipSleep}#`;
+    const trimmedNote = (note || '').trim();
+
+    if (!trimmedNote) return shipTag;
+    return `${shipTag} ${trimmedNote}`;
+  }
+
   renderNoApplicationPhase = () => {
-      return (
-        <Card>
-            <CardHeader>Keine Laufende Anmeldephase</CardHeader>
-            <CardBody>
-                Für die {this.props.conference ? this.props.conference.name : 'ausgewählte BuFaK'} gibt es keine laufende Anmeldephase.
-            </CardBody>
-        </Card>
-      )
+    return (
+      <Card>
+        <CardHeader>Keine Laufende Anmeldephase</CardHeader>
+        <CardBody>
+          Für die {this.props.conference ? this.props.conference.name : 'ausgewählte BuFaK'} gibt es keine laufende Anmeldephase.
+        </CardBody>
+      </Card>
+    )
   }
 
   renderApplicationForm = () => {
     if (!this.props.isPasswordValid) {
       return (<PasswordProtection />)
-    } 
+    }
     return (
-        <Card>
-            <CardBody>
-              <Stepper activeStep={this.state.activeStep} alternativeLabel>
-                <Step key={1}>
-                  <StepLabel>Allgemeine Informationen</StepLabel>
-                </Step>
+      <Card>
+        <CardBody>
+          <Stepper activeStep={this.state.activeStep} alternativeLabel>
+            <Step key={1}>
+              <StepLabel>Allgemeine Informationen</StepLabel>
+            </Step>
 
-                <Step key={2}>
-                  <StepLabel>Spezifische Informationen</StepLabel>
-                </Step>
+            <Step key={2}>
+              <StepLabel>Spezifische Informationen</StepLabel>
+            </Step>
 
-                <Step key={3}>
-                  <StepLabel>Angaben überprüfen</StepLabel>
-                </Step>
-              </Stepper>
-            <Form>
-              { this.state.activeStep === 0 && this.renderGeneralStep()}
-              { this.state.activeStep === 1 && this.renderSpecificStep()}
-              { this.state.activeStep === 2 && this.renderApproveStep()}
-              { this.state.activeStep === 3 && this.renderResult()}
-            </Form>
-            </CardBody>
-        </Card>
-      )
+            <Step key={3}>
+              <StepLabel>Angaben überprüfen</StepLabel>
+            </Step>
+          </Stepper>
+          <Form>
+            {this.state.activeStep === 0 && this.renderGeneralStep()}
+            {this.state.activeStep === 1 && this.renderSpecificStep()}
+            {this.state.activeStep === 2 && this.renderApproveStep()}
+            {this.state.activeStep === 3 && this.renderResult()}
+          </Form>
+        </CardBody>
+      </Card>
+    )
   }
 
-  renderGeneralStep(){
+  renderGeneralStep() {
     const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
     return (
       <div>
-      <Row>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="participant">Ich bin*</Label>
-            { this.props.isOtherKey ?
+        <Row>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="participant">Ich bin*</Label>
+              {this.props.isOtherKey ?
+                <Input
+                  type="select"
+                  value={participant}
+                  onChange={(e) => this.setState({ participant: e.currentTarget.value })}
+                  required
+                  id="participant"
+                >
+                  <option value="alumnus">Alumnus</option>
+                  <option value="rat">BuFaK Rat</option>
+                  <option value="helper">Helfer</option>
+                </Input>
+                :
+                <Input
+                  type="select"
+                  value={participant}
+                  disabled
+                  required
+                  id="participant"
+                >
+                  <option value="pariticipant">Teilnehmer</option>
+                </Input>
+              }
+            </FormGroup>
+          </Col>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
               <Input
                 type="select"
-                value={participant}
-                onChange={(e) => this.setState({ participant: e.currentTarget.value})}
-                required
-                id="participant"
-              >
-                <option value="alumnus">Alumnus</option>
-                <option value="rat">BuFaK Rat</option>
-                <option value="helper">Helfer</option>
-              </Input>
-              :
-              <Input
-                type="select"
-                value={participant}
                 disabled
+                value={this.props.priority}
                 required
-                id="participant"
-              >
-                <option value="pariticipant">Teilnehmer</option>
+                id="priority">
+                {Array.from({ length: 6 }, (v, k) => k + 1).map(x => <option key={x} id={x}>{x}</option>)}
               </Input>
-            }
-          </FormGroup>
-        </Col>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
-            <Input
-              type="select"
-              disabled
-              value={this.props.priority}
-              required
-              id="priority">
-              {Array.from({length: 6}, (v, k) => k+1).map(x => <option key={x} id={x}>{x}</option>)}
-            </Input>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="bufakCount">Deine wievielte BuFaK ist das?*</Label>
-            <Input
-              type="number"
-              min={1}
-              max={99}
-              value={this.state.bufakCount}
-              onChange={(e) => this.setState({ bufakCount: e.currentTarget.value})}
-              required
-              id="bufakCount"/>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col >
-          <Button disabled={!this.state.bufakCount} className="float-right" onClick={() => this.setState({activeStep: 1})}>Weiter</Button>
-        </Col>
-      </Row>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="bufakCount">Deine wievielte BuFaK ist das?*</Label>
+              <Input
+                type="number"
+                min={1}
+                max={99}
+                value={this.state.bufakCount}
+                onChange={(e) => this.setState({ bufakCount: e.currentTarget.value })}
+                required
+                id="bufakCount" />
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col >
+            <Button disabled={!this.state.bufakCount} className="float-right" onClick={() => this.setState({ activeStep: 1 })}>Weiter</Button>
+          </Col>
+        </Row>
       </div>
     )
   }
@@ -163,7 +176,9 @@ class ApplicationPage extends React.Component {
   renderSpecificStep() {
     return (
       <div>
-        <Alert color="warning" style={{ justifyContent: 'center'}}>Diese sensitiven Informationen werden nach der BuFaK gelöscht.</Alert>
+        <Alert color="warning" style={{ justifyContent: 'center' }}>Diese sensitiven Informationen werden nach der BuFaK gelöscht.</Alert>
+
+        {/* Sleep pref + NEW ship sleep pref */}
         <Row>
           <Col xs="12" sm="6">
             <FormGroup>
@@ -171,7 +186,7 @@ class ApplicationPage extends React.Component {
               <Input
                 type="select"
                 value={this.state.sleep}
-                onChange={(e) => this.setState({ sleep: e.currentTarget.value})}
+                onChange={(e) => this.setState({ sleep: e.currentTarget.value })}
                 required
                 id="sleep"
               >
@@ -181,19 +196,40 @@ class ApplicationPage extends React.Component {
               </Input>
             </FormGroup>
           </Col>
+
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="shipSleep">Kannst du dir vorstellen, auf dem Schiff (Gruppenschlafraum) zu übernachten?*</Label>
+              <Input
+                type="select"
+                value={this.state.shipSleep}
+                onChange={(e) => this.setState({ shipSleep: e.currentTarget.value })}
+                required
+                id="shipSleep"
+              >
+                <option value="yes">Ja</option>
+                <option value="no">Nein</option>
+                <option value="maybe">Vielleicht</option>
+              </Input>
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
           <Col xs="12" sm="6">
             <FormGroup>
               <Label for="phone">Wie lautet deine Handynummer?</Label>
               <Input
                 type="tel"
                 value={this.state.phone}
-                onChange={(e) => this.setState({ phone: e.currentTarget.value})}
+                onChange={(e) => this.setState({ phone: e.currentTarget.value })}
                 required
                 id="phone"
               />
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
           <Col xs="12" sm="6">
             <FormGroup>
@@ -201,14 +237,13 @@ class ApplicationPage extends React.Component {
               <Input
                 type="select"
                 value={this.state.eat}
-                onChange={(e) => this.setState({ eat: e.currentTarget.value})}
+                onChange={(e) => this.setState({ eat: e.currentTarget.value })}
                 required
                 id="eat"
               >
                 <option value="carnivorous">Alles</option>
                 <option value="vegetarian">Vegetarisch</option>
                 <option value="vegan">Vegan</option>
-
               </Input>
             </FormGroup>
           </Col>
@@ -218,7 +253,7 @@ class ApplicationPage extends React.Component {
               <Input
                 type="select"
                 value={this.state.intolerance}
-                onChange={(e) => this.setState({ intolerance: e.currentTarget.value})}
+                onChange={(e) => this.setState({ intolerance: e.currentTarget.value })}
                 required
                 id="intolerance"
               >
@@ -228,46 +263,48 @@ class ApplicationPage extends React.Component {
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
-          { this.state.intolerance === 'yes'  && 
+          {this.state.intolerance === 'yes' &&
+            <Col xs="12" sm="6">
+              <FormGroup>
+                <Label for="intolerance_note">Welche Unverträglichkeiten hast du?*</Label>
+                <Input
+                  type="textarea"
+                  value={this.state.intolerance_note}
+                  onChange={(e) => this.setState({ intolerance_note: e.currentTarget.value })}
+                  required
+                  id="intolerance_note"
+                />
+              </FormGroup>
+            </Col>
+          }
           <Col xs="12" sm="6">
-            <FormGroup>
-              <Label for="intolerance_note">Welche Unverträglichkeiten hast du?*</Label>
-              <Input
-                type="textarea"
-                value={this.state.intolerance_note}
-                onChange={(e) => this.setState({ intolerance_note: e.currentTarget.value})}
-                required
-                id="intolerance_note"
-              />
-            </FormGroup>
-          </Col>
-        }
-        <Col xs="12" sm="6">
             <FormGroup>
               <Label for="note">Hast du Anmerkungen?</Label>
               <Input
                 type="textarea"
                 value={this.state.note}
-                onChange={(e) => this.setState({ note: e.currentTarget.value})}
+                onChange={(e) => this.setState({ note: e.currentTarget.value })}
                 required
                 id="note"
               />
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
           <Col xs="6" sm="6">
-            <Button onClick={() => this.setState({activeStep: 0})}>Zurück</Button>
+            <Button onClick={() => this.setState({ activeStep: 0 })}>Zurück</Button>
           </Col>
           <Col xs="6" sm="6" >
             <Button
               className="float-right"
               disabled={this.state.intolerance === 'yes' && this.state.intolerance_note === ''}
-              onClick={() => this.setState({activeStep: 2})}
-              >
-                Weiter
-              </Button>
+              onClick={() => this.setState({ activeStep: 2 })}
+            >
+              Weiter
+            </Button>
           </Col>
         </Row>
       </div>
@@ -279,53 +316,55 @@ class ApplicationPage extends React.Component {
     return (
       <div>
         <Row>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="participant">Ich bin*</Label>
-            <Input
-              type="select"
-              value={participant}
-              disabled
-              required
-              id="participant"
-            >
-              <option value="pariticipant">Teilnehmer</option>
-              <option value="alumnus">Alumnus</option>
-              <option value="rat">BuFaK Rat</option>
-              <option value="helper">Helfer</option>
-            </Input>
-          </FormGroup>
-        </Col>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
-            <Input
-              type="select"
-              value={this.props.priority}
-              disabled
-              required
-              id="priority">
-              {Array.from({length: 6}, (v, k) => k+1).map(x => <option key={x} id={x}>{x}</option>)}
-            </Input>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" sm="6">
-          <FormGroup>
-            <Label for="bufakCount">Deine wievielte BuFaK ist das?*</Label>
-            <Input
-              type="number"
-              min={1}
-              max={99}
-              value={this.state.bufakCount}
-              disabled
-              required
-              id="bufakCount"/>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="participant">Ich bin*</Label>
+              <Input
+                type="select"
+                value={participant}
+                disabled
+                required
+                id="participant"
+              >
+                <option value="pariticipant">Teilnehmer</option>
+                <option value="alumnus">Alumnus</option>
+                <option value="rat">BuFaK Rat</option>
+                <option value="helper">Helfer</option>
+              </Input>
+            </FormGroup>
+          </Col>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="priority">Welche Priorität hast du in deiner Fachschaft?*</Label>
+              <Input
+                type="select"
+                value={this.props.priority}
+                disabled
+                required
+                id="priority">
+                {Array.from({ length: 6 }, (v, k) => k + 1).map(x => <option key={x} id={x}>{x}</option>)}
+              </Input>
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="bufakCount">Deine wievielte BuFaK ist das?*</Label>
+              <Input
+                type="number"
+                min={1}
+                max={99}
+                value={this.state.bufakCount}
+                disabled
+                required
+                id="bufakCount" />
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
           <Col xs="12" sm="6">
             <FormGroup>
               <Label for="sleep">Mit wem möchtest du auf einem Zimmer schlafen?*</Label>
@@ -341,6 +380,26 @@ class ApplicationPage extends React.Component {
               </Input>
             </FormGroup>
           </Col>
+
+          {/* NEW: shipSleep in approve step */}
+          <Col xs="12" sm="6">
+            <FormGroup>
+              <Label for="shipSleep">Schiff (Gruppenschlafraum) möglich?*</Label>
+              <Input
+                type="select"
+                value={this.state.shipSleep}
+                disabled
+                id="shipSleep"
+              >
+                <option value="yes">Ja</option>
+                <option value="no">Nein</option>
+                <option value="maybe">Vielleicht</option>
+              </Input>
+            </FormGroup>
+          </Col>
+        </Row>
+
+        <Row>
           <Col xs="12" sm="6">
             <FormGroup>
               <Label for="phone">Wie lautet deine Handynummer?</Label>
@@ -353,6 +412,7 @@ class ApplicationPage extends React.Component {
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
           <Col xs="12" sm="6">
             <FormGroup>
@@ -366,7 +426,6 @@ class ApplicationPage extends React.Component {
                 <option value="carnivorous">Alles</option>
                 <option value="vegetarian">Vegetarisch</option>
                 <option value="vegan">Vegan</option>
-
               </Input>
             </FormGroup>
           </Col>
@@ -385,21 +444,24 @@ class ApplicationPage extends React.Component {
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
-          { this.state.intolerance === 'yes'  && 
+          {this.state.intolerance === 'yes' &&
+            <Col xs="12" sm="6">
+              <FormGroup>
+                <Label for="intolerance_note">Welche Unverträglichkeiten hast du?*</Label>
+                <Input
+                  type="textarea"
+                  value={this.state.intolerance_note}
+                  disabled
+                  id="intolerance_note"
+                />
+              </FormGroup>
+            </Col>
+          }
+
+          {/* Note shown as the user typed it (without ship tag). The ship choice is shown separately above. */}
           <Col xs="12" sm="6">
-            <FormGroup>
-              <Label for="intolerance_note">Welche Unverträglichkeiten hast du?*</Label>
-              <Input
-                type="textarea"
-                value={this.state.intolerance_note}
-                disabled
-                id="intolerance_note"
-              />
-            </FormGroup>
-          </Col>
-        }
-        <Col xs="12" sm="6">
             <FormGroup>
               <Label for="note">Hast du Anmerkungen?</Label>
               <Input
@@ -414,26 +476,26 @@ class ApplicationPage extends React.Component {
 
         <Row>
           {this.props.conference.informationTextConferenceApplication !== "undefined" &&
-          <Col xs="12" sm="6">
-                <h5>Hinweis des Ausrichters:</h5>
-                <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextConferenceApplication }} />                
-              </Col>
-            }
             <Col xs="12" sm="6">
+              <h5>Hinweis des Ausrichters:</h5>
+              <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextConferenceApplication }} />
+            </Col>
+          }
+          <Col xs="12" sm="6">
             <FormGroup check>
               <Label for="dataprotection" check>
-                <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({dataprotection: e.target.checked}) } id="dataprotection" />{' '}
+                <Input type="checkbox" value={this.state.dataprotection} onChange={(e) => this.setState({ dataprotection: e.target.checked })} id="dataprotection" />{' '}
                 Ich habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen und stimme ihr zu*
               </Label>
             </FormGroup >
-            {this.props.conference.linkParticipantAgreement && 
+            {this.props.conference.linkParticipantAgreement &&
               <FormGroup check>
                 <Label for="participantAgreement" check>
-                  <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({participantAgreement: e.target.checked}) } id="participantAgreement" />{' '}
+                  <Input type="checkbox" value={this.state.participantAgreement} onChange={(e) => this.setState({ participantAgreement: e.target.checked })} id="participantAgreement" />{' '}
                   Ich habe die
-                  {this.props.conference.linkParticipantAgreement ? 
+                  {this.props.conference.linkParticipantAgreement ?
                     <a href={this.props.conference.linkParticipantAgreement} rel="noopener noreferrer" target="_blank"> Teilnahmevereinbarung </a>
-                    : " Teilnahmevereinbarung " 
+                    : " Teilnahmevereinbarung "
                   }
                   gelesen und stimme ihr zu*
                 </Label>
@@ -441,24 +503,25 @@ class ApplicationPage extends React.Component {
             }
             <FormGroup check>
               <Label for="newsletter" check>
-                <Input type="checkbox" value={this.state.newsletter} onChange={(e) => this.setState({newsletter: e.target.checked}) } id="newsletter" />{' '}
+                <Input type="checkbox" value={this.state.newsletter} onChange={(e) => this.setState({ newsletter: e.target.checked })} id="newsletter" />{' '}
                 Ich möchte mich zum BuFaK-Newsletter anmelden.
               </Label>
             </FormGroup>
           </Col>
         </Row>
+
         <Row>
           <Col xs="6" sm="6">
-            <Button onClick={() => this.setState({activeStep: 1})}>Zurück</Button>
+            <Button onClick={() => this.setState({ activeStep: 1 })}>Zurück</Button>
           </Col>
           <Col xs="6" sm="6" >
             <Button
               className="float-right"
               disabled={!this.state.dataprotection || (this.props.conference.participantAgreement && !this.state.participantAgreement)}
               onClick={(e) => this.handleSubmit()}
-              >
-                Absenden
-              </Button>
+            >
+              Absenden
+            </Button>
           </Col>
         </Row>
       </div>
@@ -466,15 +529,15 @@ class ApplicationPage extends React.Component {
   }
 
   renderResult() {
-    const { fetching, error} = this.props
+    const { fetching, error } = this.props
     if (fetching) {
       return (
-        <PageSpinner color="primary"/>
+        <PageSpinner color="primary" />
       )
     } else if (error) {
       console.error(error)
       return (
-        <Alert color="danger"><MdHighlightOff size={30}/>Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
+        <Alert color="danger"><MdHighlightOff size={30} />Ups... hier lief etwas schief! Versuche es später erneut oder kontaktiere den Ausrichter.</Alert>
       )
     } else {
       this.renderApplied();
@@ -505,16 +568,19 @@ class ApplicationPage extends React.Component {
       <Card>
         <CardHeader>Anmeldung eingegangen</CardHeader>
         <CardBody>
-          <Alert color="success"><MdCheckCircle size={30}/> Deine Anmeldung ist erfolgreich bei uns eingegangen.</Alert>
+          <Alert color="success"><MdCheckCircle size={30} /> Deine Anmeldung ist erfolgreich bei uns eingegangen.</Alert>
         </CardBody>
       </Card>
     )
   }
 
   handleSubmit() {
-    this.setState({activeStep: 3})
-    const { bufakCount, eat, intolerance, intolerance_note, phone, note, sleep} = this.state
+    this.setState({ activeStep: 3 })
+    const { bufakCount, eat, intolerance, intolerance_note, phone, sleep } = this.state
     const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
+
+    // NEW: compose the note that will be stored in DB (ExtraNote) via existing "note" field
+    const extraNote = this.buildExtraNote();
 
     this.props.applyForConference({
       conferenceId: this.props.conferenceId,
@@ -528,7 +594,8 @@ class ApplicationPage extends React.Component {
       eating: eat,
       priority: this.props.priority,
       intolerance: intolerance === 'yes' ? intolerance_note : 'none',
-      note,
+      // IMPORTANT: reuse existing field -> ExtraNote in DB
+      note: extraNote,
       status: 0,
       key: this.props.password,
       newsletter: this.state.newsletter,
@@ -536,43 +603,43 @@ class ApplicationPage extends React.Component {
   }
 
   render() {
-    const {conference, conferenceId, fetching, error, userForConference} = this.props;
-    const isUserUnapplied = () => isUnapplied(userForConference , conferenceId)
+    const { conference, conferenceId, fetching, error, userForConference } = this.props;
+    const isUserUnapplied = () => isUnapplied(userForConference, conferenceId)
     return (
       <Page
         className="DashboardPage"
         title="Anmeldung"
       >
-        { !conference && fetching && this.renderConferenceLoading()}
-        { !conference && error && this.renderConferenceError()}
-        { conference && !isUserUnapplied() && this.renderApplied() }
-        { conference && !conference.conferenceApplicationPhase && isUserUnapplied() &&this.renderNoApplicationPhase()}
-        { conference && conference.conferenceApplicationPhase && isUserUnapplied() && this.renderApplicationForm()}
-     </Page>
+        {!conference && fetching && this.renderConferenceLoading()}
+        {!conference && error && this.renderConferenceError()}
+        {conference && !isUserUnapplied() && this.renderApplied()}
+        {conference && !conference.conferenceApplicationPhase && isUserUnapplied() && this.renderNoApplicationPhase()}
+        {conference && conference.conferenceApplicationPhase && isUserUnapplied() && this.renderApplicationForm()}
+      </Page>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-      conferenceId: state.conference.conferenceId,
-      conference: state.conference.conference,
-      user: state.auth.user,
-      userForConference: state.auth.userForConference,
-      fetching: state.conference.fetching,
-      error: state.conference.error,
-      // password protection
-      password: state.conference.password,
-      isPasswordValid: state.conference.isPasswordValid,
-      priority: state.conference.priority,
-      isOtherKey: state.conference.isOtherKey,
+    conferenceId: state.conference.conferenceId,
+    conference: state.conference.conference,
+    user: state.auth.user,
+    userForConference: state.auth.userForConference,
+    fetching: state.conference.fetching,
+    error: state.conference.error,
+    // password protection
+    password: state.conference.password,
+    isPasswordValid: state.conference.isPasswordValid,
+    priority: state.conference.priority,
+    isOtherKey: state.conference.isOtherKey,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      getConference: () => dispatch(ConferenceActions.getConference()),
-      applyForConference: (data) => dispatch(ConferenceActions.applyForConference(data)),
+    getConference: () => dispatch(ConferenceActions.getConference()),
+    applyForConference: (data) => dispatch(ConferenceActions.applyForConference(data)),
   }
 }
 
