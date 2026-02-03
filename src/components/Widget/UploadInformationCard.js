@@ -18,7 +18,7 @@ class UploadInformationCard extends Component {
             <CardHeader>Studienbescheinigung hochladen</CardHeader>
             <CardBody>
                 <Alert color="grey">
-                    Herzlich Willkommen auf unserem Konfetti-Anmeldetool!<br /><br />
+                    Herzlich Willkommen auf unserem Konfetti-Anmeldetool! <br /><br />
                     Hier könnt Ihr Euch mit Eurem Prioritätscode für die 82. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 18.01.2026 bis zum 22.02.2026 EOD anmelden.<br /><br />
                     Da die Konferenz vom BMFTR unterstützt wird, benötigen wir von jeder angenommenen Person eine Immatrikulationsbescheinigung für das <b>SommerSemester2026</b>. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
                     Diese könnt Ihr unter folgendem Link hochladen: <a href="https://www.dropbox.com/request/lutk7zJgHnlOtlLFux3y" target="_blank" rel="noopener noreferrer">https://www.dropbox.com/request/lutk7zJgHnlOtlLFux3y</a><br /><br />
