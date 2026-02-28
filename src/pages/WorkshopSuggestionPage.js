@@ -36,7 +36,7 @@ class WorkshopSuggestionPage extends React.Component {
             redirect: false,
             workshopProperties: [
                 { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
-                { name: 'Name abgekürzt*', type: 'text', id: 'nameShort', md: 6, xs: 12},
+                { name: 'Workshoptitel kurz*', type: 'text', id: 'nameShort', md: 6, xs: 12},
                 { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
                 { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
                 { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
