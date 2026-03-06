@@ -33,61 +33,49 @@ class WorkshopSuggestionPage extends React.Component {
                 duration: 90,
                 materialNote: ''
             },
-            redirect: false,
-            // ANPASSUNG: Hier die initialen Werte korrekt setzen
-            workshopProperties: [
-                { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
-                { name: 'Workshoptitel kurz* a', type: 'text', id: 'nameShort', md: 6, xs: 12},
-                { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
-                { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
-                { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
-                    { value: 'Basic', name: 'Basic'},
-                    { value: 'Fortgeschritten', name: 'Fortgeschritten'},
-                    { value: 'Profi', name: 'Profi'}
-                ], md: 3, xs: 12, xl: 3},
-                { name: 'Themenbereich*', type: 'select', id: 'topic', md: 3, xs: 12, xl: 3, options: []},
-                { name: 'Dauer (min)*', type: 'select', id: 'duration', md: 3, xs: 12, xl: 3, options: []},
-                { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
-                { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
-            ]
+            redirect: false
+            // workshopProperties wurden aus dem State entfernt, da wir sie dynamisch generieren
         }
     }
 
     componentDidMount() {
-        const { user } = this.props;
-        let {conference}  = this.props;
+        const { user, conference } = this.props;
+        
+        let initialTopic = 'default';
+        let initialDuration = 90;
 
-        const getWorkshopTopics = () => (conference.workshopTopics || "").split(",") || "default"
-        const getWorkshopDurations = () => (conference.workshopDurations || "").split(",") || "90"
+        // Falls die Daten beim Mounten schon da sind
+        if (conference) {
+            const topics = conference.workshopTopics ? conference.workshopTopics.split(",") : ['default'];
+            const durations = conference.workshopDurations ? conference.workshopDurations.split(",") : ['90'];
+            initialTopic = topics[0];
+            initialDuration = durations[0];
+        }
 
-        if(conference){
-            this.setState({
-                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`, topic: getWorkshopTopics()[0], duration: getWorkshopDurations()[0]},
-                // ANPASSUNG: Hier die Werte identisch zum Constructor benennen, nur mit befüllten Optionen
-                workshopProperties:[
-                        { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
-                        { name: 'Workshoptitel kurz* b', type: 'text', id: 'nameShort', md: 6, xs: 12},
-                        { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
-                        { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
-                        { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
-                            { value: 'Basic', name: 'Basic'},
-                            { value: 'Fortgeschritten', name: 'Fortgeschritten'},
-                            { value: 'Profi', name: 'Profi'}
-                        ], md: 3, xs: 12, xl: 3},
-                        { name: 'Themenbereich*', type: 'select', id: 'topic', xs: 12, md:3,xl:3, options: [
-                            ...getWorkshopTopics().map(option => ({ value: option, name: option}))
-                          ]},
-                        { name: 'Dauer (min)*', type: 'select', id: 'duration', xs: 12, md:3,xl:3, options: [
-                            ...getWorkshopDurations().map(option => ({ value: option, name: option}))
-                          ]},
-                        { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
-                        { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
-                    ]
-            })
-        } else{
-            this.setState({
-                workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`}
-            })
+        this.setState({
+            workshop: {
+                ...this.state.workshop, 
+                hostUID: user.uid, 
+                hostName: `${user.name} ${user.surname}`,
+                topic: initialTopic,
+                duration: initialDuration
+            }
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        // Falls die Konferenz-Daten erst kurz nach dem Mounten geladen werden
+        if (this.props.conference !== prevProps.conference && this.props.conference) {
+            const topics = this.props.conference.workshopTopics ? this.props.conference.workshopTopics.split(",") : ['default'];
+            const durations = this.props.conference.workshopDurations ? this.props.conference.workshopDurations.split(",") : ['90'];
+            
+            this.setState(prevState => ({
+                workshop: {
+                    ...prevState.workshop,
+                    topic: prevState.workshop.topic === 'default' ? topics[0] : prevState.workshop.topic,
+                    duration: prevState.workshop.duration === 90 ? durations[0] : prevState.workshop.duration
+                }
+            }));
         }
     }
 
@@ -104,6 +92,29 @@ class WorkshopSuggestionPage extends React.Component {
     onSave() {
         this.setState({redirect: true})
         this.props.updateExistingWorkshop(this.state.workshop)
+    }
+
+    // Dynamische Berechnung der Eingabefelder
+    getWorkshopProperties() {
+        const { conference } = this.props;
+        const topics = conference && conference.workshopTopics ? conference.workshopTopics.split(",") : [];
+        const durations = conference && conference.workshopDurations ? conference.workshopDurations.split(",") : [];
+
+        return [
+            { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
+            { name: 'Workshoptitel kurz*', type: 'text', id: 'nameShort', md: 6, xs: 12},
+            { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
+            { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
+            { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
+                { value: 'Basic', name: 'Basic'},
+                { value: 'Fortgeschritten', name: 'Fortgeschritten'},
+                { value: 'Profi', name: 'Profi'}
+            ], md: 3, xs: 12, xl: 3},
+            { name: 'Themenbereich*', type: 'select', id: 'topic', xs: 12, md: 3, xl: 3, options: topics.map(t => ({ value: t, name: t})) },
+            { name: 'Dauer (min)*', type: 'select', id: 'duration', xs: 12, md: 3, xl: 3, options: durations.map(d => ({ value: d, name: d})) },
+            { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
+            { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
+        ];
     }
 
     render() {
@@ -127,89 +138,52 @@ class WorkshopSuggestionPage extends React.Component {
         }
 
         if (fetching) {
-            return (
-                <PageSpinner />
-            )
+            return <PageSpinner />
         }
 
-        if (this.props.conference.informationTextWorkshopSuggestion !== undefined){
-            return (
-                <Page
-                    className="WorkshopDetailsPage"
-                >
-                    <Row>
-                        <Col>
-                            <Card>
-                                { (redirect || success) && <Redirect to="/"/>}
-                                { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
-                                { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
-                                { !redirect &&
-                                    <div>
+        // Ruft die aktuellen Eigenschaften ab
+        const currentProperties = this.getWorkshopProperties();
 
-                                        <DetailsHeader
-                                            title={'Neuen Workshop einreichen'}
-                                            empty={true}
-                                            onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
-                                            editing={true}
-                                            onSave={() => this.onSave()}
-                                            disabled={!this.isWorkshopValid()}
-                                        />
+        return (
+            <Page className="WorkshopDetailsPage">
+                <Row>
+                    <Col>
+                        <Card>
+                            { (redirect || success) && <Redirect to="/"/>}
+                            { redirect && error && <CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
+                            { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
+                            
+                            { !redirect && (
+                                <div>
+                                    <DetailsHeader
+                                        title={'Neuen Workshop einreichen'}
+                                        empty={true}
+                                        onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
+                                        editing={true}
+                                        onSave={() => this.onSave()}
+                                        disabled={!this.isWorkshopValid()}
+                                    />
 
+                                    { conference.informationTextWorkshopSuggestion !== undefined && (
                                         <div style={{padding:'1.25rem'}}>
                                             <h6>Hinweise des Ausrichters:</h6>
-                                            <div dangerouslySetInnerHTML={{ __html: this.props.conference.informationTextWorkshopSuggestion }} />
+                                            <div dangerouslySetInnerHTML={{ __html: conference.informationTextWorkshopSuggestion }} />
                                         </div>
-                                        <DetailsBody
-                                            disabled={false}
-                                            object={workshop}
-                                            onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
-                                            properties={this.state.workshopProperties}
-                                        />
-                                    </div>
-                                }
-                            </Card>
-                        </Col>
-                    </Row>
-                </Page>
-            )
-        } else {
-            return (
-                <Page
-                    className="WorkshopDetailsPage"
-                >
-                    <Row>
-                        <Col>
-                            <Card>
-                                { (redirect || success) && <Redirect to="/"/>}
-                                { redirect && error &&<CardBody><Alert color="danger"/>Das hat leider nicht geklappt. Versuche es später noch einmal oder melde dich beim Ausrichter.</CardBody>}
-                                { redirect && !error && !success && <CardBody><PageSpinner /></CardBody>}
-                                { !redirect &&
-                                    <div>
+                                    )}
 
-                                        <DetailsHeader
-                                            title={'Neuen Workshop einreichen'}
-                                            empty={true}
-                                            onCreate={() => this.props.createNewWorkshopSuggestion(workshop)}
-                                            editing={true}
-                                            onSave={() => this.onSave()}
-                                            disabled={!this.isWorkshopValid()}
-                                        />
-                                        <DetailsBody
-                                            disabled={false}
-                                            object={workshop}
-                                            onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
-                                            properties={this.state.workshopProperties}
-                                        />
-                                    </div>
-                                }
-                            </Card>
-                        </Col>
-                    </Row>
-                </Page>
-            )
-
-        }
-
+                                    <DetailsBody
+                                        disabled={false}
+                                        object={workshop}
+                                        onChange={(id, value) => this.setState({ workshop: {...workshop, [id]: value}})}
+                                        properties={currentProperties}
+                                    />
+                                </div>
+                            )}
+                        </Card>
+                    </Col>
+                </Row>
+            </Page>
+        );
     }
 }
 
@@ -222,15 +196,15 @@ const mapStateToProps = (state) => {
         fetching: state.workshop.fetching,
         user: state.auth.user
     }
-  }
+}
 
-  const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
     return {
         getUsers: () => dispatch(WorkshopActions.getUsers()),
         createNewWorkshopSuggestion: (workshop) => dispatch(WorkshopActions.createNewWorkshopSuggestion(workshop)),
         clearFetching: () => dispatch(WorkshopActions.updateFetching(false)),
         clearSuccess: () => dispatch(WorkshopActions.updateSuccess(false)),
     }
-  }
+}
 
-  export default connect(mapStateToProps, mapDispatchToProps)(WorkshopSuggestionPage);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkshopSuggestionPage);
