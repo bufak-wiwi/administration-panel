@@ -34,9 +34,10 @@ class WorkshopSuggestionPage extends React.Component {
                 materialNote: ''
             },
             redirect: false,
+            // ANPASSUNG: Hier die initialen Werte korrekt setzen
             workshopProperties: [
                 { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
-                { name: 'Name abgekürzt*', type: 'text', id: 'nameShort', md: 6, xs: 12},
+                { name: 'Workshoptitel kurz* x', type: 'text', id: 'nameShort', md: 6, xs: 12},
                 { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
                 { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
                 { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
@@ -44,9 +45,9 @@ class WorkshopSuggestionPage extends React.Component {
                     { value: 'Fortgeschritten', name: 'Fortgeschritten'},
                     { value: 'Profi', name: 'Profi'}
                 ], md: 3, xs: 12, xl: 3},
-                { name: 'Themenbereich', type: 'text', id: 'topic', md: 3, xs: 12, xl: 3},
-                { name: 'Dauer (min)', type: 'number', id: 'duration', md: 3, xs: 12, xl: 3},
-                { name: 'Maximale Besucherzahl', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
+                { name: 'Themenbereich*', type: 'select', id: 'topic', md: 3, xs: 12, xl: 3, options: []},
+                { name: 'Dauer (min)*', type: 'select', id: 'duration', md: 3, xs: 12, xl: 3, options: []},
+                { name: 'Maximale Besucherzahl*', type: 'number', id: 'maxVisitors', min: 0, max: 999, md: 3, xs: 12, xl: 3},
                 { name: 'Anmerkungen (z.B. Material, weitere Workshopleiter)', type: 'textarea', id: 'materialNote', md: 12, xs: 12, xl: 12}
             ]
         }
@@ -62,9 +63,10 @@ class WorkshopSuggestionPage extends React.Component {
         if(conference){
             this.setState({
                 workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`, topic: getWorkshopTopics()[0], duration: getWorkshopDurations()[0]},
+                // ANPASSUNG: Hier die Werte identisch zum Constructor benennen, nur mit befüllten Optionen
                 workshopProperties:[
-                        { name: 'Name*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
-                        { name: 'Name abgekürzt*', type: 'text', id: 'nameShort', md: 6, xs: 12},
+                        { name: 'Workshoptitel*', type: 'text', id: 'name', xl: 12, md: 12, xs: 12},
+                        { name: 'Workshoptitel kurz* y', type: 'text', id: 'nameShort', md: 6, xs: 12},
                         { name: 'Workshopleiter', type: 'text', id: 'hostName', md: 6, xs: 12, readOnly: true},
                         { name: 'Beschreibung*', type: 'textarea', id: 'overview', md: 12, xs: 12, xl: 12},
                         { name: 'Niveau*', type: 'select', id: 'difficulty', options: [
@@ -85,11 +87,8 @@ class WorkshopSuggestionPage extends React.Component {
         } else{
             this.setState({
                 workshop: {...this.state.workshop, hostUID: user.uid, hostName: `${user.name} ${user.surname}`}
-        
             })
         }
-        
-
     }
 
     componentWillUnmount() {
