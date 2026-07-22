@@ -19,10 +19,10 @@ class UploadInformationCard extends Component {
             <CardBody>
                 <Alert color="grey">
                     Herzlich Willkommen auf unserem Konfetti-Anmeldetool!<br /><br />
-                    Hier könnt Ihr Euch mit Eurem Prioritätscode für die 82. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 18.01.2026 bis zum 22.02.2026 EOD anmelden.<br /><br />
-                    Da die Konferenz vom BMBF unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
-                    Diese könnt Ihr unter folgendem Link hochladen: <a href="https://1drv.ms/b/c/8541847e6e62c9f1/IQBIwYgxHAqUS7jfboInn_K6AdMo_oAJnZmgSck9pEDEtek?e=pD8XLK " target="_blank" rel="noopener noreferrer">https://1drv.ms/b/c/8541847e6e62c9f1/IQBIwYgxHAqUS7jfboInn_K6AdMo_oAJnZmgSck9pEDEtek?e=pD8XLK </a><br /><br />
-                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:guest@stugawiwi.de" target="_blank" rel="noopener noreferrer">guest@stugawiwi.de</a>
+                    Hier könnt Ihr Euch mit Eurem Prioritätscode für die 83. Bundesfachschaftenkonferenz Wirtschaftswissenschaften vom 29.10.26 bis zum 01.11.26 EOD anmelden.<br /><br />
+                    Da die Konferenz vom BMFTR unterstützt wird, benötigen wir von jeder angemeldeten Person eine aktuelle Immatrikulationsbescheinigung für das Wintersemester 2026/2027. Bitte benennt die PDF-Datei folgendermaßen: "Stadt_Vorname_Nachname".<br />
+                    Diese könnt Ihr unter folgendem Link hochladen: <a href="XXXXXXXX" target="_blank" rel="noopener noreferrer">XXXXXXXX</a><br /><br />
+                    Bei Fragen und Anregungen meldet Euch gerne unter dieser E-Mail bei uns: <a href="mailto:teilnehmendenbetreuung@gladfak.de" target="_blank" rel="noopener noreferrer">teilnehmendenbetreuung@gladfak.de</a>
                 </Alert>
             </CardBody>
         </Card>
