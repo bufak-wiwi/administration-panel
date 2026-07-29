@@ -38,8 +38,6 @@ class ApplicationPage extends React.Component {
       eat: 'carnivorous',
       intolerance: 'no',
       sleep: 'same council',
-      // NEW: ship sleeping preference (stored into ExtraNote via note field on submit)
-      shipSleep: 'no', // yes | no | maybe
       phone: '',
       intolerance_note: '',
       note: '',
@@ -47,17 +45,6 @@ class ApplicationPage extends React.Component {
       dataprotection: false,
       participantAgreement: false,
     }
-  }
-
-  // NEW: helper to build the final note that will be saved into the DB (ExtraNote)
-  // Format: "#ship:[antwort]# " + optional user note
-  buildExtraNote = () => {
-    const { shipSleep, note } = this.state;
-    const shipTag = `#ship:${shipSleep}#`;
-    const trimmedNote = (note || '').trim();
-
-    if (!trimmedNote) return shipTag;
-    return `${shipTag} ${trimmedNote}`;
   }
 
   renderNoApplicationPhase = () => {
@@ -178,7 +165,6 @@ class ApplicationPage extends React.Component {
       <div>
         <Alert color="warning" style={{ justifyContent: 'center' }}>Diese sensitiven Informationen werden nach der BuFaK gelöscht.</Alert>
 
-        {/* Sleep pref + NEW ship sleep pref */}
         <Row>
           <Col xs="12" sm="6">
             <FormGroup>
@@ -193,23 +179,6 @@ class ApplicationPage extends React.Component {
                 <option value="same council">Eigene Fachschaft</option>
                 <option value="same sex">Eigenes Geschlecht</option>
                 <option value="no preferences">Egal</option>
-              </Input>
-            </FormGroup>
-          </Col>
-
-          <Col xs="12" sm="6">
-            <FormGroup>
-              <Label for="shipSleep">Kannst du dir vorstellen, auf dem Schiff (Gruppenschlafraum) zu übernachten?*</Label>
-              <Input
-                type="select"
-                value={this.state.shipSleep}
-                onChange={(e) => this.setState({ shipSleep: e.currentTarget.value })}
-                required
-                id="shipSleep"
-              >
-                <option value="yes">Ja</option>
-                <option value="no">Nein</option>
-                <option value="maybe">Vielleicht</option>
               </Input>
             </FormGroup>
           </Col>
@@ -380,23 +349,6 @@ class ApplicationPage extends React.Component {
               </Input>
             </FormGroup>
           </Col>
-
-          {/* NEW: shipSleep in approve step */}
-          <Col xs="12" sm="6">
-            <FormGroup>
-              <Label for="shipSleep">Schiff (Gruppenschlafraum) möglich?*</Label>
-              <Input
-                type="select"
-                value={this.state.shipSleep}
-                disabled
-                id="shipSleep"
-              >
-                <option value="yes">Ja</option>
-                <option value="no">Nein</option>
-                <option value="maybe">Vielleicht</option>
-              </Input>
-            </FormGroup>
-          </Col>
         </Row>
 
         <Row>
@@ -460,7 +412,6 @@ class ApplicationPage extends React.Component {
             </Col>
           }
 
-          {/* Note shown as the user typed it (without ship tag). The ship choice is shown separately above. */}
           <Col xs="12" sm="6">
             <FormGroup>
               <Label for="note">Hast du Anmerkungen?</Label>
@@ -576,11 +527,8 @@ class ApplicationPage extends React.Component {
 
   handleSubmit() {
     this.setState({ activeStep: 3 })
-    const { bufakCount, eat, intolerance, intolerance_note, phone, sleep } = this.state
+    const { bufakCount, eat, intolerance, intolerance_note, phone, sleep, note } = this.state
     const participant = this.props.isOtherKey ? this.state.participant : 'pariticipant'
-
-    // NEW: compose the note that will be stored in DB (ExtraNote) via existing "note" field
-    const extraNote = this.buildExtraNote();
 
     this.props.applyForConference({
       conferenceId: this.props.conferenceId,
@@ -594,8 +542,7 @@ class ApplicationPage extends React.Component {
       eating: eat,
       priority: this.props.priority,
       intolerance: intolerance === 'yes' ? intolerance_note : 'none',
-      // IMPORTANT: reuse existing field -> ExtraNote in DB
-      note: extraNote,
+      note: note,
       status: 0,
       key: this.props.password,
       newsletter: this.state.newsletter,
